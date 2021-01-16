@@ -15,6 +15,7 @@
 		24B1128D25A9576300EE8DEA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24B1128B25A9576300EE8DEA /* LaunchScreen.storyboard */; };
 		24B1129825A9576300EE8DEA /* MakeupLoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B1129725A9576300EE8DEA /* MakeupLoggerTests.swift */; };
 		24B112A325A9576300EE8DEA /* MakeupLoggerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B112A225A9576300EE8DEA /* MakeupLoggerUITests.swift */; };
+		24B112BC25B1A54A00EE8DEA /* CommentListAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B112BB25B1A54A00EE8DEA /* CommentListAdapter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		24B1129E25A9576300EE8DEA /* MakeupLoggerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MakeupLoggerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		24B112A225A9576300EE8DEA /* MakeupLoggerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeupLoggerUITests.swift; sourceTree = "<group>"; };
 		24B112A425A9576300EE8DEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		24B112BB25B1A54A00EE8DEA /* CommentListAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentListAdapter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				24B1128925A9576300EE8DEA /* Assets.xcassets */,
 				24B1128B25A9576300EE8DEA /* LaunchScreen.storyboard */,
 				24B1128E25A9576300EE8DEA /* Info.plist */,
+				24B112BB25B1A54A00EE8DEA /* CommentListAdapter.swift */,
 			);
 			path = MakeupLogger;
 			sourceTree = "<group>";
@@ -261,6 +264,7 @@
 				24B1128525A9576100EE8DEA /* ViewController.swift in Sources */,
 				24B1128125A9576100EE8DEA /* AppDelegate.swift in Sources */,
 				24B1128325A9576100EE8DEA /* SceneDelegate.swift in Sources */,
+				24B112BC25B1A54A00EE8DEA /* CommentListAdapter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,6 +443,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 39WWX2FY3V;
 				INFOPLIST_FILE = MakeupLogger/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -458,6 +463,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 39WWX2FY3V;
 				INFOPLIST_FILE = MakeupLogger/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
