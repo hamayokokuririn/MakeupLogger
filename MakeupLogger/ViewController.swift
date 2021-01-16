@@ -9,23 +9,20 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    let image = UIImage(named: "sample_face")
+    let viewModel: ViewModel
+    lazy var image = UIImage(named: viewModel.image)
     lazy var faceView = UIImageView(image: image)
-    
     let tableView = UITableView()
-    lazy var adapter: CommentListAdapter? = {
-        let adapter = CommentListAdapter(annotaionList: ["comment1"])
-        adapter.addAction = {
-            self.addAnnotaion()
-        }
-        return adapter
-    }()
     
-    private func addAnnotaion() {
-        let annotaion = UIView()
-        annotaion.backgroundColor = .red
-        annotaion.frame.size = CGSize(width: 20, height: 20)
-        faceView.addSubview(annotaion)
+    init(viewModel: ViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+
+        viewModel.delegate = self
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
@@ -38,8 +35,8 @@ class ViewController: UIViewController {
         faceView.backgroundColor = .black
         faceView.contentMode = .scaleAspectFit
         
-        tableView.dataSource = adapter
-        tableView.delegate = adapter
+        tableView.dataSource = viewModel.adapter
+        tableView.delegate = viewModel.adapter
     }
     
     override func viewWillLayoutSubviews() {
@@ -63,5 +60,20 @@ class ViewController: UIViewController {
                                  height: tableViewHeight)
     }
 
+        
+    func addAnnotaion(_ annotation: Annotation) {
+        let view = UILabel()
+        view.backgroundColor = .red
+        view.frame.size = CGSize(width: 20, height: 20)
+        view.text = annotation.text
+        faceView.addSubview(view)
+    }
+}
+
+extension ViewController: ViewModelDelegate {
+    func viewModel(_ model: ViewModel, add annotation: Annotation) {
+        addAnnotaion(annotation)
+    }
+    
     
 }
