@@ -17,6 +17,7 @@ class ViewModel {
     let image = "sample_face"
     let adapter: CommentListAdapter
     var annotaionList = [Annotation]()
+    
     init(annotaionList: [String]) {
         self.adapter = CommentListAdapter(annotaionList: annotaionList)
         adapter.addAction = {
@@ -25,8 +26,9 @@ class ViewModel {
     }
     
     private func addAnnotation() {
-        let annotaion = Annotation(id: "1",
-                                   text: "1")
+        let idAndText = String(annotaionList.count + 1)
+        let annotaion = Annotation(id: idAndText,
+                                   text: idAndText)
         annotaionList.append(annotaion)
         delegate?.viewModel(self, add: annotaion)
     }
