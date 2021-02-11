@@ -39,6 +39,7 @@ class ViewController: UIViewController {
         
         faceView.backgroundColor = .black
         faceView.contentMode = .scaleAspectFit
+        faceView.delegate = self
         
         tableView.dataSource = viewModel.adapter
         tableView.delegate = viewModel.adapter
@@ -67,13 +68,7 @@ class ViewController: UIViewController {
 
         
     func addAnnotaion(_ annotation: Annotation) {
-        let view = UILabel()
-        view.backgroundColor = .red
-        view.frame.size = CGSize(width: 40, height: 40)
-        view.text = annotation.text
-        view.textColor = .white
-        view.textAlignment = .center
-        view.isUserInteractionEnabled = true
+        let view = AnnotationView(annotation: annotation)
         faceView.addSubview(view)
     }
 }
@@ -84,4 +79,10 @@ extension ViewController: ViewModelDelegate {
         tableView.reloadData()
     }
     
+}
+
+extension ViewController: AnnotaionMoveImageViewDelegate {
+    func annotaionMoveImageView(_ view: AnnotaionMoveImageView, touchEnded annotation: Annotation) {
+        viewModel.touchEnded(annotation: annotation)
+    }
 }

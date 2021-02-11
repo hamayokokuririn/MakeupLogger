@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import CoreGraphics
 
-struct Annotation {
+struct Annotation: Codable {
     let id: String
     let text: String
+    var point: CGPoint = .zero
 }

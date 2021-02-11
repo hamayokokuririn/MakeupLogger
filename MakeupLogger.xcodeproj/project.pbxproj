@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2446ED1D25D54790005BD9F3 /* AnnotaionMoveImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED1C25D54790005BD9F3 /* AnnotaionMoveImageView.swift */; };
+		2446ED2025D5713C005BD9F3 /* AnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED1F25D5713C005BD9F3 /* AnnotationView.swift */; };
 		24B1128125A9576100EE8DEA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B1128025A9576100EE8DEA /* AppDelegate.swift */; };
 		24B1128325A9576100EE8DEA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B1128225A9576100EE8DEA /* SceneDelegate.swift */; };
 		24B1128525A9576100EE8DEA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B1128425A9576100EE8DEA /* ViewController.swift */; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		2446ED1C25D54790005BD9F3 /* AnnotaionMoveImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotaionMoveImageView.swift; sourceTree = "<group>"; };
+		2446ED1F25D5713C005BD9F3 /* AnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationView.swift; sourceTree = "<group>"; };
 		24B1127D25A9576100EE8DEA /* MakeupLogger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MakeupLogger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		24B1128025A9576100EE8DEA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		24B1128225A9576100EE8DEA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -82,6 +84,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2446ED1E25D57130005BD9F3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2446ED1F25D5713C005BD9F3 /* AnnotationView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		24B1127425A9576100EE8DEA = {
 			isa = PBXGroup;
 			children = (
@@ -105,6 +115,7 @@
 		24B1127F25A9576100EE8DEA /* MakeupLogger */ = {
 			isa = PBXGroup;
 			children = (
+				2446ED1E25D57130005BD9F3 /* Views */,
 				24B112C825B2D6F200EE8DEA /* Domain */,
 				24B1128025A9576100EE8DEA /* AppDelegate.swift */,
 				24B1128225A9576100EE8DEA /* SceneDelegate.swift */,
@@ -279,6 +290,7 @@
 				24B1128125A9576100EE8DEA /* AppDelegate.swift in Sources */,
 				2446ED1D25D54790005BD9F3 /* AnnotaionMoveImageView.swift in Sources */,
 				24B1128325A9576100EE8DEA /* SceneDelegate.swift in Sources */,
+				2446ED2025D5713C005BD9F3 /* AnnotationView.swift in Sources */,
 				24B112CA25B2D70100EE8DEA /* Annotation.swift in Sources */,
 				24B112BC25B1A54A00EE8DEA /* CommentListAdapter.swift in Sources */,
 			);

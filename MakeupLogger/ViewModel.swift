@@ -16,7 +16,7 @@ class ViewModel {
     
     let image = "sample_face"
     let adapter: CommentListAdapter
-    var annotaionList = [Annotation]()
+    var annotationList = [Annotation]()
     
     init(annotaionList: [String]) {
         self.adapter = CommentListAdapter(annotaionList: annotaionList)
@@ -24,12 +24,21 @@ class ViewModel {
         adapter.delegate = self
     }
     
+    func touchEnded(annotation: Annotation) {
+        guard let index = annotationList.firstIndex(where: { first in
+            first.id == annotation.id
+        }) else {
+            return
+        }
+        annotationList[index] = annotation
+    }
+    
     private func addAnnotationAction() {
-        let idAndText = String(annotaionList.count + 1)
+        let idAndText = String(annotationList.count + 1)
         let annotaion = Annotation(id: idAndText,
                                    text: idAndText)
-        annotaionList.append(annotaion)
-        adapter.annotaionList = annotaionList.map {
+        annotationList.append(annotaion)
+        adapter.annotaionList = annotationList.map {
             $0.text
         }
         self.delegate?.viewModel(self, add: annotaion)
