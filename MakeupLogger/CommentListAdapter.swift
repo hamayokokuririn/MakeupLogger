@@ -8,7 +8,13 @@
 import Foundation
 import UIKit
 
+protocol CommentListAdapterDelegate: AnyObject {
+    func commentListAdapter(_ adapter: CommentListAdapter, didSelectCommentCell index: Int)
+}
+
 final class CommentListAdapter: NSObject, UITableViewDataSource {
+    weak var delegate: CommentListAdapterDelegate?
+    
     var annotaionList: [String]
     
     var addAction: Optional<() -> Void> = nil
@@ -33,10 +39,9 @@ final class CommentListAdapter: NSObject, UITableViewDataSource {
 
 extension CommentListAdapter: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let index = indexPath.row
-        if (annotaionList.count - 1) == index {
-            print("did select add button")
-        }
+        delegate?.commentListAdapter(self, didSelectCommentCell: index)
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -59,8 +64,13 @@ extension CommentListAdapter: UITableViewDelegate {
     @objc private func didPushAdd() {
         addAction?()
     }
+    
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         30
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        50
     }
     
 }

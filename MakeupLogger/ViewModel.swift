@@ -20,16 +20,25 @@ class ViewModel {
     
     init(annotaionList: [String]) {
         self.adapter = CommentListAdapter(annotaionList: annotaionList)
-        adapter.addAction = {
-            self.addAnnotation()
-        }
+        adapter.addAction = addAnnotationAction
+        adapter.delegate = self
     }
     
-    private func addAnnotation() {
+    private func addAnnotationAction() {
         let idAndText = String(annotaionList.count + 1)
         let annotaion = Annotation(id: idAndText,
                                    text: idAndText)
         annotaionList.append(annotaion)
-        delegate?.viewModel(self, add: annotaion)
+        adapter.annotaionList = annotaionList.map {
+            $0.text
+        }
+        self.delegate?.viewModel(self, add: annotaion)
+    }
+    
+}
+
+extension ViewModel: CommentListAdapterDelegate {
+    func commentListAdapter(_ adapter: CommentListAdapter, didSelectCommentCell index: Int) {
+        print("Annotaionをハイライトする")
     }
 }

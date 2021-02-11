@@ -80,8 +80,8 @@ class ViewController: UIViewController {
 
 extension ViewController: ViewModelDelegate {
     func viewModel(_ model: ViewModel, add annotation: Annotation) {
-            addAnnotaion(annotation)
+        addAnnotaion(annotation)
+        tableView.reloadData()
     }
-    
     
 }
