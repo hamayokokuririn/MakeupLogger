@@ -60,7 +60,7 @@ extension CommentListAdapter: UITableViewDelegate {
         addAction?()
     }
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        20
+        30
     }
     
 }

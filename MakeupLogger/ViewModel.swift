@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol ViewModelDelegate: class {
+protocol ViewModelDelegate: AnyObject {
     func viewModel(_ model: ViewModel, add annotation: Annotation)
 }
 
@@ -25,7 +25,9 @@ class ViewModel {
     }
     
     private func addAnnotation() {
-        annotaionList.append(Annotation(id: "1",
-                                        text: "1"))
+        let annotaion = Annotation(id: "1",
+                                   text: "1")
+        annotaionList.append(annotaion)
+        delegate?.viewModel(self, add: annotaion)
     }
 }

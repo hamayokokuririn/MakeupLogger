@@ -11,7 +11,12 @@ class ViewController: UIViewController {
 
     let viewModel: ViewModel
     lazy var image = UIImage(named: viewModel.image)
-    lazy var faceView = UIImageView(image: image)
+    lazy var faceView: AnnotaionMoveImageView = {
+        let view = AnnotaionMoveImageView(image: image)
+        view.isUserInteractionEnabled = true
+        return view
+    }()
+        
     let tableView = UITableView()
     
     init(viewModel: ViewModel) {
@@ -64,15 +69,18 @@ class ViewController: UIViewController {
     func addAnnotaion(_ annotation: Annotation) {
         let view = UILabel()
         view.backgroundColor = .red
-        view.frame.size = CGSize(width: 20, height: 20)
+        view.frame.size = CGSize(width: 40, height: 40)
         view.text = annotation.text
+        view.textColor = .white
+        view.textAlignment = .center
+        view.isUserInteractionEnabled = true
         faceView.addSubview(view)
     }
 }
 
 extension ViewController: ViewModelDelegate {
     func viewModel(_ model: ViewModel, add annotation: Annotation) {
-        addAnnotaion(annotation)
+            addAnnotaion(annotation)
     }
     
     
