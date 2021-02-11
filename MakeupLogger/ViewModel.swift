@@ -11,7 +11,7 @@ protocol ViewModelDelegate: AnyObject {
     func viewModel(_ model: ViewModel, add annotation: Annotation)
 }
 
-class ViewModel {
+final class ViewModel {
     weak var delegate: ViewModelDelegate?
     
     let image = "sample_face"
