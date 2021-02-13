@@ -74,7 +74,7 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: ViewModelDelegate {
-    func viewModel(_ model: ViewModel, add annotation: Annotation) {
+    func viewModel(_ model: ViewModel, add annotation: FaceAnnotation) {
         addAnnotaion(annotation)
         tableView.reloadData()
     }
@@ -83,6 +83,9 @@ extension ViewController: ViewModelDelegate {
 
 extension ViewController: AnnotaionMoveImageViewDelegate {
     func annotaionMoveImageView(_ view: AnnotaionMoveImageView, touchEnded annotation: Annotation) {
-        viewModel.touchEnded(annotation: annotation)
+        guard let faceAnnotation = annotation as? FaceAnnotation else {
+            return
+        }
+        viewModel.touchEnded(annotation: faceAnnotation)
     }
 }

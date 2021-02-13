@@ -25,8 +25,8 @@ class AnnotaionMoveImageView: UIImageView {
         guard let view = firstTouchAnnotation(from: touches) else {
             return
         }
-        let pointChangedAnnotation = Annotation(id: view.annotation.id, text: view.annotation.text, point: view.frame.origin)
-        delegate?.annotaionMoveImageView(self, touchEnded: pointChangedAnnotation)
+        
+        delegate?.annotaionMoveImageView(self, touchEnded: view.annotation)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {

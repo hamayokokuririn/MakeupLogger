@@ -15,11 +15,11 @@ protocol CommentListAdapterDelegate: AnyObject {
 final class CommentListAdapter: NSObject, UITableViewDataSource {
     weak var delegate: CommentListAdapterDelegate?
     
-    var annotaionList: [String]
+    var annotaionList: [FaceAnnotation]
     
     var addAction: Optional<() -> Void> = nil
     
-    init(annotaionList: [String]) {
+    init(annotaionList: [FaceAnnotation]) {
         self.annotaionList = annotaionList
     }
     
@@ -30,7 +30,7 @@ final class CommentListAdapter: NSObject, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let annotaion = annotaionList[indexPath.row]
         let cell = UITableViewCell()
-        cell.textLabel?.text = annotaion
+        cell.textLabel?.text = annotaion.text
         return cell
     }
     

@@ -8,7 +8,7 @@
 import Foundation
 
 protocol ViewModelDelegate: AnyObject {
-    func viewModel(_ model: ViewModel, add annotation: Annotation)
+    func viewModel(_ model: ViewModel, add annotation: FaceAnnotation)
 }
 
 final class ViewModel {
@@ -16,17 +16,18 @@ final class ViewModel {
     
     let image = "sample_face"
     let adapter: CommentListAdapter
-    var annotationList = [Annotation]()
+    var annotationList = [FaceAnnotation]()
     
-    init(annotaionList: [String]) {
-        self.adapter = CommentListAdapter(annotaionList: annotaionList)
+    init(annotationList: [FaceAnnotation]) {
+        self.adapter = CommentListAdapter(annotaionList: annotationList)
+        self.annotationList = annotationList
         adapter.addAction = addAnnotationAction
         adapter.delegate = self
     }
     
-    func touchEnded(annotation: Annotation) {
+    func touchEnded(annotation: FaceAnnotation) {
         guard let index = annotationList.firstIndex(where: { first in
-            first.id == annotation.id
+            first == annotation
         }) else {
             return
         }
@@ -35,15 +36,12 @@ final class ViewModel {
     
     private func addAnnotationAction() {
         let idAndText = String(annotationList.count + 1)
-        let annotaion = Annotation(id: idAndText,
-                                   text: idAndText)
+        let id = AnnotationID(id: idAndText)
+        let annotaion = FaceAnnotation(id: id, text: idAndText)
         annotationList.append(annotaion)
-        adapter.annotaionList = annotationList.map {
-            $0.text
-        }
+        adapter.annotaionList = annotationList
         self.delegate?.viewModel(self, add: annotaion)
     }
-    
 }
 
 extension ViewModel: CommentListAdapterDelegate {
