@@ -114,6 +114,8 @@ extension ViewController: ViewModelDelegate {
     func viewModel(_ model: ViewModel, add annotation: FaceAnnotation) {
         addAnnotaion(annotation)
         tableView.reloadData()
+        let row = tableView.numberOfRows(inSection: 0)
+        tableView.scrollToRow(at: IndexPath(row: row - 1, section: 0), at: .bottom, animated: true)
     }
     
 }
