@@ -15,23 +15,33 @@ protocol CommentListAdapterDelegate: AnyObject {
 final class CommentListAdapter: NSObject, UITableViewDataSource {
     weak var delegate: CommentListAdapterDelegate?
     
-    var annotaionList: [FaceAnnotation]
+    var annotationList: [FaceAnnotation]
     
     var addAction: Optional<() -> Void> = nil
     
-    init(annotaionList: [FaceAnnotation]) {
-        self.annotaionList = annotaionList
+    init(annotationList: [FaceAnnotation]) {
+        self.annotationList = annotationList
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        annotaionList.count
+        annotationList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let annotaion = annotaionList[indexPath.row]
+        let annotaion = annotationList[indexPath.row]
         let cell = CommentCell()
         cell.setAnnotationText(annotaion.text)
-        cell.setAnnotationComment("test!!")
+        if let comment = annotaion.comment?.text {
+            cell.setAnnotationComment(comment)
+        }
+        cell.didEndEditing = { text in
+            let cellAnnotation = self.annotationList[indexPath.row]
+            self.annotationList[indexPath.row] = FaceAnnotation(id: cellAnnotation.id,
+                                                               text: cellAnnotation.text,
+                                                               pointRatioOnImage: cellAnnotation.pointRatioOnImage,
+                                                               comment: Comment(text: text),
+                                                               colorPallet: cellAnnotation.colorPallet)
+        }
         return cell
     }
         

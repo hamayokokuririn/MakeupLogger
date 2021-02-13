@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 
 final class CommentCell: UITableViewCell {
+    var didEndEditing: ((String) -> Void)?
+    
     let idLabel: UILabel = .init()
     let commentField: UITextField = .init()
     
@@ -53,5 +55,10 @@ extension CommentCell: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let text = textField.text else {return}
+        self.didEndEditing?(text)
     }
 }
