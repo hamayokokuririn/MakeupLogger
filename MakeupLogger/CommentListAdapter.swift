@@ -29,11 +29,11 @@ final class CommentListAdapter: NSObject, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let annotaion = annotaionList[indexPath.row]
-        let cell = UITableViewCell()
-        cell.textLabel?.text = annotaion.text
+        let cell = CommentCell()
+        cell.setAnnotationText(annotaion.text)
+        cell.setAnnotationComment("test!!")
         return cell
     }
-    
         
 }
 
