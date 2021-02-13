@@ -14,13 +14,13 @@
 		2446ED2625D77A28005BD9F3 /* ColorPallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED2525D77A28005BD9F3 /* ColorPallet.swift */; };
 		24B1128125A9576100EE8DEA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B1128025A9576100EE8DEA /* AppDelegate.swift */; };
 		24B1128325A9576100EE8DEA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B1128225A9576100EE8DEA /* SceneDelegate.swift */; };
-		24B1128525A9576100EE8DEA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B1128425A9576100EE8DEA /* ViewController.swift */; };
+		24B1128525A9576100EE8DEA /* AnnotationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B1128425A9576100EE8DEA /* AnnotationViewController.swift */; };
 		24B1128A25A9576300EE8DEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 24B1128925A9576300EE8DEA /* Assets.xcassets */; };
 		24B1128D25A9576300EE8DEA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24B1128B25A9576300EE8DEA /* LaunchScreen.storyboard */; };
 		24B1129825A9576300EE8DEA /* MakeupLoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B1129725A9576300EE8DEA /* MakeupLoggerTests.swift */; };
 		24B112A325A9576300EE8DEA /* MakeupLoggerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B112A225A9576300EE8DEA /* MakeupLoggerUITests.swift */; };
 		24B112BC25B1A54A00EE8DEA /* CommentListAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B112BB25B1A54A00EE8DEA /* CommentListAdapter.swift */; };
-		24B112C425B2D4DC00EE8DEA /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B112C325B2D4DC00EE8DEA /* ViewModel.swift */; };
+		24B112C425B2D4DC00EE8DEA /* AnnotationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B112C325B2D4DC00EE8DEA /* AnnotationViewModel.swift */; };
 		24B112CA25B2D70100EE8DEA /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B112C925B2D70100EE8DEA /* Annotation.swift */; };
 /* End PBXBuildFile section */
 
@@ -50,7 +50,7 @@
 		24B1127D25A9576100EE8DEA /* MakeupLogger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MakeupLogger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		24B1128025A9576100EE8DEA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		24B1128225A9576100EE8DEA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		24B1128425A9576100EE8DEA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		24B1128425A9576100EE8DEA /* AnnotationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationViewController.swift; sourceTree = "<group>"; };
 		24B1128925A9576300EE8DEA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		24B1128C25A9576300EE8DEA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		24B1128E25A9576300EE8DEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -61,7 +61,7 @@
 		24B112A225A9576300EE8DEA /* MakeupLoggerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeupLoggerUITests.swift; sourceTree = "<group>"; };
 		24B112A425A9576300EE8DEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		24B112BB25B1A54A00EE8DEA /* CommentListAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentListAdapter.swift; sourceTree = "<group>"; };
-		24B112C325B2D4DC00EE8DEA /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		24B112C325B2D4DC00EE8DEA /* AnnotationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationViewModel.swift; sourceTree = "<group>"; };
 		24B112C925B2D70100EE8DEA /* Annotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -93,10 +93,20 @@
 		2446ED1E25D57130005BD9F3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				2446ED1F25D5713C005BD9F3 /* AnnotationView.swift */,
-				2446ED2125D774D5005BD9F3 /* CommentCell.swift */,
+				2446ED2725D892DF005BD9F3 /* Annotation */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		2446ED2725D892DF005BD9F3 /* Annotation */ = {
+			isa = PBXGroup;
+			children = (
+				24B1128425A9576100EE8DEA /* AnnotationViewController.swift */,
+				2446ED1F25D5713C005BD9F3 /* AnnotationView.swift */,
+				2446ED2125D774D5005BD9F3 /* CommentCell.swift */,
+				2446ED1C25D54790005BD9F3 /* AnnotaionMoveImageView.swift */,
+			);
+			path = Annotation;
 			sourceTree = "<group>";
 		};
 		24B1127425A9576100EE8DEA = {
@@ -126,13 +136,11 @@
 				24B112C825B2D6F200EE8DEA /* Domain */,
 				24B1128025A9576100EE8DEA /* AppDelegate.swift */,
 				24B1128225A9576100EE8DEA /* SceneDelegate.swift */,
-				24B1128425A9576100EE8DEA /* ViewController.swift */,
 				24B1128925A9576300EE8DEA /* Assets.xcassets */,
 				24B1128B25A9576300EE8DEA /* LaunchScreen.storyboard */,
 				24B1128E25A9576300EE8DEA /* Info.plist */,
 				24B112BB25B1A54A00EE8DEA /* CommentListAdapter.swift */,
-				24B112C325B2D4DC00EE8DEA /* ViewModel.swift */,
-				2446ED1C25D54790005BD9F3 /* AnnotaionMoveImageView.swift */,
+				24B112C325B2D4DC00EE8DEA /* AnnotationViewModel.swift */,
 			);
 			path = MakeupLogger;
 			sourceTree = "<group>";
@@ -294,8 +302,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				24B112C425B2D4DC00EE8DEA /* ViewModel.swift in Sources */,
-				24B1128525A9576100EE8DEA /* ViewController.swift in Sources */,
+				24B112C425B2D4DC00EE8DEA /* AnnotationViewModel.swift in Sources */,
+				24B1128525A9576100EE8DEA /* AnnotationViewController.swift in Sources */,
 				24B1128125A9576100EE8DEA /* AppDelegate.swift in Sources */,
 				2446ED1D25D54790005BD9F3 /* AnnotaionMoveImageView.swift in Sources */,
 				2446ED2625D77A28005BD9F3 /* ColorPallet.swift in Sources */,

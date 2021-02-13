@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  AnnotationViewController.swift
 //  MakeupLogger
 //
 //  Created by 齋藤健悟 on 2021/01/09.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class AnnotationViewController: UIViewController {
 
-    let viewModel: ViewModel
+    let viewModel: AnnotationViewModel
     lazy var image = UIImage(named: viewModel.image)
     lazy var faceView: AnnotaionMoveImageView = {
         let view = AnnotaionMoveImageView(image: image)
@@ -19,7 +19,7 @@ class ViewController: UIViewController {
         
     let tableView = UITableView()
     
-    init(viewModel: ViewModel) {
+    init(viewModel: AnnotationViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
 
@@ -110,8 +110,8 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: ViewModelDelegate {
-    func viewModel(_ model: ViewModel, add annotation: FaceAnnotation) {
+extension AnnotationViewController: AnnotationViewModelDelegate {
+    func viewModel(_ model: AnnotationViewModel, add annotation: FaceAnnotation) {
         addAnnotaion(annotation)
         tableView.reloadData()
         let row = tableView.numberOfRows(inSection: 0)
@@ -120,7 +120,7 @@ extension ViewController: ViewModelDelegate {
     
 }
 
-extension ViewController: AnnotaionMoveImageViewDelegate {
+extension AnnotationViewController: AnnotaionMoveImageViewDelegate {
     func annotaionMoveImageView(_ view: AnnotaionMoveImageView, touchEnded annotation: Annotation) {
         guard let faceAnnotation = annotation as? FaceAnnotation else {
             return
@@ -129,7 +129,7 @@ extension ViewController: AnnotaionMoveImageViewDelegate {
     }
 }
 
-extension ViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+extension AnnotationViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             faceView.image = image

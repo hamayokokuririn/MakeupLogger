@@ -7,12 +7,12 @@
 
 import Foundation
 
-protocol ViewModelDelegate: AnyObject {
-    func viewModel(_ model: ViewModel, add annotation: FaceAnnotation)
+protocol AnnotationViewModelDelegate: AnyObject {
+    func viewModel(_ model: AnnotationViewModel, add annotation: FaceAnnotation)
 }
 
-final class ViewModel {
-    weak var delegate: ViewModelDelegate?
+final class AnnotationViewModel {
+    weak var delegate: AnnotationViewModelDelegate?
     
     let image = "sample_face"
     let adapter: CommentListAdapter
@@ -41,7 +41,7 @@ final class ViewModel {
     }
 }
 
-extension ViewModel: CommentListAdapterDelegate {
+extension AnnotationViewModel: CommentListAdapterDelegate {
     func commentListAdapter(_ adapter: CommentListAdapter, didSelectCommentCell index: Int) {
         print("Annotaionをハイライトする")
     }

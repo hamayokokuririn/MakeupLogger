@@ -21,8 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         window.makeKeyAndVisible()
         
-        let viewModel = ViewModel(annotationList: [])
-        let vc = ViewController(viewModel: viewModel)
+        let viewModel = AnnotationViewModel(annotationList: [])
+        let vc = AnnotationViewController(viewModel: viewModel)
         let navigation = UINavigationController(rootViewController: vc)
         window.rootViewController = navigation
     }
