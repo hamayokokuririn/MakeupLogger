@@ -24,6 +24,43 @@ class ViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
 
         viewModel.delegate = self
+
+        let item = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(takeNewPhoto))
+        self.navigationItem.rightBarButtonItem = item
+    }
+    
+    @objc private func takeNewPhoto() {
+        let alert = UIAlertController(title: "画像を変更",
+                                      message: nil,
+                                      preferredStyle: .alert)
+        let cameraAction = UIAlertAction(title: "カメラで撮影",
+                                        style: .default) { _ in
+            self.camera()
+        }
+        alert.addAction(cameraAction)
+        
+        let photoLibraryAction = UIAlertAction(title: "ライブラリから選択",
+                                               style: .default) { _ in
+            self.photoLibrary()
+        }
+        alert.addAction(photoLibraryAction)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func camera() {
+        let picker = UIImagePickerController()
+        picker.sourceType = .camera
+        picker.delegate = self
+        present(picker, animated: true, completion: nil)
+    }
+    
+    private func photoLibrary() {
+        let picker = UIImagePickerController()
+        picker.sourceType = .photoLibrary
+        picker.delegate = self
+        picker.navigationBar.tintColor = .white
+        picker.navigationBar.barTintColor = .gray
+        present(picker, animated: true, completion: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -87,5 +124,20 @@ extension ViewController: AnnotaionMoveImageViewDelegate {
             return
         }
         viewModel.touchEnded(annotation: faceAnnotation)
+    }
+}
+
+extension ViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            faceView.image = image
+        } else {
+            print("error")
+        }
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true, completion: nil)
     }
 }

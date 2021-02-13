@@ -23,7 +23,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let viewModel = ViewModel(annotationList: [])
         let vc = ViewController(viewModel: viewModel)
-        window.rootViewController = vc
+        let navigation = UINavigationController(rootViewController: vc)
+        window.rootViewController = navigation
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
