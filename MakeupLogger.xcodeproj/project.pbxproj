@@ -117,9 +117,11 @@
 			isa = PBXGroup;
 			children = (
 				24B1128425A9576100EE8DEA /* AnnotationViewController.swift */,
+				24B112C325B2D4DC00EE8DEA /* AnnotationViewModel.swift */,
 				2446ED1F25D5713C005BD9F3 /* AnnotationView.swift */,
 				2446ED2125D774D5005BD9F3 /* CommentCell.swift */,
 				2446ED1C25D54790005BD9F3 /* AnnotaionMoveImageView.swift */,
+				24B112BB25B1A54A00EE8DEA /* CommentListAdapter.swift */,
 			);
 			path = Annotation;
 			sourceTree = "<group>";
@@ -164,8 +166,6 @@
 				24B1128925A9576300EE8DEA /* Assets.xcassets */,
 				24B1128B25A9576300EE8DEA /* LaunchScreen.storyboard */,
 				24B1128E25A9576300EE8DEA /* Info.plist */,
-				24B112BB25B1A54A00EE8DEA /* CommentListAdapter.swift */,
-				24B112C325B2D4DC00EE8DEA /* AnnotationViewModel.swift */,
 			);
 			path = MakeupLogger;
 			sourceTree = "<group>";

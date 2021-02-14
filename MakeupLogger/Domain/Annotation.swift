@@ -9,7 +9,7 @@ import Foundation
 import CoreGraphics
 
 protocol Annotation: Codable {
-    var id: AnnotationID { get }
+    var id: String { get }
     var text: String { get }
     var pointRatioOnImage: PointRatio { get }
 }
@@ -33,24 +33,16 @@ struct PointRatio: Codable {
     }
 }
 
-struct AnnotationID: Codable {
+struct FaceAnnotation: Annotation, Equatable {
+    static func == (lhs: FaceAnnotation, rhs: FaceAnnotation) -> Bool {
+        lhs.id == rhs.id
+    }
+    
     let id: String
-}
-
-struct FaceAnnotation: Annotation {
-    let id: AnnotationID
     let text: String
     var pointRatioOnImage: PointRatio = .zero
     var comment: Comment?
     var colorPallet: ColorPallet?
-    
-    struct FaceAnnotationID: Codable {
-        let id: String
-    }
+    var selectedColorPalletAnnotationID: String?
 }
 
-extension FaceAnnotation: Equatable {
-    static func == (lhs: FaceAnnotation, rhs: FaceAnnotation) -> Bool {
-        lhs.id.id == rhs.id.id
-    }
-}

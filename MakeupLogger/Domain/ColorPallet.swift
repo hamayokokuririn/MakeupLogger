@@ -9,17 +9,18 @@ import Foundation
 import UIKit
 
 struct ColorPallet: Codable {
-    let faceAnnotationID: FaceAnnotation.FaceAnnotationID
+    let id: ColorPalletID
+    var title: String
     var imageFileName: String
     var annotationList: [ColorPalletAnnotation]
+    
+    struct ColorPalletID: Codable {
+        let id: String
+    }
 }
 
 struct ColorPalletAnnotation: Annotation {
-    var id: AnnotationID
+    let id: String
     let text: String
     var pointRatioOnImage: PointRatio
-    
-    struct CollorPalletAnnotationID: Codable {
-        let id: String
-    }
 }

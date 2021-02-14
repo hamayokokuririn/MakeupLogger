@@ -34,8 +34,7 @@ final class AnnotationViewModel {
     
     private func addAnnotationAction() {
         let idAndText = String(adapter.annotationList.count + 1)
-        let id = AnnotationID(id: idAndText)
-        let annotaion = FaceAnnotation(id: id, text: idAndText)
+        let annotaion = FaceAnnotation(id: idAndText, text: idAndText, selectedColorPalletAnnotationID: "1")
         adapter.annotationList.append(annotaion)
         self.delegate?.viewModel(self, add: annotaion)
     }
