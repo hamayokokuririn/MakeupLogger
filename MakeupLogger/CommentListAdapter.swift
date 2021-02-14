@@ -23,6 +23,15 @@ final class CommentListAdapter: NSObject, UITableViewDataSource {
         self.annotationList = annotationList
     }
     
+    func updateAnnotation(_ annotation: FaceAnnotation) {
+        guard let index = annotationList.firstIndex(where: { first in
+            first == annotation
+        }) else {
+            return
+        }
+        annotationList[index] = annotation
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         annotationList.count
     }

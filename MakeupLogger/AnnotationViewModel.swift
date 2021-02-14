@@ -9,6 +9,7 @@ import Foundation
 
 protocol AnnotationViewModelDelegate: AnyObject {
     func viewModel(_ model: AnnotationViewModel, add annotation: FaceAnnotation)
+    func viewModel(_ model: AnnotationViewModel, didSelect annotation: FaceAnnotation)
 }
 
 final class AnnotationViewModel {
@@ -24,12 +25,11 @@ final class AnnotationViewModel {
     }
     
     func touchEnded(annotation: FaceAnnotation) {
-        guard let index = adapter.annotationList.firstIndex(where: { first in
-            first == annotation
-        }) else {
-            return
-        }
-        adapter.annotationList[index] = annotation
+        adapter.updateAnnotation(annotation)
+    }
+    
+    func editAnnotation(_ annotation: FaceAnnotation) {
+        adapter.updateAnnotation(annotation)
     }
     
     private func addAnnotationAction() {
@@ -43,6 +43,7 @@ final class AnnotationViewModel {
 
 extension AnnotationViewModel: CommentListAdapterDelegate {
     func commentListAdapter(_ adapter: CommentListAdapter, didSelectCommentCell index: Int) {
-        print("Annotaionをハイライトする")
+        let annotation = adapter.annotationList[index]
+        delegate?.viewModel(self, didSelect: annotation)
     }
 }

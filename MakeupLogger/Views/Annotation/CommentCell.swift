@@ -21,7 +21,6 @@ final class CommentCell: UITableViewCell {
         idLabel.textAlignment = .center
         
         contentView.addSubview(commentField)
-        commentField.isUserInteractionEnabled = true
         commentField.delegate = self
         commentField.returnKeyType = .done
         commentField.backgroundColor = .systemGray6

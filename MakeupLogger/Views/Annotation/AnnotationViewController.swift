@@ -118,6 +118,11 @@ extension AnnotationViewController: AnnotationViewModelDelegate {
         tableView.scrollToRow(at: IndexPath(row: row - 1, section: 0), at: .bottom, animated: true)
     }
     
+    func viewModel(_ model: AnnotationViewModel, didSelect annotation: FaceAnnotation) {
+        let vc = AnnotationDetailViewController(annotation: annotation)
+        vc.presentationController?.delegate = self
+        present(vc, animated: true, completion: nil)
+    }
 }
 
 extension AnnotationViewController: AnnotaionMoveImageViewDelegate {
@@ -141,5 +146,16 @@ extension AnnotationViewController: UIImagePickerControllerDelegate & UINavigati
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension AnnotationViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+        guard let vc = presentationController.presentedViewController as? AnnotationDetailViewController else {
+            return
+        }
+        let annotation = vc.viewModel.annotation
+        viewModel.editAnnotation(annotation)
+        tableView.reloadData()
     }
 }
