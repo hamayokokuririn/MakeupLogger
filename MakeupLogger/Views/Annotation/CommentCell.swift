@@ -12,7 +12,7 @@ final class CommentCell: UITableViewCell {
     var didEndEditing: ((String) -> Void)?
     
     let idLabel: UILabel = .init()
-    let commentField: UITextField = .init()
+    let commentLabel: UILabel = .init()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -20,10 +20,7 @@ final class CommentCell: UITableViewCell {
         contentView.addSubview(idLabel)
         idLabel.textAlignment = .center
         
-        contentView.addSubview(commentField)
-        commentField.delegate = self
-        commentField.returnKeyType = .done
-        commentField.backgroundColor = .systemGray6
+        contentView.addSubview(commentLabel)
     }
     
     required init?(coder: NSCoder) {
@@ -35,7 +32,7 @@ final class CommentCell: UITableViewCell {
         
         let height = frame.height
         idLabel.frame = CGRect(x: 0, y: 0, width: 30, height: height)
-        commentField.frame = CGRect(x: idLabel.frame.maxX,
+        commentLabel.frame = CGRect(x: idLabel.frame.maxX,
                                     y: 0,
                                     width: frame.width - idLabel.frame.width,
                                     height: height)
@@ -46,18 +43,7 @@ final class CommentCell: UITableViewCell {
     }
     
     func setAnnotationComment(_ text: String) {
-        commentField.text = text
+        commentLabel.text = text
     }
 }
 
-extension CommentCell: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        guard let text = textField.text else {return}
-        self.didEndEditing?(text)
-    }
-}

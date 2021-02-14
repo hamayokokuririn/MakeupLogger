@@ -10,7 +10,9 @@ import UIKit
 
 final class AnnotationDetailViewController: UIViewController {
     var viewModel: AnnotationDetailViewModel
-    private let textField: UITextField = .init()
+    
+    private let commentTitle: UILabel = .init()
+    private let textView: UITextView = .init()
     private let colorPalletButton: UIButton = .init()
     
     init(annotation: FaceAnnotation) {
@@ -18,12 +20,16 @@ final class AnnotationDetailViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         
         view.backgroundColor = .white
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(close))
         
-        view.addSubview(textField)
-        textField.text = annotation.comment?.text
-        textField.backgroundColor = .systemGray6
-        textField.delegate = self
-        textField.returnKeyType = .done
+        view.addSubview(commentTitle)
+        commentTitle.text = "Comment"
+        
+        view.addSubview(textView)
+        textView.text = annotation.comment?.text
+        textView.backgroundColor = .systemGray6
+        textView.delegate = self
+        textView.returnKeyType = .done
         
         view.addSubview(colorPalletButton)
         colorPalletButton.setTitle("Color", for: .normal)
@@ -39,27 +45,39 @@ final class AnnotationDetailViewController: UIViewController {
         super.viewWillLayoutSubviews()
         
         let safeAreaInsets = view.safeAreaInsets
-        textField.frame = CGRect(x: safeAreaInsets.left,
-                                 y: safeAreaInsets.top,
-                                 width: view.frame.width,
-                                 height: 100)
+        let margin = CGFloat(16) + safeAreaInsets.left
+        commentTitle.sizeToFit()
+        commentTitle.frame.origin = CGPoint(x: margin, y: safeAreaInsets.top + CGFloat(32))
+        textView.frame = CGRect(x: margin,
+                                y: commentTitle.frame.maxY,
+                                width: view.frame.width,
+                                height: 100)
         colorPalletButton.sizeToFit()
-        colorPalletButton.frame.origin = CGPoint(x: safeAreaInsets.left, y: textField.frame.maxY)
+        colorPalletButton.frame.origin = CGPoint(x: margin, y: textView.frame.maxY + CGFloat(8))
     }
     
     @objc private func didPushButton() {
         print("カラーパレットの選択")
     }
+    
+    @objc private func close() {
+        guard let pc = navigationController?.presentationController else {return}
+        pc.delegate?.presentationControllerWillDismiss?(pc)
+    }
 }
 
-extension AnnotationDetailViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+extension AnnotationDetailViewController: UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+            return false
+        }
         return true
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        guard let text = textField.text else {return}
+    func textViewDidEndEditing(_ textView: UITextView) {
+        guard let text = textView.text else {return}
         viewModel.setComment(text)
     }
+    
 }

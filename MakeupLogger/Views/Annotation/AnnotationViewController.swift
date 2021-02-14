@@ -96,8 +96,9 @@ extension AnnotationViewController: AnnotationViewModelDelegate {
     
     func viewModel(_ model: AnnotationViewModel, didSelect annotation: FaceAnnotation) {
         let vc = AnnotationDetailViewController(annotation: annotation)
-        vc.presentationController?.delegate = self
-        present(vc, animated: true, completion: nil)
+        let navigation = UINavigationController(rootViewController: vc)
+        navigation.presentationController?.delegate = self
+        present(navigation, animated: true, completion: nil)
     }
 }
 
@@ -113,9 +114,11 @@ extension AnnotationViewController: AnnotaionMoveImageViewDelegate {
 
 extension AnnotationViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
-        guard let vc = presentationController.presentedViewController as? AnnotationDetailViewController else {
+        guard let navi = presentationController.presentedViewController as? UINavigationController,
+              let vc = navi.topViewController as? AnnotationDetailViewController else {
             return
         }
+        dismiss(animated: true, completion: nil)
         let annotation = vc.viewModel.annotation
         viewModel.editAnnotation(annotation)
         tableView.reloadData()
