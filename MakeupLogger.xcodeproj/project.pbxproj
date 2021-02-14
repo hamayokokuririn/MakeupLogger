@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		242447B425D89927002290F2 /* AnnotationDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447B325D89927002290F2 /* AnnotationDetailViewModel.swift */; };
+		242447B725D8B1E1002290F2 /* TakePhotoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447B625D8B1E1002290F2 /* TakePhotoAlert.swift */; };
 		2446ED1D25D54790005BD9F3 /* AnnotaionMoveImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED1C25D54790005BD9F3 /* AnnotaionMoveImageView.swift */; };
 		2446ED2025D5713C005BD9F3 /* AnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED1F25D5713C005BD9F3 /* AnnotationView.swift */; };
 		2446ED2225D774D5005BD9F3 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED2125D774D5005BD9F3 /* CommentCell.swift */; };
@@ -45,6 +46,7 @@
 
 /* Begin PBXFileReference section */
 		242447B325D89927002290F2 /* AnnotationDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationDetailViewModel.swift; sourceTree = "<group>"; };
+		242447B625D8B1E1002290F2 /* TakePhotoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakePhotoAlert.swift; sourceTree = "<group>"; };
 		2446ED1C25D54790005BD9F3 /* AnnotaionMoveImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotaionMoveImageView.swift; sourceTree = "<group>"; };
 		2446ED1F25D5713C005BD9F3 /* AnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationView.swift; sourceTree = "<group>"; };
 		2446ED2125D774D5005BD9F3 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
@@ -94,6 +96,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		242447B525D8B1C6002290F2 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				242447B625D8B1E1002290F2 /* TakePhotoAlert.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
 		2446ED1E25D57130005BD9F3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,6 +156,7 @@
 		24B1127F25A9576100EE8DEA /* MakeupLogger */ = {
 			isa = PBXGroup;
 			children = (
+				242447B525D8B1C6002290F2 /* Service */,
 				2446ED1E25D57130005BD9F3 /* Views */,
 				24B112C825B2D6F200EE8DEA /* Domain */,
 				24B1128025A9576100EE8DEA /* AppDelegate.swift */,
@@ -318,6 +329,7 @@
 			files = (
 				24B112C425B2D4DC00EE8DEA /* AnnotationViewModel.swift in Sources */,
 				242447B425D89927002290F2 /* AnnotationDetailViewModel.swift in Sources */,
+				242447B725D8B1E1002290F2 /* TakePhotoAlert.swift in Sources */,
 				24B1128525A9576100EE8DEA /* AnnotationViewController.swift in Sources */,
 				24B1128125A9576100EE8DEA /* AppDelegate.swift in Sources */,
 				2446ED1D25D54790005BD9F3 /* AnnotaionMoveImageView.swift in Sources */,
