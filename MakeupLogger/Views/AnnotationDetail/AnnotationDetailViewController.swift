@@ -15,7 +15,7 @@ final class AnnotationDetailViewController: UIViewController {
     private let textView: UITextView = .init()
     private let selectedColorPalletTitle: UILabel = .init()
     private let selectedColorPalletAnnotation: UILabel = .init()
-    private let colorPalletImage = UIImageView()
+    private let colorPalletImage = AnnotationMoveImageView()
     private let changeColorPalletButton: UIButton = .init()
     
     init(annotation: FaceAnnotation) {
@@ -34,14 +34,22 @@ final class AnnotationDetailViewController: UIViewController {
         textView.delegate = self
         textView.returnKeyType = .done
         
-        let colorPalletAnnotation = ColorPalletAnnotation(id: "1",
+        let colorPalletAnnotation1 = ColorPalletAnnotation(id: "1",
                                                           text: "1",
                                                           pointRatioOnImage: PointRatio(x: 0, y: 0))
+        let colorPalletAnnotation2 = ColorPalletAnnotation(id: "2",
+                                                          text: "2",
+                                                          pointRatioOnImage: PointRatio(x: 0.3, y: 0))
+        let colorPalletAnnotation3 = ColorPalletAnnotation(id: "3",
+                                                          text: "3",
+                                                          pointRatioOnImage: PointRatio(x: 0.6, y: 0))
         // todo: FaceAnnotationはColorPalletIDを知っている。そこからカラーパレットを取得する
         let colorPallet = ColorPallet(id: ColorPallet.ColorPalletID(id: "test"),
                                       title: "color_pallet",
                                       imageFileName: "sample_color_pallet",
-                                      annotationList: [colorPalletAnnotation])
+                                      annotationList: [colorPalletAnnotation1,
+                                      colorPalletAnnotation2,
+                                      colorPalletAnnotation3])
         
         view.addSubview(selectedColorPalletTitle)
         selectedColorPalletTitle.text = colorPallet.title
@@ -52,11 +60,16 @@ final class AnnotationDetailViewController: UIViewController {
         }.first?.text
         
         view.addSubview(colorPalletImage)
+        colorPalletImage.backgroundColor = .black
         colorPalletImage.image = UIImage(named: colorPallet.imageFileName)
         colorPalletImage.contentMode = .scaleAspectFit
+        colorPallet.annotationList.forEach {
+            let view = AnnotationView(annotation: $0)
+            colorPalletImage.addSubview(view)
+        }
         
         view.addSubview(changeColorPalletButton)
-        changeColorPalletButton.setTitle("Color", for: .normal)
+        changeColorPalletButton.setTitle("Change Color", for: .normal)
         changeColorPalletButton.addTarget(self, action: #selector(didPushChangeColorPalletButton), for: .touchUpInside)
         changeColorPalletButton.setTitleColor(.systemBlue, for: .normal)
     }
@@ -85,6 +98,7 @@ final class AnnotationDetailViewController: UIViewController {
         
         colorPalletImage.frame.size = CGSize(width: view.frame.width - margin * 2, height: 300)
         colorPalletImage.frame.origin = CGPoint(x: margin, y: selectedColorPalletAnnotation.frame.maxY + CGFloat(8))
+        colorPalletImage.adjustAnnotationViewFrame()
         
         changeColorPalletButton.sizeToFit()
         changeColorPalletButton.frame.origin = CGPoint(x: margin, y: colorPalletImage.frame.maxY + CGFloat(8))

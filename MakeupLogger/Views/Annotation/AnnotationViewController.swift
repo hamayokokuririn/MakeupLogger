@@ -13,8 +13,8 @@ class AnnotationViewController: UIViewController {
     let alert: TakePhotoAlert
     
     lazy var image = UIImage(named: viewModel.image)
-    lazy var faceView: AnnotaionMoveImageView = {
-        let view = AnnotaionMoveImageView(image: image)
+    lazy var faceView: AnnotationMoveImageView = {
+        let view = AnnotationMoveImageView(image: image)
         view.isUserInteractionEnabled = true
         return view
     }()
@@ -102,8 +102,8 @@ extension AnnotationViewController: AnnotationViewModelDelegate {
     }
 }
 
-extension AnnotationViewController: AnnotaionMoveImageViewDelegate {
-    func annotaionMoveImageView(_ view: AnnotaionMoveImageView, touchEnded annotation: Annotation) {
+extension AnnotationViewController: AnnotationMoveImageViewDelegate {
+    func annotationMoveImageView(_ view: AnnotationMoveImageView, touchEnded annotation: Annotation) {
         guard let faceAnnotation = annotation as? FaceAnnotation else {
             return
         }

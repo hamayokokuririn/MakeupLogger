@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		242447B425D89927002290F2 /* AnnotationDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447B325D89927002290F2 /* AnnotationDetailViewModel.swift */; };
 		242447B725D8B1E1002290F2 /* TakePhotoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447B625D8B1E1002290F2 /* TakePhotoAlert.swift */; };
-		2446ED1D25D54790005BD9F3 /* AnnotaionMoveImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED1C25D54790005BD9F3 /* AnnotaionMoveImageView.swift */; };
+		2446ED1D25D54790005BD9F3 /* AnnotationMoveImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED1C25D54790005BD9F3 /* AnnotationMoveImageView.swift */; };
 		2446ED2025D5713C005BD9F3 /* AnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED1F25D5713C005BD9F3 /* AnnotationView.swift */; };
 		2446ED2225D774D5005BD9F3 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED2125D774D5005BD9F3 /* CommentCell.swift */; };
 		2446ED2425D776BD005BD9F3 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED2325D776BD005BD9F3 /* Comment.swift */; };
@@ -47,7 +47,7 @@
 /* Begin PBXFileReference section */
 		242447B325D89927002290F2 /* AnnotationDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationDetailViewModel.swift; sourceTree = "<group>"; };
 		242447B625D8B1E1002290F2 /* TakePhotoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakePhotoAlert.swift; sourceTree = "<group>"; };
-		2446ED1C25D54790005BD9F3 /* AnnotaionMoveImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotaionMoveImageView.swift; sourceTree = "<group>"; };
+		2446ED1C25D54790005BD9F3 /* AnnotationMoveImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationMoveImageView.swift; sourceTree = "<group>"; };
 		2446ED1F25D5713C005BD9F3 /* AnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationView.swift; sourceTree = "<group>"; };
 		2446ED2125D774D5005BD9F3 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		2446ED2325D776BD005BD9F3 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
@@ -120,7 +120,7 @@
 				24B112C325B2D4DC00EE8DEA /* AnnotationViewModel.swift */,
 				2446ED1F25D5713C005BD9F3 /* AnnotationView.swift */,
 				2446ED2125D774D5005BD9F3 /* CommentCell.swift */,
-				2446ED1C25D54790005BD9F3 /* AnnotaionMoveImageView.swift */,
+				2446ED1C25D54790005BD9F3 /* AnnotationMoveImageView.swift */,
 				24B112BB25B1A54A00EE8DEA /* CommentListAdapter.swift */,
 			);
 			path = Annotation;
@@ -332,7 +332,7 @@
 				242447B725D8B1E1002290F2 /* TakePhotoAlert.swift in Sources */,
 				24B1128525A9576100EE8DEA /* AnnotationViewController.swift in Sources */,
 				24B1128125A9576100EE8DEA /* AppDelegate.swift in Sources */,
-				2446ED1D25D54790005BD9F3 /* AnnotaionMoveImageView.swift in Sources */,
+				2446ED1D25D54790005BD9F3 /* AnnotationMoveImageView.swift in Sources */,
 				2446ED2A25D893E4005BD9F3 /* AnnotationDetailViewController.swift in Sources */,
 				2446ED2625D77A28005BD9F3 /* ColorPallet.swift in Sources */,
 				24B1128325A9576100EE8DEA /* SceneDelegate.swift in Sources */,

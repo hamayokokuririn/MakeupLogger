@@ -7,13 +7,14 @@
 
 import Foundation
 import UIKit
+import AVFoundation
 
-protocol AnnotaionMoveImageViewDelegate: AnyObject {
-    func annotaionMoveImageView(_ view: AnnotaionMoveImageView, touchEnded annotation: Annotation)
+protocol AnnotationMoveImageViewDelegate: AnyObject {
+    func annotationMoveImageView(_ view: AnnotationMoveImageView, touchEnded annotation: Annotation)
 }
 
-class AnnotaionMoveImageView: UIImageView {
-    weak var delegate: AnnotaionMoveImageViewDelegate?
+class AnnotationMoveImageView: UIImageView {
+    weak var delegate: AnnotationMoveImageViewDelegate?
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
@@ -26,7 +27,7 @@ class AnnotaionMoveImageView: UIImageView {
             return
         }
         
-        delegate?.annotaionMoveImageView(self, touchEnded: view.annotation)
+        delegate?.annotationMoveImageView(self, touchEnded: view.annotation)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -38,6 +39,20 @@ class AnnotaionMoveImageView: UIImageView {
         if view != self {
             view.center = touch.location(in: self)
         }
+    }
+    
+    func adjustAnnotationViewFrame() {
+        subviews.compactMap {
+            $0 as? AnnotationView
+        }.forEach {
+            let imageRect = self.imageRect()
+            $0.frame.origin = CGPoint(x: CGFloat($0.annotation.pointRatioOnImage.x) * imageRect.width + imageRect.minX,
+                                      y: CGFloat($0.annotation.pointRatioOnImage.y) * imageRect.height + imageRect.minY)
+        }
+    }
+    
+    private func imageRect() -> CGRect {
+        return AVMakeRect(aspectRatio: image!.size, insideRect: bounds)
     }
     
     private func firstTouchAnnotation(from touches: Set<UITouch>) -> AnnotationView? {
