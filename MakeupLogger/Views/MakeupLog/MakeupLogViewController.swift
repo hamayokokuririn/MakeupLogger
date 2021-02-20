@@ -20,7 +20,7 @@ final class MakeupLogViewController: UIViewController {
         viewModel.didChangeSegment = { part in
             let vm = FacePartViewModel(part: part)
             let vc = FacePartViewController(viewModel: vm)
-            self.present(vc, animated: true, completion: nil)
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
@@ -42,6 +42,7 @@ final class MakeupLogViewController: UIViewController {
         viewModel.segmentActionList().forEach {
             segment.insertSegment(action: $0.action, at: $0.index, animated: false)
         }
+        segment.selectedSegmentIndex = 0
     }
     
     override func viewWillLayoutSubviews() {

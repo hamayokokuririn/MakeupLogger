@@ -159,8 +159,8 @@
 		2446ED1E25D57130005BD9F3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				242447C725E0F388002290F2 /* MakeupLog */,
 				242447C225E0EF82002290F2 /* MakeupLogList */,
+				242447C725E0F388002290F2 /* MakeupLog */,
 				2446ED2825D893BB005BD9F3 /* AnnotationDetail */,
 				2446ED2725D892DF005BD9F3 /* Annotation */,
 			);
