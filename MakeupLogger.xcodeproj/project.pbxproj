@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		242447B425D89927002290F2 /* AnnotationDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447B325D89927002290F2 /* AnnotationDetailViewModel.swift */; };
 		242447B725D8B1E1002290F2 /* TakePhotoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447B625D8B1E1002290F2 /* TakePhotoAlert.swift */; };
+		242447BA25E0A625002290F2 /* MakeupLogRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447B925E0A625002290F2 /* MakeupLogRepository.swift */; };
+		242447BC25E0EB65002290F2 /* FaceAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447BB25E0EB65002290F2 /* FaceAnnotation.swift */; };
+		242447BF25E0EB9A002290F2 /* ColorPalletAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447BE25E0EB9A002290F2 /* ColorPalletAnnotation.swift */; };
+		242447C125E0EBEA002290F2 /* MakeupLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447C025E0EBEA002290F2 /* MakeupLog.swift */; };
 		2446ED1D25D54790005BD9F3 /* AnnotationMoveImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED1C25D54790005BD9F3 /* AnnotationMoveImageView.swift */; };
 		2446ED2025D5713C005BD9F3 /* AnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED1F25D5713C005BD9F3 /* AnnotationView.swift */; };
 		2446ED2225D774D5005BD9F3 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED2125D774D5005BD9F3 /* CommentCell.swift */; };
@@ -47,6 +51,10 @@
 /* Begin PBXFileReference section */
 		242447B325D89927002290F2 /* AnnotationDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationDetailViewModel.swift; sourceTree = "<group>"; };
 		242447B625D8B1E1002290F2 /* TakePhotoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakePhotoAlert.swift; sourceTree = "<group>"; };
+		242447B925E0A625002290F2 /* MakeupLogRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeupLogRepository.swift; sourceTree = "<group>"; };
+		242447BB25E0EB65002290F2 /* FaceAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceAnnotation.swift; sourceTree = "<group>"; };
+		242447BE25E0EB9A002290F2 /* ColorPalletAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalletAnnotation.swift; sourceTree = "<group>"; };
+		242447C025E0EBEA002290F2 /* MakeupLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeupLog.swift; sourceTree = "<group>"; };
 		2446ED1C25D54790005BD9F3 /* AnnotationMoveImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationMoveImageView.swift; sourceTree = "<group>"; };
 		2446ED1F25D5713C005BD9F3 /* AnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationView.swift; sourceTree = "<group>"; };
 		2446ED2125D774D5005BD9F3 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
@@ -104,9 +112,35 @@
 			path = Service;
 			sourceTree = "<group>";
 		};
+		242447B825E0A5F8002290F2 /* DataStore */ = {
+			isa = PBXGroup;
+			children = (
+				242447B925E0A625002290F2 /* MakeupLogRepository.swift */,
+			);
+			path = DataStore;
+			sourceTree = "<group>";
+		};
+		242447BD25E0EB7C002290F2 /* Annotation */ = {
+			isa = PBXGroup;
+			children = (
+				24B112C925B2D70100EE8DEA /* Annotation.swift */,
+				242447BB25E0EB65002290F2 /* FaceAnnotation.swift */,
+				242447BE25E0EB9A002290F2 /* ColorPalletAnnotation.swift */,
+			);
+			path = Annotation;
+			sourceTree = "<group>";
+		};
+		242447C225E0EF82002290F2 /* MakeupLogList */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = MakeupLogList;
+			sourceTree = "<group>";
+		};
 		2446ED1E25D57130005BD9F3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				242447C225E0EF82002290F2 /* MakeupLogList */,
 				2446ED2825D893BB005BD9F3 /* AnnotationDetail */,
 				2446ED2725D892DF005BD9F3 /* Annotation */,
 			);
@@ -158,6 +192,7 @@
 		24B1127F25A9576100EE8DEA /* MakeupLogger */ = {
 			isa = PBXGroup;
 			children = (
+				242447B825E0A5F8002290F2 /* DataStore */,
 				242447B525D8B1C6002290F2 /* Service */,
 				2446ED1E25D57130005BD9F3 /* Views */,
 				24B112C825B2D6F200EE8DEA /* Domain */,
@@ -191,9 +226,10 @@
 		24B112C825B2D6F200EE8DEA /* Domain */ = {
 			isa = PBXGroup;
 			children = (
-				24B112C925B2D70100EE8DEA /* Annotation.swift */,
+				242447BD25E0EB7C002290F2 /* Annotation */,
 				2446ED2325D776BD005BD9F3 /* Comment.swift */,
 				2446ED2525D77A28005BD9F3 /* ColorPallet.swift */,
+				242447C025E0EBEA002290F2 /* MakeupLog.swift */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -334,13 +370,17 @@
 				24B1128125A9576100EE8DEA /* AppDelegate.swift in Sources */,
 				2446ED1D25D54790005BD9F3 /* AnnotationMoveImageView.swift in Sources */,
 				2446ED2A25D893E4005BD9F3 /* AnnotationDetailViewController.swift in Sources */,
+				242447BA25E0A625002290F2 /* MakeupLogRepository.swift in Sources */,
 				2446ED2625D77A28005BD9F3 /* ColorPallet.swift in Sources */,
+				242447BC25E0EB65002290F2 /* FaceAnnotation.swift in Sources */,
 				24B1128325A9576100EE8DEA /* SceneDelegate.swift in Sources */,
 				2446ED2425D776BD005BD9F3 /* Comment.swift in Sources */,
+				242447BF25E0EB9A002290F2 /* ColorPalletAnnotation.swift in Sources */,
 				2446ED2225D774D5005BD9F3 /* CommentCell.swift in Sources */,
 				2446ED2025D5713C005BD9F3 /* AnnotationView.swift in Sources */,
 				24B112CA25B2D70100EE8DEA /* Annotation.swift in Sources */,
 				24B112BC25B1A54A00EE8DEA /* CommentListAdapter.swift in Sources */,
+				242447C125E0EBEA002290F2 /* MakeupLog.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

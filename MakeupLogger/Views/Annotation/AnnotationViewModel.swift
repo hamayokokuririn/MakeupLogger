@@ -15,7 +15,7 @@ protocol AnnotationViewModelDelegate: AnyObject {
 final class AnnotationViewModel {
     weak var delegate: AnnotationViewModelDelegate?
     
-    let image = "sample_face"
+    let image = "sample_eye_line"
     let adapter: CommentListAdapter
     
     init(annotationList: [FaceAnnotation]) {

@@ -19,8 +19,3 @@ struct ColorPallet: Codable {
     }
 }
 
-struct ColorPalletAnnotation: Annotation {
-    let id: String
-    let text: String
-    var pointRatioOnImage: PointRatio
-}
