@@ -8,18 +8,19 @@
 import Foundation
 
 protocol AnnotationViewModelDelegate: AnyObject {
-    func viewModel(_ model: AnnotationViewModel, add annotation: FaceAnnotation)
-    func viewModel(_ model: AnnotationViewModel, didSelect annotation: FaceAnnotation)
+    func viewModel(_ model: FacePartViewModel, add annotation: FaceAnnotation)
+    func viewModel(_ model: FacePartViewModel, didSelect annotation: FaceAnnotation)
 }
 
-final class AnnotationViewModel {
+final class FacePartViewModel {
     weak var delegate: AnnotationViewModelDelegate?
     
-    let image = "sample_eye_line"
+    let part: FacePart
     let adapter: CommentListAdapter
     
-    init(annotationList: [FaceAnnotation]) {
-        self.adapter = CommentListAdapter(annotationList: annotationList)
+    init(part: FacePart) {
+        self.part = part
+        self.adapter = CommentListAdapter(annotationList: part.annotations)
         adapter.addAction = addAnnotationAction
         adapter.delegate = self
     }
@@ -40,7 +41,7 @@ final class AnnotationViewModel {
     }
 }
 
-extension AnnotationViewModel: CommentListAdapterDelegate {
+extension FacePartViewModel: CommentListAdapterDelegate {
     func commentListAdapter(_ adapter: CommentListAdapter, didSelectCommentCell index: Int) {
         let annotation = adapter.annotationList[index]
         delegate?.viewModel(self, didSelect: annotation)

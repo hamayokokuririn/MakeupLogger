@@ -7,21 +7,20 @@
 
 import UIKit
 
-class AnnotationViewController: UIViewController {
+class FacePartViewController: UIViewController {
 
-    let viewModel: AnnotationViewModel
+    let viewModel: FacePartViewModel
     let alert: TakePhotoAlert
     
-    lazy var image = UIImage(named: viewModel.image)
     lazy var faceView: AnnotationMoveImageView = {
-        let view = AnnotationMoveImageView(image: image)
+        let view = AnnotationMoveImageView(image: viewModel.part.image)
         view.isUserInteractionEnabled = true
         return view
     }()
         
     let tableView = UITableView()
     
-    init(viewModel: AnnotationViewModel) {
+    init(viewModel: FacePartViewModel) {
         self.viewModel = viewModel
         self.alert = TakePhotoAlert()
         super.init(nibName: nil, bundle: nil)
@@ -86,15 +85,15 @@ class AnnotationViewController: UIViewController {
     }
 }
 
-extension AnnotationViewController: AnnotationViewModelDelegate {
-    func viewModel(_ model: AnnotationViewModel, add annotation: FaceAnnotation) {
+extension FacePartViewController: AnnotationViewModelDelegate {
+    func viewModel(_ model: FacePartViewModel, add annotation: FaceAnnotation) {
         addAnnotaion(annotation)
         tableView.reloadData()
         let row = tableView.numberOfRows(inSection: 0)
         tableView.scrollToRow(at: IndexPath(row: row - 1, section: 0), at: .bottom, animated: true)
     }
     
-    func viewModel(_ model: AnnotationViewModel, didSelect annotation: FaceAnnotation) {
+    func viewModel(_ model: FacePartViewModel, didSelect annotation: FaceAnnotation) {
         let vc = AnnotationDetailViewController(annotation: annotation)
         let navigation = UINavigationController(rootViewController: vc)
         navigation.presentationController?.delegate = self
@@ -102,7 +101,7 @@ extension AnnotationViewController: AnnotationViewModelDelegate {
     }
 }
 
-extension AnnotationViewController: AnnotationMoveImageViewDelegate {
+extension FacePartViewController: AnnotationMoveImageViewDelegate {
     func annotationMoveImageView(_ view: AnnotationMoveImageView, touchEnded annotation: Annotation) {
         guard let faceAnnotation = annotation as? FaceAnnotation else {
             return
@@ -112,7 +111,7 @@ extension AnnotationViewController: AnnotationMoveImageViewDelegate {
 }
 
 
-extension AnnotationViewController: UIAdaptivePresentationControllerDelegate {
+extension FacePartViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
         guard let navi = presentationController.presentedViewController as? UINavigationController,
               let vc = navi.topViewController as? AnnotationDetailViewController else {

@@ -18,8 +18,8 @@ final class MakeupLogViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         
         viewModel.didChangeSegment = { part in
-            let vm = AnnotationViewModel(annotationList: part.annotations)
-            let vc = AnnotationViewController(viewModel: vm)
+            let vm = FacePartViewModel(part: part)
+            let vc = FacePartViewController(viewModel: vm)
             self.present(vc, animated: true, completion: nil)
         }
     }
