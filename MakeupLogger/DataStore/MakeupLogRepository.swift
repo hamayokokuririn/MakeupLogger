@@ -16,7 +16,7 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
     lazy var log: MakeupLog = MakeupLog(id: "makeupLog_1", title: "makeup_sample", image: #imageLiteral(resourceName: "sample_face"),
                                         partsList: [eye])
     lazy var eye: FacePart = { FacePart(type: "eye", image: #imageLiteral(resourceName: "sample_eye_line"),
-                                        annotations: [])}()
+                                        annotations: [eyeAnnotation])}()
     lazy var eyeAnnotation: FaceAnnotation = { FaceAnnotation(id: "eye_1",
                                                               text: "1",
                                                               pointRatioOnImage: PointRatio(x: 0.1, y: 0.2),

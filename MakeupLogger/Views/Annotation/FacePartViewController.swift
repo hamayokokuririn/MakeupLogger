@@ -52,6 +52,10 @@ class FacePartViewController: UIViewController {
         faceView.backgroundColor = .black
         faceView.contentMode = .scaleAspectFit
         faceView.delegate = self
+        viewModel.part.annotations.forEach {
+            let view = AnnotationView(annotation: $0)
+            faceView.addSubview(view)
+        }
         
         tableView.dataSource = viewModel.adapter
         tableView.delegate = viewModel.adapter
@@ -69,6 +73,7 @@ class FacePartViewController: UIViewController {
                                 y: safeAreaInsets.top,
                                 width: imageWidth,
                                 height: imageHeight)
+        faceView.adjustAnnotationViewFrame()
         
         let tableViewTop = faceView.frame.maxY + CGFloat(24)
         let tableViewHeight = mainFrame.height - tableViewTop - view.safeAreaInsets.bottom
