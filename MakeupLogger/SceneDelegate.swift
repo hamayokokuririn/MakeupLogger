@@ -21,8 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         window.makeKeyAndVisible()
         
-        let viewModel = AnnotationViewModel(annotationList: [])
-        let vc = AnnotationViewController(viewModel: viewModel)
+        let repo = MakeupLogRepositoryInMemory()
+        let vc = MakeupLogListViewController(repository: repo)
         let navigation = UINavigationController(rootViewController: vc)
         window.rootViewController = navigation
     }
