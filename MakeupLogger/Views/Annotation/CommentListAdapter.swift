@@ -17,7 +17,7 @@ final class CommentListAdapter: NSObject, UITableViewDataSource {
     
     var annotationList: [FaceAnnotation]
     
-    var addAction: Optional<() -> Void> = nil
+    var addAction: Optional<(Int) -> Void> = nil
     
     init(annotationList: [FaceAnnotation]) {
         self.annotationList = annotationList
@@ -37,10 +37,10 @@ final class CommentListAdapter: NSObject, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let annotaion = annotationList[indexPath.row]
+        let annotation = annotationList[indexPath.row]
         let cell = CommentCell()
-        cell.setAnnotationText(annotaion.text)
-        if let comment = annotaion.comment?.text {
+        cell.setAnnotationText(annotation.text)
+        if let comment = annotation.comment?.text {
             cell.setAnnotationComment(comment)
         }
         cell.didEndEditing = { text in
@@ -81,7 +81,7 @@ extension CommentListAdapter: UITableViewDelegate {
     }
     
     @objc private func didPushAdd() {
-        addAction?()
+        addAction?(annotationList.count + 1)
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

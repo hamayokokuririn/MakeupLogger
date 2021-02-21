@@ -84,7 +84,7 @@ class FacePartViewController: UIViewController {
     }
 
         
-    func addAnnotaion(_ annotation: Annotation) {
+    func addAnnotation(_ annotation: Annotation) {
         let view = AnnotationView(annotation: annotation)
         faceView.addSubview(view)
     }
@@ -92,7 +92,7 @@ class FacePartViewController: UIViewController {
 
 extension FacePartViewController: AnnotationViewModelDelegate {
     func viewModel(_ model: FacePartViewModel, add annotation: FaceAnnotation) {
-        addAnnotaion(annotation)
+        addAnnotation(annotation)
         tableView.reloadData()
         let row = tableView.numberOfRows(inSection: 0)
         tableView.scrollToRow(at: IndexPath(row: row - 1, section: 0), at: .bottom, animated: true)

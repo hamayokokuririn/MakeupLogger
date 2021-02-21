@@ -21,7 +21,6 @@ final class FacePartViewModel {
     init(part: FacePart) {
         self.part = part
         self.adapter = CommentListAdapter(annotationList: part.annotations)
-        adapter.addAction = addAnnotationAction
         adapter.delegate = self
     }
     
@@ -35,9 +34,9 @@ final class FacePartViewModel {
     
     private func addAnnotationAction() {
         let idAndText = String(adapter.annotationList.count + 1)
-        let annotaion = FaceAnnotation(id: idAndText, text: idAndText, selectedColorPalletAnnotationID: "1")
-        adapter.annotationList.append(annotaion)
-        self.delegate?.viewModel(self, add: annotaion)
+        let annotation = FaceAnnotation(id: idAndText, text: idAndText, selectedColorPalletAnnotationID: "1")
+        adapter.annotationList.append(annotation)
+        self.delegate?.viewModel(self, add: annotation)
     }
 }
 
