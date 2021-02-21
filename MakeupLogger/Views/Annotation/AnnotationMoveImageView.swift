@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 
 protocol AnnotationMoveImageViewDelegate: AnyObject {
-    func annotationMoveImageView(_ view: AnnotationMoveImageView, touchEnded annotation: Annotation)
+    func annotationMoveImageView(_ view: AnnotationMoveImageView, didTouched annotationView: AnnotationView)
 }
 
 class AnnotationMoveImageView: UIImageView {
@@ -23,11 +23,11 @@ class AnnotationMoveImageView: UIImageView {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
-        guard let view = firstTouchAnnotation(from: touches) else {
+        guard let view = touches.first?.view as? AnnotationView else {
             return
         }
         
-        delegate?.annotationMoveImageView(self, touchEnded: view.annotation)
+        delegate?.annotationMoveImageView(self, didTouched: view)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -55,10 +55,4 @@ class AnnotationMoveImageView: UIImageView {
         return AVMakeRect(aspectRatio: image!.size, insideRect: bounds)
     }
     
-    private func firstTouchAnnotation(from touches: Set<UITouch>) -> AnnotationView? {
-        guard let touch = touches.first else {
-            return nil
-        }
-        return touch.view as? AnnotationView
-    }
 }

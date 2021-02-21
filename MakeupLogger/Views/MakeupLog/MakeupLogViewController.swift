@@ -67,6 +67,8 @@ final class MakeupLogViewController: UIViewController {
         imageCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "id")
         
         view.addSubview(tableView)
+        tableView.delegate = viewModel.tableViewAdapter
+        tableView.dataSource = viewModel.tableViewAdapter
     }
     
     override func viewWillLayoutSubviews() {
@@ -94,26 +96,12 @@ final class MakeupLogViewController: UIViewController {
 }
 
 extension MakeupLogViewController: MakeupLogViewModelDelegate {
-    func viewModel(_ model: MakeupLogViewModel, didChange state: MakeupLogViewModel.ViewState) {
-        switch state {
-        case .face:
-            tableView.isHidden = true
-            let path = IndexPath(item: 0, section: 0)
-            self.imageCollection.selectItem(at: path,
-                                            animated: true,
-                                            scrollPosition: .left)
-        case .part(let facePart):
-            tableView.isHidden = false
-            if let index = viewModel.log.partsList.firstIndex(where: {$0 == facePart}) {
-                let path = IndexPath(item: index.signum() + 1, section: 0)
-                self.imageCollection.selectItem(at: path,
-                                                animated: true,
-                                                scrollPosition: .left)
-                self.tableView.delegate = self.viewModel.tableViewAdapter
-                self.tableView.dataSource = self.viewModel.tableViewAdapter
-                self.tableView.reloadData()
-            }
-        }
+    func viewModel(_ model: MakeupLogViewModel, didChange state: MakeupLogViewModel.ViewState, cellForRowAt indexPath: IndexPath) {
+        tableView.isHidden = state == .face
+        self.imageCollection.selectItem(at: indexPath,
+                                        animated: true,
+                                        scrollPosition: .left)
+        self.tableView.reloadData()
     }
     
     func viewModel(_ model: MakeupLogViewModel, add annotation: FaceAnnotation) {
@@ -133,6 +121,13 @@ extension MakeupLogViewController: MakeupLogViewModelDelegate {
 }
 
 extension MakeupLogViewController: AnnotationMoveImageViewDelegate {
+    func annotationMoveImageView(_ view: AnnotationMoveImageView, didTouched annotationView: AnnotationView) {
+        guard var annotation = annotationView.annotation as? FaceAnnotation else {return}
+        let pointRatio = PointRatio(parentViewSize: view.frame.size, annotationPoint: annotationView.frame.origin)
+        annotation.pointRatioOnImage = pointRatio
+        viewModel.touchEnded(annotation: annotation)
+    }
+    
     func annotationMoveImageView(_ view: AnnotationMoveImageView, touchEnded annotation: Annotation) {
         guard let faceAnnotation = annotation as? FaceAnnotation else {
             return

@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 final class CommentCell: UITableViewCell {
-    var didEndEditing: ((String) -> Void)?
     
     let idLabel: UILabel = .init()
     let commentLabel: UILabel = .init()

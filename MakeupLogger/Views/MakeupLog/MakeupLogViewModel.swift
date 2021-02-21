@@ -11,7 +11,7 @@ import UIKit
 protocol MakeupLogViewModelDelegate: AnyObject {
     func viewModel(_ model: MakeupLogViewModel, add annotation: FaceAnnotation)
     func viewModel(_ model: MakeupLogViewModel, didSelect annotation: FaceAnnotation)
-    func viewModel(_ model: MakeupLogViewModel, didChange state: MakeupLogViewModel.ViewState)
+    func viewModel(_ model: MakeupLogViewModel, didChange state: MakeupLogViewModel.ViewState, cellForRowAt indexPath: IndexPath)
 }
 
 final class MakeupLogViewModel: NSObject {
@@ -41,7 +41,17 @@ final class MakeupLogViewModel: NSObject {
     
     var state: ViewState = .face {
         didSet {
-            delegate?.viewModel(self, didChange: state)
+            switch state {
+            case .face:
+                let path = IndexPath(item: 0, section: 0)
+                delegate?.viewModel(self, didChange: state, cellForRowAt: path)
+            case .part(let facePart):
+                self.updateTableViewAdapter(part: facePart)
+                if let index = log.partsList.firstIndex(where: {$0 == facePart}) {
+                    let path = IndexPath(item: index.signum() + 1, section: 0)
+                    delegate?.viewModel(self, didChange: state, cellForRowAt: path)
+                }
+            }
         }
     }
     
@@ -80,7 +90,6 @@ final class MakeupLogViewModel: NSObject {
                               state: .on) { _ in
             print("face")
             self.state = .face
-            self.delegate?.viewModel(self, didChange: .face)
         }
         list.append((action: action, index: 0))
         for (index, part) in log.partsList.enumerated() {
@@ -94,8 +103,6 @@ final class MakeupLogViewModel: NSObject {
                 print(part.type)
                 let logPart = self.log.partsList[index]
                 self.state = .part(logPart)
-                self.updateTableViewAdapter(part: logPart)
-                self.delegate?.viewModel(self, didChange: .part(logPart))
             }
             list.append((action: action, index: indexPlus1))
         }
@@ -109,6 +116,7 @@ final class MakeupLogViewModel: NSObject {
             }) {
                 if let i = self.log.partsList[id].annotations.firstIndex(where: {$0.id == annotation.id}) {
                     log.partsList[id].annotations[i] = annotation
+                    updateTableViewAdapter(part: log.partsList[id])
                 }
             }
         }
@@ -153,6 +161,7 @@ extension MakeupLogViewModel: UICollectionViewDataSource {
             view.addSubview(annotation)
         }
         view.adjustAnnotationViewFrame()
+        view.delegate = self
         cell.contentView.addSubview(view)
         cell.contentView.isUserInteractionEnabled = true
         return cell
@@ -174,4 +183,14 @@ extension MakeupLogViewModel: CommentListAdapterDelegate {
         self.appendAnnotation(annotation)
         self.delegate?.viewModel(self, add: annotation)
     }
+}
+
+extension MakeupLogViewModel: AnnotationMoveImageViewDelegate {
+    func annotationMoveImageView(_ view: AnnotationMoveImageView, didTouched annotationView: AnnotationView) {
+        guard var annotation = annotationView.annotation as? FaceAnnotation else {return}
+        let pointRatio = PointRatio(parentViewSize: view.frame.size, annotationPoint: annotationView.frame.origin)
+        annotation.pointRatioOnImage = pointRatio
+        touchEnded(annotation: annotation)
+    }
+    
 }

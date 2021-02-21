@@ -107,12 +107,13 @@ extension FacePartViewController: AnnotationViewModelDelegate {
 }
 
 extension FacePartViewController: AnnotationMoveImageViewDelegate {
-    func annotationMoveImageView(_ view: AnnotationMoveImageView, touchEnded annotation: Annotation) {
-        guard let faceAnnotation = annotation as? FaceAnnotation else {
+    func annotationMoveImageView(_ view: AnnotationMoveImageView, didTouched annotationView: AnnotationView) {
+        guard let faceAnnotation = annotationView.annotation as? FaceAnnotation else {
             return
         }
         viewModel.touchEnded(annotation: faceAnnotation)
     }
+    
 }
 
 

@@ -42,14 +42,6 @@ final class CommentListAdapter: NSObject, UITableViewDataSource {
         if let comment = annotation.comment?.text {
             cell.setAnnotationComment(comment)
         }
-        cell.didEndEditing = { text in
-            let cellAnnotation = self.annotationList[indexPath.row]
-            self.annotationList[indexPath.row] = FaceAnnotation(id: cellAnnotation.id,
-                                                               text: cellAnnotation.text,
-                                                               pointRatioOnImage: cellAnnotation.pointRatioOnImage,
-                                                               comment: Comment(text: text),
-                                                               colorPallet: cellAnnotation.colorPallet)
-        }
         return cell
     }
         
