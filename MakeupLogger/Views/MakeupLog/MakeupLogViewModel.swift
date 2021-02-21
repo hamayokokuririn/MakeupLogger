@@ -92,9 +92,10 @@ final class MakeupLogViewModel: NSObject {
                                   attributes: .destructive,
                                   state: .off) { _ in
                 print(part.type)
-                self.state = .part(part)
-                self.updateTableViewAdapter(part: part)
-                self.delegate?.viewModel(self, didChange: .part(part))
+                let logPart = self.log.partsList[index]
+                self.state = .part(logPart)
+                self.updateTableViewAdapter(part: logPart)
+                self.delegate?.viewModel(self, didChange: .part(logPart))
             }
             list.append((action: action, index: indexPlus1))
         }
