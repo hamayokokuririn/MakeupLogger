@@ -12,11 +12,20 @@ struct MakeupLog {
     let id: String
     let title: String
     let image: UIImage
-    let partsList: [FacePart]
+    var partsList: [FacePart]
 }
 
-struct FacePart {
+struct FacePart: Hashable {
     let type: String
     let image: UIImage
-    let annotations: [FaceAnnotation]
+    var annotations: [FaceAnnotation]
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(type)
+        hasher.combine(image.description)
+        annotations.forEach {
+            hasher.combine($0.id)
+        }
+    }
+
 }
