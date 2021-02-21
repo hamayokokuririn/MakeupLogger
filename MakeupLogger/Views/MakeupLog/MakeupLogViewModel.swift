@@ -188,7 +188,11 @@ extension MakeupLogViewModel: CommentListAdapterDelegate {
 extension MakeupLogViewModel: AnnotationMoveImageViewDelegate {
     func annotationMoveImageView(_ view: AnnotationMoveImageView, didTouched annotationView: AnnotationView) {
         guard var annotation = annotationView.annotation as? FaceAnnotation else {return}
-        let pointRatio = PointRatio(parentViewSize: view.frame.size, annotationPoint: annotationView.frame.origin)
+        let imageViewRect = view.imageRect()
+        let point = CGPoint(x: annotationView.frame.minX - imageViewRect.minX,
+                            y: annotationView.frame.minY - imageViewRect.minY)
+        let pointRatio = PointRatio(parentViewSize: imageViewRect.size,
+                                    annotationPoint: point)
         annotation.pointRatioOnImage = pointRatio
         touchEnded(annotation: annotation)
     }

@@ -120,22 +120,6 @@ extension MakeupLogViewController: MakeupLogViewModelDelegate {
     
 }
 
-extension MakeupLogViewController: AnnotationMoveImageViewDelegate {
-    func annotationMoveImageView(_ view: AnnotationMoveImageView, didTouched annotationView: AnnotationView) {
-        guard var annotation = annotationView.annotation as? FaceAnnotation else {return}
-        let pointRatio = PointRatio(parentViewSize: view.frame.size, annotationPoint: annotationView.frame.origin)
-        annotation.pointRatioOnImage = pointRatio
-        viewModel.touchEnded(annotation: annotation)
-    }
-    
-    func annotationMoveImageView(_ view: AnnotationMoveImageView, touchEnded annotation: Annotation) {
-        guard let faceAnnotation = annotation as? FaceAnnotation else {
-            return
-        }
-        viewModel.touchEnded(annotation: faceAnnotation)
-    }
-}
-
 extension MakeupLogViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
         guard let navi = presentationController.presentedViewController as? UINavigationController,

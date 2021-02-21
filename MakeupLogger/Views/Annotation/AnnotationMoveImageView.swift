@@ -51,7 +51,7 @@ class AnnotationMoveImageView: UIImageView {
         }
     }
     
-    private func imageRect() -> CGRect {
+    func imageRect() -> CGRect {
         return AVMakeRect(aspectRatio: image!.size, insideRect: bounds)
     }
     
