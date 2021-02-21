@@ -48,24 +48,16 @@ final class MakeupLogViewModel: NSObject {
     weak var delegate: MakeupLogViewModelDelegate? = nil
     
     var log: MakeupLog
-    var tableViewAdapter: CommentListAdapter?
+    let tableViewAdapter = CommentListAdapter(annotationList: [])
     
     init(log: MakeupLog) {
         self.log = log
         super.init()
+        tableViewAdapter.delegate = self
     }
     
     func updateTableViewAdapter(part: FacePart) {
-        let adapter = CommentListAdapter(annotationList: part.annotations)
-        adapter.addAction = { index in
-            let idAndText = index.description
-            let annotation = FaceAnnotation(id: idAndText,
-                                            text: idAndText,
-                                            selectedColorPalletAnnotationID: "1")
-            self.appendAnnotation(annotation)
-            self.delegate?.viewModel(self, add: annotation)
-        }
-        self.tableViewAdapter = adapter
+        self.tableViewAdapter.annotationList = part.annotations
     }
     
     private func appendAnnotation(_ annotation: FaceAnnotation) {
@@ -74,8 +66,10 @@ final class MakeupLogViewModel: NSObject {
                 $0.type == part.type
             }) {
                 self.log.partsList[id].annotations.append(annotation)
+                updateTableViewAdapter(part: self.log.partsList[id])
             }
         }
+        
     }
     
     func segmentActionList() -> [(action: UIAction, index: Int)] {
@@ -85,6 +79,7 @@ final class MakeupLogViewModel: NSObject {
                               attributes: .destructive,
                               state: .on) { _ in
             print("face")
+            self.state = .face
             self.delegate?.viewModel(self, didChange: .face)
         }
         list.append((action: action, index: 0))
@@ -97,6 +92,7 @@ final class MakeupLogViewModel: NSObject {
                                   attributes: .destructive,
                                   state: .off) { _ in
                 print(part.type)
+                self.state = .part(part)
                 self.updateTableViewAdapter(part: part)
                 self.delegate?.viewModel(self, didChange: .part(part))
             }
@@ -135,9 +131,12 @@ extension MakeupLogViewModel: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "id",
                                                       for: indexPath)
         cell.backgroundColor = .green
+        cell.contentView.subviews.forEach {
+            $0.removeFromSuperview()
+        }
         if indexPath.row == 0 {
             let image = UIImageView()
-            cell.addSubview(image)
+            cell.contentView.addSubview(image)
             image.image = log.image
             image.frame.size = cell.frame.size
             image.contentMode = .scaleAspectFit
@@ -158,4 +157,20 @@ extension MakeupLogViewModel: UICollectionViewDataSource {
         return cell
     }
     
+}
+
+extension MakeupLogViewModel: CommentListAdapterDelegate {
+    func commentListAdapter(_ adapter: CommentListAdapter, didSelectCommentCell index: Int) {
+        let annotation = adapter.annotationList[index]
+        delegate?.viewModel(self, didSelect: annotation)
+    }
+    
+    func commentListAdapter(_ adapter: CommentListAdapter, didPushAddButton insertIndex: Int) {
+        let idAndText = insertIndex.description
+        let annotation = FaceAnnotation(id: idAndText,
+                                        text: idAndText,
+                                        selectedColorPalletAnnotationID: "1")
+        self.appendAnnotation(annotation)
+        self.delegate?.viewModel(self, add: annotation)
+    }
 }

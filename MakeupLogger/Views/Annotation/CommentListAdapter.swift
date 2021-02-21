@@ -10,14 +10,13 @@ import UIKit
 
 protocol CommentListAdapterDelegate: AnyObject {
     func commentListAdapter(_ adapter: CommentListAdapter, didSelectCommentCell index: Int)
+    func commentListAdapter(_ adapter: CommentListAdapter, didPushAddButton insertIndex: Int)
 }
 
 final class CommentListAdapter: NSObject, UITableViewDataSource {
     weak var delegate: CommentListAdapterDelegate?
     
     var annotationList: [FaceAnnotation]
-    
-    var addAction: Optional<(Int) -> Void> = nil
     
     init(annotationList: [FaceAnnotation]) {
         self.annotationList = annotationList
@@ -81,7 +80,7 @@ extension CommentListAdapter: UITableViewDelegate {
     }
     
     @objc private func didPushAdd() {
-        addAction?(annotationList.count + 1)
+        delegate?.commentListAdapter(self, didPushAddButton: annotationList.count + 1)
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

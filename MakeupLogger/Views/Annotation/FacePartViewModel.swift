@@ -41,6 +41,9 @@ final class FacePartViewModel {
 }
 
 extension FacePartViewModel: CommentListAdapterDelegate {
+    func commentListAdapter(_ adapter: CommentListAdapter, didPushAddButton insertIndex: Int) {
+        print("add action")
+    }
     func commentListAdapter(_ adapter: CommentListAdapter, didSelectCommentCell index: Int) {
         let annotation = adapter.annotationList[index]
         delegate?.viewModel(self, didSelect: annotation)

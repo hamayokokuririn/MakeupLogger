@@ -15,10 +15,15 @@ struct MakeupLog {
     var partsList: [FacePart]
 }
 
-struct FacePart: Hashable {
+struct FacePart: Equatable, Hashable {
+    let id: String
     let type: String
     let image: UIImage
     var annotations: [FaceAnnotation]
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.id == rhs.id
+    }
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(type)
