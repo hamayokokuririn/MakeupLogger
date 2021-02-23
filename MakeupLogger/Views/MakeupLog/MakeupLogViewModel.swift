@@ -46,7 +46,7 @@ final class MakeupLogViewModel: NSObject {
                 let path = IndexPath(item: 0, section: 0)
                 delegate?.viewModel(self, didChange: state, cellForRowAt: path)
             case .part(let facePart):
-                self.updateTableViewAdapter(part: facePart)
+                self.tableViewAdapter.annotationList = facePart.annotations
                 if let index = log.partsList.firstIndex(where: {$0 == facePart}) {
                     let path = IndexPath(item: index.signum() + 1, section: 0)
                     delegate?.viewModel(self, didChange: state, cellForRowAt: path)
@@ -66,17 +66,13 @@ final class MakeupLogViewModel: NSObject {
         tableViewAdapter.delegate = self
     }
     
-    func updateTableViewAdapter(part: FacePart) {
-        self.tableViewAdapter.annotationList = part.annotations
-    }
-    
     private func appendAnnotation(_ annotation: FaceAnnotation) {
         if case .part(let part) = self.state {
             if let id = log.partsList.firstIndex(where: {
                 $0.type == part.type
             }) {
                 self.log.partsList[id].annotations.append(annotation)
-                updateTableViewAdapter(part: self.log.partsList[id])
+                self.state = .part(self.log.partsList[id])
             }
         }
         
@@ -116,7 +112,7 @@ final class MakeupLogViewModel: NSObject {
             }) {
                 if let i = self.log.partsList[id].annotations.firstIndex(where: {$0.id == annotation.id}) {
                     log.partsList[id].annotations[i] = annotation
-                    updateTableViewAdapter(part: log.partsList[id])
+                    self.state = .part(log.partsList[id])
                 }
             }
         }
