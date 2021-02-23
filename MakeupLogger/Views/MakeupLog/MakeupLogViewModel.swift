@@ -15,28 +15,9 @@ protocol MakeupLogViewModelDelegate: AnyObject {
 }
 
 final class MakeupLogViewModel: NSObject {
-    enum ViewState: Equatable {
-        static func == (lhs: MakeupLogViewModel.ViewState, rhs: MakeupLogViewModel.ViewState) -> Bool {
-            switch lhs {
-            case .face:
-                switch rhs {
-                case .face:
-                    return true
-                case .part(_):
-                    return false
-                }
-            case .part(let lIndex):
-                switch rhs {
-                case .face:
-                    return false
-                case .part(let rIndex):
-                    return lIndex == rIndex
-                }
-            }
-        }
-        
+    enum ViewState {
         case face
-        case part(Int)
+        case part(partIndex: Int)
     }
     
     var state: ViewState = .face {
@@ -66,7 +47,7 @@ final class MakeupLogViewModel: NSObject {
     private func appendAnnotation(_ annotation: FaceAnnotation) {
         if case .part(let index) = self.state {
             self.log.partsList[index].annotations.append(annotation)
-            self.state = .part(index)
+            self.state = .part(partIndex: index)
         }
     }
     
@@ -89,7 +70,7 @@ final class MakeupLogViewModel: NSObject {
                                   attributes: .destructive,
                                   state: .off) { _ in
                 print(part.type)
-                self.state = .part(index)
+                self.state = .part(partIndex: index)
             }
             list.append((action: action, index: indexPlus1))
         }
@@ -100,7 +81,7 @@ final class MakeupLogViewModel: NSObject {
         if case .part(let index) = self.state {
             if let i = self.log.partsList[index].annotations.firstIndex(where: {$0.id == annotation.id}) {
                 log.partsList[index].annotations[i] = annotation
-                self.state = .part(index)
+                self.state = .part(partIndex: index)
             }
         }
     }
@@ -192,4 +173,25 @@ extension MakeupLogViewModel: AnnotationMoveImageViewDelegate {
         }
     }
     
+}
+
+extension MakeupLogViewModel.ViewState: Equatable {
+    static func == (lhs: MakeupLogViewModel.ViewState, rhs: MakeupLogViewModel.ViewState) -> Bool {
+        switch lhs {
+        case .face:
+            switch rhs {
+            case .face:
+                return true
+            case .part(_):
+                return false
+            }
+        case .part(let lIndex):
+            switch rhs {
+            case .face:
+                return false
+            case .part(let rIndex):
+                return lIndex == rIndex
+            }
+        }
+    }
 }
