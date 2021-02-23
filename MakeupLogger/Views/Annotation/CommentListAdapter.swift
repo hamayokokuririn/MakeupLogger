@@ -11,32 +11,24 @@ import UIKit
 protocol CommentListAdapterDelegate: AnyObject {
     func commentListAdapter(_ adapter: CommentListAdapter, didSelectCommentCell index: Int)
     func commentListAdapter(_ adapter: CommentListAdapter, didPushAddButton insertIndex: Int)
+    func commentListAdapterAnnotationList(_ adapter: CommentListAdapter) -> [FaceAnnotation]
 }
 
 final class CommentListAdapter: NSObject, UITableViewDataSource {
     weak var delegate: CommentListAdapterDelegate?
     
-    var annotationList: [FaceAnnotation]
-    
-    init(annotationList: [FaceAnnotation]) {
-        self.annotationList = annotationList
-    }
-    
-    func updateAnnotation(_ annotation: FaceAnnotation) {
-        guard let index = annotationList.firstIndex(where: { first in
-            first == annotation
-        }) else {
-            return
-        }
-        annotationList[index] = annotation
+    init(delegate: CommentListAdapterDelegate) {
+        self.delegate = delegate
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        annotationList.count
+        guard let delegate = delegate else {return 0}
+        return delegate.commentListAdapterAnnotationList(self).count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let annotation = annotationList[indexPath.row]
+        guard let delegate = delegate else {return UITableViewCell()}
+        let annotation = delegate.commentListAdapterAnnotationList(self)[indexPath.row]
         let cell = CommentCell()
         cell.setAnnotationText(annotation.text)
         if let comment = annotation.comment?.text {
@@ -72,7 +64,8 @@ extension CommentListAdapter: UITableViewDelegate {
     }
     
     @objc private func didPushAdd() {
-        delegate?.commentListAdapter(self, didPushAddButton: annotationList.count + 1)
+        guard let delegate = delegate else {return}
+        delegate.commentListAdapter(self, didPushAddButton: delegate.commentListAdapterAnnotationList(self).count + 1)
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

@@ -46,7 +46,6 @@ final class MakeupLogViewModel: NSObject {
                 let path = IndexPath(item: 0, section: 0)
                 delegate?.viewModel(self, didChange: state, cellForRowAt: path)
             case .part(let facePart):
-                self.tableViewAdapter.annotationList = facePart.annotations
                 if let index = log.partsList.firstIndex(where: {$0 == facePart}) {
                     let path = IndexPath(item: index.signum() + 1, section: 0)
                     delegate?.viewModel(self, didChange: state, cellForRowAt: path)
@@ -58,7 +57,7 @@ final class MakeupLogViewModel: NSObject {
     weak var delegate: MakeupLogViewModelDelegate? = nil
     
     var log: MakeupLog
-    let tableViewAdapter = CommentListAdapter(annotationList: [])
+    lazy var tableViewAdapter = CommentListAdapter(delegate: self)
     
     init(log: MakeupLog) {
         self.log = log
@@ -166,9 +165,20 @@ extension MakeupLogViewModel: UICollectionViewDataSource {
 }
 
 extension MakeupLogViewModel: CommentListAdapterDelegate {
+    func commentListAdapterAnnotationList(_ adapter: CommentListAdapter) -> [FaceAnnotation] {
+        if case .part(let part) = state,
+           let selectedPart = log.partsList.first(where: {$0.id == part.id}){
+            return selectedPart.annotations
+        }
+        return []
+    }
+    
     func commentListAdapter(_ adapter: CommentListAdapter, didSelectCommentCell index: Int) {
-        let annotation = adapter.annotationList[index]
-        delegate?.viewModel(self, didSelect: annotation)
+        if case .part(let part) = state,
+           let selectedPart = log.partsList.first(where: {$0.id == part.id}){
+            delegate?.viewModel(self, didSelect: selectedPart.annotations[index])
+        }
+        return
     }
     
     func commentListAdapter(_ adapter: CommentListAdapter, didPushAddButton insertIndex: Int) {
