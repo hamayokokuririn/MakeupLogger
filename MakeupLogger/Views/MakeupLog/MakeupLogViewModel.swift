@@ -25,18 +25,18 @@ final class MakeupLogViewModel: NSObject {
                 case .part(_):
                     return false
                 }
-            case .part(let lPart):
+            case .part(let lIndex):
                 switch rhs {
                 case .face:
                     return false
-                case .part(let rPart):
-                    return lPart.type == rPart.type
+                case .part(let rIndex):
+                    return lIndex == rIndex
                 }
             }
         }
         
         case face
-        case part(FacePart)
+        case part(Int)
     }
     
     var state: ViewState = .face {
@@ -45,11 +45,9 @@ final class MakeupLogViewModel: NSObject {
             case .face:
                 let path = IndexPath(item: 0, section: 0)
                 delegate?.viewModel(self, didChange: state, cellForRowAt: path)
-            case .part(let facePart):
-                if let index = log.partsList.firstIndex(where: {$0 == facePart}) {
-                    let path = IndexPath(item: index.signum() + 1, section: 0)
-                    delegate?.viewModel(self, didChange: state, cellForRowAt: path)
-                }
+            case .part(let index):
+                let path = IndexPath(item: index + 1, section: 0)
+                delegate?.viewModel(self, didChange: state, cellForRowAt: path)
             }
         }
     }
@@ -66,15 +64,10 @@ final class MakeupLogViewModel: NSObject {
     }
     
     private func appendAnnotation(_ annotation: FaceAnnotation) {
-        if case .part(let part) = self.state {
-            if let id = log.partsList.firstIndex(where: {
-                $0.type == part.type
-            }) {
-                self.log.partsList[id].annotations.append(annotation)
-                self.state = .part(self.log.partsList[id])
-            }
+        if case .part(let index) = self.state {
+            self.log.partsList[index].annotations.append(annotation)
+            self.state = .part(index)
         }
-        
     }
     
     func segmentActionList() -> [(action: UIAction, index: Int)] {
@@ -96,8 +89,7 @@ final class MakeupLogViewModel: NSObject {
                                   attributes: .destructive,
                                   state: .off) { _ in
                 print(part.type)
-                let logPart = self.log.partsList[index]
-                self.state = .part(logPart)
+                self.state = .part(index)
             }
             list.append((action: action, index: indexPlus1))
         }
@@ -105,14 +97,10 @@ final class MakeupLogViewModel: NSObject {
     }
     
     private func updateAnnotation(_ annotation: FaceAnnotation) {
-        if case .part(let part) = self.state {
-            if let id = log.partsList.firstIndex(where: {
-                $0.type == part.type
-            }) {
-                if let i = self.log.partsList[id].annotations.firstIndex(where: {$0.id == annotation.id}) {
-                    log.partsList[id].annotations[i] = annotation
-                    self.state = .part(log.partsList[id])
-                }
+        if case .part(let index) = self.state {
+            if let i = self.log.partsList[index].annotations.firstIndex(where: {$0.id == annotation.id}) {
+                log.partsList[index].annotations[i] = annotation
+                self.state = .part(index)
             }
         }
     }
@@ -166,17 +154,15 @@ extension MakeupLogViewModel: UICollectionViewDataSource {
 
 extension MakeupLogViewModel: CommentListAdapterDelegate {
     func commentListAdapterAnnotationList(_ adapter: CommentListAdapter) -> [FaceAnnotation] {
-        if case .part(let part) = state,
-           let selectedPart = log.partsList.first(where: {$0.id == part.id}){
-            return selectedPart.annotations
+        if case .part(let index) = state {
+            return log.partsList[index].annotations
         }
         return []
     }
     
     func commentListAdapter(_ adapter: CommentListAdapter, didSelectCommentCell index: Int) {
-        if case .part(let part) = state,
-           let selectedPart = log.partsList.first(where: {$0.id == part.id}){
-            delegate?.viewModel(self, didSelect: selectedPart.annotations[index])
+        if case .part(let partIndex) = state {
+            delegate?.viewModel(self, didSelect: log.partsList[partIndex].annotations[index])
         }
         return
     }
@@ -194,8 +180,8 @@ extension MakeupLogViewModel: CommentListAdapterDelegate {
 extension MakeupLogViewModel: AnnotationMoveImageViewDelegate {
     func annotationMoveImageView(_ view: AnnotationMoveImageView, didTouched annotationView: AnnotationView) {
         let annotationID = annotationView.annotation.id
-        if case .part(let part) = state,
-           var faceAnnotation = part.annotations.first(where: {$0.id == annotationID}) {
+        if case .part(let index) = state,
+           var faceAnnotation = log.partsList[index].annotations.first(where: {$0.id == annotationID}) {
             let imageViewRect = view.imageRect()
             let point = CGPoint(x: annotationView.frame.minX - imageViewRect.minX,
                                 y: annotationView.frame.minY - imageViewRect.minY)
