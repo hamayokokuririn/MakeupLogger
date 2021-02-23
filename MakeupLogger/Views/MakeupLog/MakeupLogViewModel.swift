@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 protocol MakeupLogViewModelDelegate: AnyObject {
-    func viewModel(_ model: MakeupLogViewModel, add annotation: FaceAnnotation)
+    func viewModelAddAnnotation(_ model: MakeupLogViewModel)
     func viewModel(_ model: MakeupLogViewModel, didSelect annotation: FaceAnnotation)
     func viewModel(_ model: MakeupLogViewModel, didChange state: MakeupLogViewModel.ViewState, cellForRowAt indexPath: IndexPath)
 }
@@ -187,7 +187,7 @@ extension MakeupLogViewModel: CommentListAdapterDelegate {
                                         text: idAndText,
                                         selectedColorPalletAnnotationID: "1")
         self.appendAnnotation(annotation)
-        self.delegate?.viewModel(self, add: annotation)
+        self.delegate?.viewModelAddAnnotation(self)
     }
 }
 

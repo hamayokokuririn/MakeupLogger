@@ -104,7 +104,7 @@ extension MakeupLogViewController: MakeupLogViewModelDelegate {
         self.tableView.reloadData()
     }
     
-    func viewModel(_ model: MakeupLogViewModel, add annotation: FaceAnnotation) {
+    func viewModelAddAnnotation(_ model: MakeupLogViewModel) {
         imageCollection.reloadData()
         tableView.reloadData()
         let row = tableView.numberOfRows(inSection: 0)
