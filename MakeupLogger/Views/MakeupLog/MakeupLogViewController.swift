@@ -121,7 +121,7 @@ extension MakeupLogViewController: MakeupLogViewModelDelegate {
 }
 
 extension MakeupLogViewController: UIAdaptivePresentationControllerDelegate {
-    func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         guard let navi = presentationController.presentedViewController as? UINavigationController,
               let vc = navi.topViewController as? AnnotationDetailViewController else {
             return

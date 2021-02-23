@@ -110,7 +110,7 @@ final class AnnotationDetailViewController: UIViewController {
     
     @objc private func close() {
         guard let pc = navigationController?.presentationController else {return}
-        pc.delegate?.presentationControllerWillDismiss?(pc)
+        pc.delegate?.presentationControllerDidDismiss?(pc)
     }
 }
 
