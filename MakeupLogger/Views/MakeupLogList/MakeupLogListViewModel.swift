@@ -19,7 +19,7 @@ final class MakeupLogListViewModel: NSObject {
     }
     
     func fetchLog() {
-        repository.fetch { logList in
+        repository.getLogList { logList in
             self.list = logList
             self.didFinishReloadList?()
         }

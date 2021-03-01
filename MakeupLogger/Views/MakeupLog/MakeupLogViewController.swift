@@ -30,7 +30,7 @@ final class MakeupLogViewController: UIViewController {
     
     let viewModel: MakeupLogViewModel
     init(log: MakeupLog) {
-        self.viewModel = MakeupLogViewModel(log: log)
+        self.viewModel = MakeupLogViewModel(logID: log.id)
         super.init(nibName: nil, bundle: nil)
         
         viewModel.delegate = self
@@ -57,8 +57,12 @@ final class MakeupLogViewController: UIViewController {
         view.backgroundColor = .systemGray3
         
         view.addSubview(segment)
-        viewModel.segmentActionList().forEach {
-            segment.insertSegment(action: $0.action, at: $0.index, animated: false)
+        viewModel.segmentActionList { (actions) in
+            var index = 0
+            actions.forEach {
+                segment.insertSegment(action: $0, at: index, animated: false)
+                index += 1
+            }
         }
         segment.selectedSegmentIndex = 0
         

@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         window.makeKeyAndVisible()
         
-        let repo = MakeupLogRepositoryInMemory()
+        let repo = MakeupLogRepositoryInMemory.shared
         let vc = MakeupLogListViewController(repository: repo)
         let navigation = UINavigationController(rootViewController: vc)
         window.rootViewController = navigation

@@ -9,11 +9,19 @@ import Foundation
 import UIKit
 
 protocol MakeupLogRepository {
-    func fetch(completion: ([MakeupLog]) -> Void)
+    func getLogList(completion: ([MakeupLog]) -> Void)
+    func updateFacePart(logID: String, part: FacePart, completion: (MakeupLog?) -> Void)
+    func updateFaceAnnotation(logID: String, partID: String, faceAnnotation: FaceAnnotation, completion: (MakeupLog?) -> Void)
+    func insertFaceAnnotation(logID: String, partID: String, faceAnnotation: FaceAnnotation, completion: (MakeupLog?) -> Void)
+    
+    var logMap: [String: MakeupLog] { get }
 }
 
 class MakeupLogRepositoryInMemory: MakeupLogRepository {
-    lazy var log: MakeupLog = MakeupLog(id: "makeupLog_1", title: "makeup_sample", image: #imageLiteral(resourceName: "sample_face"),
+    static let shared = MakeupLogRepositoryInMemory()
+    
+    let id = "makeupLog_1"
+    lazy var log: MakeupLog = MakeupLog(id: id, title: "makeup_sample", image: #imageLiteral(resourceName: "sample_face"),
                                         partsList: [eye])
     lazy var eye: FacePart = { FacePart(id: "part_eye_1", type: "eye", image: #imageLiteral(resourceName: "sample_eye_line"),
                                         annotations: [eyeAnnotation])}()
@@ -39,7 +47,56 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
                                        annotationList: [colorPalletAnnotation1,
                                                         colorPalletAnnotation2,
                                                         colorPalletAnnotation3])
-    func fetch(completion: (([MakeupLog]) -> Void)) {
-        completion([log])
+    
+    lazy var logMap = [id: log]
+    
+    private var logList: [MakeupLog] {
+        logMap.values.map {$0 as MakeupLog}
+    }
+    
+    private init() {}
+    
+    func setLog(logMap: [String: MakeupLog]? = nil) {
+        if let map = logMap {
+            self.logMap = map
+        }
+    }
+    
+    func getLogList(completion: (([MakeupLog]) -> Void)) {
+        completion(logList)
+    }
+    
+    func updateFacePart(logID: String, part: FacePart, completion: (MakeupLog?) -> Void) {
+        if var log = logMap[logID],
+           let index = log.partsList.firstIndex(where: {$0.id == part.id}) {
+            log.partsList[index] = part
+            logMap[logID] = log
+            completion(log)
+        } else {
+            completion(nil)
+        }
+    }
+    
+    func updateFaceAnnotation(logID: String, partID: String, faceAnnotation: FaceAnnotation, completion: (MakeupLog?) -> Void) {
+        if var log = logMap[logID],
+           let partIndex = log.partsList.firstIndex(where: {$0.id == partID}),
+           let faceIndex = logMap[logID]?.partsList[partIndex].annotations.firstIndex(where: {$0.id == faceAnnotation.id}) {
+            log.partsList[partIndex].annotations[faceIndex] = faceAnnotation
+            logMap[logID] = log
+            completion(log)
+        } else {
+            completion(nil)
+        }
+    }
+    
+    func insertFaceAnnotation(logID: String, partID: String, faceAnnotation: FaceAnnotation, completion: (MakeupLog?) -> Void) {
+        if var log = logMap[logID],
+           let partIndex = log.partsList.firstIndex(where: {$0.id == partID}) {
+            log.partsList[partIndex].annotations.append(faceAnnotation)
+            logMap[logID] = log
+            completion(log)
+        } else {
+            completion(nil)
+        }
     }
 }

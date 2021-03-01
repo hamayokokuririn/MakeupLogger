@@ -17,6 +17,7 @@
 		242447C625E0F00D002290F2 /* MakeupLogListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447C525E0F00D002290F2 /* MakeupLogListViewModel.swift */; };
 		242447C925E0F398002290F2 /* MakeupLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447C825E0F398002290F2 /* MakeupLogViewController.swift */; };
 		242447CB25E0F3BB002290F2 /* MakeupLogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447CA25E0F3BB002290F2 /* MakeupLogViewModel.swift */; };
+		242447CD25E69CCD002290F2 /* MakeupLogRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447CC25E69CCD002290F2 /* MakeupLogRepositoryTests.swift */; };
 		2446ED1D25D54790005BD9F3 /* AnnotationMoveImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED1C25D54790005BD9F3 /* AnnotationMoveImageView.swift */; };
 		2446ED2025D5713C005BD9F3 /* AnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED1F25D5713C005BD9F3 /* AnnotationView.swift */; };
 		2446ED2225D774D5005BD9F3 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED2125D774D5005BD9F3 /* CommentCell.swift */; };
@@ -61,6 +62,7 @@
 		242447C525E0F00D002290F2 /* MakeupLogListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeupLogListViewModel.swift; sourceTree = "<group>"; };
 		242447C825E0F398002290F2 /* MakeupLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeupLogViewController.swift; sourceTree = "<group>"; };
 		242447CA25E0F3BB002290F2 /* MakeupLogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeupLogViewModel.swift; sourceTree = "<group>"; };
+		242447CC25E69CCD002290F2 /* MakeupLogRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeupLogRepositoryTests.swift; sourceTree = "<group>"; };
 		2446ED1C25D54790005BD9F3 /* AnnotationMoveImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationMoveImageView.swift; sourceTree = "<group>"; };
 		2446ED1F25D5713C005BD9F3 /* AnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationView.swift; sourceTree = "<group>"; };
 		2446ED2125D774D5005BD9F3 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 			children = (
 				24B1129725A9576300EE8DEA /* MakeupLoggerTests.swift */,
 				24B1129925A9576300EE8DEA /* Info.plist */,
+				242447CC25E69CCD002290F2 /* MakeupLogRepositoryTests.swift */,
 			);
 			path = MakeupLoggerTests;
 			sourceTree = "<group>";
@@ -405,6 +408,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				24B1129825A9576300EE8DEA /* MakeupLoggerTests.swift in Sources */,
+				242447CD25E69CCD002290F2 /* MakeupLogRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

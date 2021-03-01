@@ -17,7 +17,7 @@ protocol MakeupLogViewModelDelegate: AnyObject {
 final class MakeupLogViewModel: NSObject {
     enum ViewState {
         case face
-        case part(partIndex: Int)
+        case part(partID: String)
     }
     
     var state: ViewState = .face {
@@ -26,33 +26,46 @@ final class MakeupLogViewModel: NSObject {
             case .face:
                 let path = IndexPath(item: 0, section: 0)
                 delegate?.viewModel(self, didChange: state, cellForRowAt: path)
-            case .part(let index):
-                let path = IndexPath(item: index + 1, section: 0)
-                delegate?.viewModel(self, didChange: state, cellForRowAt: path)
+            case .part(let partID):
+                repository.getLogList { logList in
+                    let log = logList[0]
+                    if let part = log.partsList.firstIndex(where: {$0.id == partID}) {
+                        let path = IndexPath(item: part.signum() + 1, section: 0)
+                        delegate?.viewModel(self, didChange: state, cellForRowAt: path)
+                    }
+                    
+                }
+                
             }
         }
     }
     
     weak var delegate: MakeupLogViewModelDelegate? = nil
     
-    var log: MakeupLog
     lazy var tableViewAdapter = CommentListAdapter(delegate: self)
+    private let logID: String
+    private let repository: MakeupLogRepository
     
-    init(log: MakeupLog) {
-        self.log = log
+    init(logID: String, repository: MakeupLogRepository = MakeupLogRepositoryInMemory.shared) {
+        self.logID = logID
+        self.repository = repository
         super.init()
         tableViewAdapter.delegate = self
     }
-    
+        
     private func appendAnnotation(_ annotation: FaceAnnotation) {
-        if case .part(let index) = self.state {
-            self.log.partsList[index].annotations.append(annotation)
-            self.state = .part(partIndex: index)
+        if case .part(let partID) = self.state {
+            self.repository.insertFaceAnnotation(logID: logID,
+                                                 partID: partID,
+                                                 faceAnnotation: annotation,
+                                                 completion: {_ in
+                                                    self.state = .part(partID: partID)
+                                                 })
         }
     }
     
-    func segmentActionList() -> [(action: UIAction, index: Int)] {
-        var list = [(action: UIAction, index: Int)]()
+    func segmentActionList(completion: ([UIAction]) -> Void) {
+        var list = [UIAction]()
         let action = UIAction(title: "face",
                               image: nil, identifier: nil, discoverabilityTitle: nil,
                               attributes: .destructive,
@@ -60,28 +73,30 @@ final class MakeupLogViewModel: NSObject {
             print("face")
             self.state = .face
         }
-        list.append((action: action, index: 0))
-        for (index, part) in log.partsList.enumerated() {
-            let indexPlus1 = index + 1
-            let action = UIAction(title: part.type,
-                                  image: nil,
-                                  identifier: nil,
-                                  discoverabilityTitle: nil,
-                                  attributes: .destructive,
-                                  state: .off) { _ in
-                print(part.type)
-                self.state = .part(partIndex: index)
+        list.append(action)
+        repository.getLogList { (logList) in
+            for part in logList[0].partsList {
+                let action = UIAction(title: part.type,
+                                      image: nil,
+                                      identifier: nil,
+                                      discoverabilityTitle: nil,
+                                      attributes: .destructive,
+                                      state: .off) { _ in
+                    print(part.type)
+                    self.state = .part(partID: part.id)
+                }
+                list.append(action)
             }
-            list.append((action: action, index: indexPlus1))
+            completion(list)
         }
-        return list
     }
     
     private func updateAnnotation(_ annotation: FaceAnnotation) {
-        if case .part(let index) = self.state {
-            if let i = self.log.partsList[index].annotations.firstIndex(where: {$0.id == annotation.id}) {
-                log.partsList[index].annotations[i] = annotation
-                self.state = .part(partIndex: index)
+        if case .part(let partID) = self.state {
+            repository.updateFaceAnnotation(logID: logID,
+                                            partID: partID,
+                                            faceAnnotation: annotation) {_ in
+                self.state = .part(partID: partID)
             }
         }
     }
@@ -97,7 +112,7 @@ final class MakeupLogViewModel: NSObject {
 
 extension MakeupLogViewModel: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return log.partsList.count + 1
+        return repository.logMap[logID]!.partsList.count + 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -110,12 +125,12 @@ extension MakeupLogViewModel: UICollectionViewDataSource {
         if indexPath.row == 0 {
             let image = UIImageView()
             cell.contentView.addSubview(image)
-            image.image = log.image
+            image.image = repository.logMap[logID]!.image
             image.frame.size = cell.frame.size
             image.contentMode = .scaleAspectFit
             return cell
         }
-        let part = log.partsList[indexPath.row - 1]
+        let part = repository.logMap[logID]!.partsList[indexPath.row - 1]
         let view = AnnotationMoveImageView(image: part.image)
         view.isUserInteractionEnabled = true
         view.frame.size = cell.frame.size
@@ -135,15 +150,17 @@ extension MakeupLogViewModel: UICollectionViewDataSource {
 
 extension MakeupLogViewModel: CommentListAdapterDelegate {
     func commentListAdapterAnnotationList(_ adapter: CommentListAdapter) -> [FaceAnnotation] {
-        if case .part(let index) = state {
-            return log.partsList[index].annotations
+        if case .part(let partID) = state,
+           let part = repository.logMap[logID]!.partsList.first(where: {$0.id == partID}) {
+            return part.annotations
         }
         return []
     }
     
     func commentListAdapter(_ adapter: CommentListAdapter, didSelectCommentCell index: Int) {
-        if case .part(let partIndex) = state {
-            delegate?.viewModel(self, didSelect: log.partsList[partIndex].annotations[index])
+        if case .part(let partID) = state,
+           let part = repository.logMap[logID]!.partsList.first(where: {$0.id == partID}) {
+            delegate?.viewModel(self, didSelect: part.annotations[index])
         }
         return
     }
@@ -161,8 +178,9 @@ extension MakeupLogViewModel: CommentListAdapterDelegate {
 extension MakeupLogViewModel: AnnotationMoveImageViewDelegate {
     func annotationMoveImageView(_ view: AnnotationMoveImageView, didTouched annotationView: AnnotationView) {
         let annotationID = annotationView.annotation.id
-        if case .part(let index) = state,
-           var faceAnnotation = log.partsList[index].annotations.first(where: {$0.id == annotationID}) {
+        if case .part(let partID) = state,
+           let part = repository.logMap[logID]!.partsList.first(where: {$0.id == partID}),
+           var faceAnnotation = part.annotations.first(where: {$0.id == annotationID}) {
             let imageViewRect = view.imageRect()
             let point = CGPoint(x: annotationView.frame.minX - imageViewRect.minX,
                                 y: annotationView.frame.minY - imageViewRect.minY)
