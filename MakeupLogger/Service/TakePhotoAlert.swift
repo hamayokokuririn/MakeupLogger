@@ -28,6 +28,11 @@ class TakePhotoAlert: NSObject {
             self.photoLibrary()
         }
         alert.addAction(photoLibraryAction)
+        let cancelAction = UIAlertAction(title: "キャンセル",
+                                               style: .cancel) { _ in
+            self.presenter?.dismiss(animated: false, completion: nil)
+        }
+        alert.addAction(cancelAction)
         presenter.present(alert, animated: true, completion: nil)
     }
     
