@@ -43,10 +43,10 @@ final class MakeupLogViewModel: NSObject {
     weak var delegate: MakeupLogViewModelDelegate? = nil
     
     lazy var tableViewAdapter = CommentListAdapter(delegate: self)
-    private let logID: String
+    private let logID: MakeupLog.ID
     private let repository: MakeupLogRepository
     
-    init(logID: String, repository: MakeupLogRepository = MakeupLogRepositoryInMemory.shared) {
+    init(logID: MakeupLog.ID, repository: MakeupLogRepository = MakeupLogRepositoryInMemory.shared) {
         self.logID = logID
         self.repository = repository
         super.init()

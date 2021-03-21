@@ -9,7 +9,7 @@ import XCTest
 @testable import MakeupLogger
 
 class MakeupLogRepositoryTests: XCTestCase {
-    let logID = "log_1"
+    let logID = MakeupLog.ID(idNumber: 1)
     let partID = FacePart.ID(idNumber: 1)
     let annotationID = "faceAnnotation_1"
     lazy var faceAnnotation1 = FaceAnnotation(id: annotationID, text: "1")

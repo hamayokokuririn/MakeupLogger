@@ -8,15 +8,34 @@
 import Foundation
 import UIKit
 
-struct MakeupLog {
-    let id: String
+struct MakeupLog: Equatable, Hashable {
+    struct ID: Hashable {
+        private let header = "makeuplog"
+        private let idNumber: Int
+        private var id: String {
+            header + "_" + idNumber.description
+        }
+        
+        init(idNumber: Int) {
+            self.idNumber = idNumber
+        }
+        
+        func makeNextID() -> ID {
+            ID(idNumber: self.idNumber + 1)
+        }
+    }
+    let id: ID
     let title: String
     let image: UIImage
     var partsList: [FacePart]
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
 
 struct FacePart: Equatable, Hashable {
-    struct ID: Equatable {
+    struct ID: Equatable, Hashable {
         private let header = "facepart"
         private let idNumber: Int
         private var id: String {
@@ -42,11 +61,6 @@ struct FacePart: Equatable, Hashable {
     }
     
     func hash(into hasher: inout Hasher) {
-        hasher.combine(type)
-        hasher.combine(image.description)
-        annotations.forEach {
-            hasher.combine($0.id)
-        }
+        hasher.combine(id)
     }
-
 }
