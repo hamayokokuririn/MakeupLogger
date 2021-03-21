@@ -10,11 +10,12 @@ import UIKit
 import AVFoundation
 
 protocol AnnotationMoveImageViewDelegate: AnyObject {
-    func annotationMoveImageView(_ view: AnnotationMoveImageView, didTouched annotationView: AnnotationView)
+    associatedtype AnnotationType: Annotation
+    func annotationMoveImageView(_ view: AnnotationMoveImageView<Self>, didTouched annotationViewFrame: CGRect, and id: AnnotationID)
 }
 
-class AnnotationMoveImageView: UIImageView {
-    weak var delegate: AnnotationMoveImageViewDelegate?
+class AnnotationMoveImageView<D: AnnotationMoveImageViewDelegate>: UIImageView {
+    weak var delegate: D?
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
@@ -23,11 +24,12 @@ class AnnotationMoveImageView: UIImageView {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
-        guard let view = touches.first?.view as? AnnotationView else {
+        guard let view = touches.first?.view as? AnnotationView<D.AnnotationType> else {
             return
         }
         
-        delegate?.annotationMoveImageView(self, didTouched: view)
+        delegate?.annotationMoveImageView(self,
+                                          didTouched: view.frame, and: view.annotation.id)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -43,7 +45,7 @@ class AnnotationMoveImageView: UIImageView {
     
     func adjustAnnotationViewFrame() {
         subviews.compactMap {
-            $0 as? AnnotationView
+            $0 as? AnnotationView<D.AnnotationType>
         }.forEach {
             let imageRect = self.imageRect()
             $0.frame.origin = CGPoint(x: CGFloat($0.annotation.pointRatioOnImage.x) * imageRect.width + imageRect.minX,

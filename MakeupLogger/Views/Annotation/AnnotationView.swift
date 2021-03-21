@@ -8,9 +8,9 @@
 import Foundation
 import UIKit
 
-class AnnotationView: UILabel {
-    let annotation: Annotation
-    init(annotation: Annotation) {
+class AnnotationView<A: Annotation>: UILabel {
+    let annotation: A
+    init(annotation: A) {
         self.annotation = annotation
         super.init(frame: .zero)
         

@@ -53,11 +53,10 @@ final class MakeupLogViewModel: NSObject {
         tableViewAdapter.delegate = self
     }
         
-    private func appendAnnotation(_ annotation: FaceAnnotation) {
+    private func appendAnnotation() {
         if case .part(let partID) = self.state {
             self.repository.insertFaceAnnotation(logID: logID,
                                                  partID: partID,
-                                                 faceAnnotation: annotation,
                                                  completion: {_ in
                                                     self.state = .part(partID: partID)
                                                  })
@@ -137,7 +136,7 @@ extension MakeupLogViewModel: UICollectionViewDataSource {
             return cell
         }
         let part = repository.logMap[logID]!.partsList[indexPath.row - 1]
-        let view = AnnotationMoveImageView(image: part.image)
+        let view = AnnotationMoveImageView<Self>(image: part.image)
         view.isUserInteractionEnabled = true
         view.frame.size = cell.frame.size
         view.contentMode = .scaleAspectFit
@@ -146,7 +145,7 @@ extension MakeupLogViewModel: UICollectionViewDataSource {
             view.addSubview(annotation)
         }
         view.adjustAnnotationViewFrame()
-        view.delegate = self
+        view.delegate = self as? Self
         cell.contentView.addSubview(view)
         cell.contentView.isUserInteractionEnabled = true
         return cell
@@ -172,24 +171,22 @@ extension MakeupLogViewModel: CommentListAdapterDelegate {
     }
     
     func commentListAdapter(_ adapter: CommentListAdapter, didPushAddButton insertIndex: Int) {
-        let idAndText = insertIndex.description
-        let annotation = FaceAnnotation(id: idAndText,
-                                        text: idAndText,
-                                        selectedColorPalletAnnotationID: "1")
-        self.appendAnnotation(annotation)
+        self.appendAnnotation()
         self.delegate?.viewModelAddAnnotation(self)
     }
 }
 
 extension MakeupLogViewModel: AnnotationMoveImageViewDelegate {
-    func annotationMoveImageView(_ view: AnnotationMoveImageView, didTouched annotationView: AnnotationView) {
-        let annotationID = annotationView.annotation.id
+    typealias AnnotationType = FaceAnnotation
+    
+    func annotationMoveImageView(_ view: AnnotationMoveImageView<MakeupLogViewModel>, didTouched annotationViewFrame: CGRect, and id: AnnotationID) {
         if case .part(let partID) = state,
            let part = repository.logMap[logID]!.partsList.first(where: {$0.id == partID}),
-           var faceAnnotation = part.annotations.first(where: {$0.id == annotationID}) {
+           let faceID = id as? FaceAnnotation.FAID,
+           var faceAnnotation = part.annotations.first(where: {$0.id == faceID}) {
             let imageViewRect = view.imageRect()
-            let point = CGPoint(x: annotationView.frame.minX - imageViewRect.minX,
-                                y: annotationView.frame.minY - imageViewRect.minY)
+            let point = CGPoint(x: annotationViewFrame.minX - imageViewRect.minX,
+                                y: annotationViewFrame.minY - imageViewRect.minY)
             let pointRatio = PointRatio(parentViewSize: imageViewRect.size,
                                         annotationPoint: point)
             faceAnnotation.pointRatioOnImage = pointRatio

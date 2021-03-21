@@ -8,14 +8,23 @@
 import Foundation
 
 struct FaceAnnotation: Annotation, Equatable {
+    
     static func == (lhs: FaceAnnotation, rhs: FaceAnnotation) -> Bool {
         lhs.id == rhs.id
     }
-    
-    let id: String
+    typealias ID = FAID
+    var id: FAID
     let text: String
     var pointRatioOnImage: PointRatio = .zero
     var comment: Comment?
     var colorPallet: ColorPallet?
-    var selectedColorPalletAnnotationID: String?
+    var selectedColorPalletAnnotationID: ColorPalletAnnotation.CPID?
+    
+    struct FAID: AnnotationID, Equatable, Codable {
+        var id: Int = 0
+        
+        func makeNextAnnotationID() -> FAID {
+            FAID(id: id + 1)
+        }
+    }
 }

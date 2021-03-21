@@ -11,7 +11,7 @@ import XCTest
 class MakeupLogRepositoryTests: XCTestCase {
     let logID = MakeupLog.ID(idNumber: 1)
     let partID = FacePart.ID(idNumber: 1)
-    let annotationID = "faceAnnotation_1"
+    let annotationID = FaceAnnotation.FAID(id: 1)
     lazy var faceAnnotation1 = FaceAnnotation(id: annotationID, text: "1")
     
     lazy var annotations = [faceAnnotation1]
@@ -19,7 +19,7 @@ class MakeupLogRepositoryTests: XCTestCase {
     lazy var log = MakeupLog(id: logID, title: "1", image: UIImage(), partsList: [facePart])
     let repository = MakeupLogRepositoryInMemory.shared
     
-    let annotationID2 = "faceAnnotation_2"
+    let annotationID2 = FaceAnnotation.FAID(id: 2)
     lazy var faceAnnotation2 = FaceAnnotation(id: annotationID2, text: "2")
     
     override func setUp() {
@@ -71,8 +71,7 @@ class MakeupLogRepositoryTests: XCTestCase {
         XCTAssertEqual(annotations!.count, 1)
         
         repository.insertFaceAnnotation(logID: logID,
-                                        partID: partID,
-                                        faceAnnotation: faceAnnotation2) { log in
+                                        partID: partID) { log in
             guard let annotations = log?.partsList.first(where: {$0.id == partID})?.annotations else {
                 return XCTFail()
             }

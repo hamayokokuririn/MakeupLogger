@@ -9,9 +9,15 @@ import Foundation
 import CoreGraphics
 
 protocol Annotation: Codable {
-    var id: String { get }
+    associatedtype ID: AnnotationID
+    var id: ID { get }
     var text: String { get }
     var pointRatioOnImage: PointRatio { get }
+}
+
+protocol AnnotationID {
+    var id: Int { get }
+    func makeNextAnnotationID() -> Self
 }
 
 struct PointRatio: Codable {

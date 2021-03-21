@@ -15,7 +15,10 @@ final class AnnotationDetailViewController: UIViewController {
     private let textView: UITextView = .init()
     private let selectedColorPalletTitle: UILabel = .init()
     private let selectedColorPalletAnnotation: UILabel = .init()
-    private let colorPalletImage = AnnotationMoveImageView()
+    private lazy var colorPalletImage: AnnotationMoveImageView = {
+        return AnnotationMoveImageView<AnnotationDetailViewController>()
+    }()
+        
     private let changeColorPalletButton: UIButton = .init()
     
     init(annotation: FaceAnnotation) {
@@ -34,36 +37,19 @@ final class AnnotationDetailViewController: UIViewController {
         textView.delegate = self
         textView.returnKeyType = .done
         
-        let colorPalletAnnotation1 = ColorPalletAnnotation(id: "1",
-                                                          text: "1",
-                                                          pointRatioOnImage: PointRatio(x: 0, y: 0))
-        let colorPalletAnnotation2 = ColorPalletAnnotation(id: "2",
-                                                          text: "2",
-                                                          pointRatioOnImage: PointRatio(x: 0.3, y: 0))
-        let colorPalletAnnotation3 = ColorPalletAnnotation(id: "3",
-                                                          text: "3",
-                                                          pointRatioOnImage: PointRatio(x: 0.6, y: 0))
-        // todo: FaceAnnotationはColorPalletIDを知っている。そこからカラーパレットを取得する
-        let colorPallet = ColorPallet(id: ColorPallet.ColorPalletID(id: "test"),
-                                      title: "color_pallet",
-                                      imageFileName: "sample_color_pallet",
-                                      annotationList: [colorPalletAnnotation1,
-                                      colorPalletAnnotation2,
-                                      colorPalletAnnotation3])
-        
         view.addSubview(selectedColorPalletTitle)
-        selectedColorPalletTitle.text = colorPallet.title
+        selectedColorPalletTitle.text = annotation.colorPallet?.title
         
         view.addSubview(selectedColorPalletAnnotation)
-        selectedColorPalletAnnotation.text = colorPallet.annotationList.filter {
+        selectedColorPalletAnnotation.text = annotation.colorPallet?.annotationList.filter {
             $0.id == annotation.selectedColorPalletAnnotationID
         }.first?.text
         
         view.addSubview(colorPalletImage)
         colorPalletImage.backgroundColor = .black
-        colorPalletImage.image = UIImage(named: colorPallet.imageFileName)
+        colorPalletImage.image = UIImage(named: annotation.colorPallet?.imageFileName ?? "")
         colorPalletImage.contentMode = .scaleAspectFit
-        colorPallet.annotationList.forEach {
+        annotation.colorPallet?.annotationList.forEach {
             let view = AnnotationView(annotation: $0)
             colorPalletImage.addSubview(view)
         }
@@ -128,4 +114,12 @@ extension AnnotationDetailViewController: UITextViewDelegate {
         viewModel.setComment(text)
     }
     
+}
+
+extension AnnotationDetailViewController: AnnotationMoveImageViewDelegate {
+    typealias AnnotationType = ColorPalletAnnotation
+    
+    func annotationMoveImageView(_ view: AnnotationMoveImageView<AnnotationDetailViewController>, didTouched annotationViewFrame: CGRect, and id: AnnotationID) {
+        
+    }
 }
