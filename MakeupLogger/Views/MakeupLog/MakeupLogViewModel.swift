@@ -17,7 +17,7 @@ protocol MakeupLogViewModelDelegate: AnyObject {
 final class MakeupLogViewModel: NSObject {
     enum ViewState {
         case face
-        case part(partID: String)
+        case part(partID: FacePart.ID)
     }
     
     var state: ViewState = .face {
@@ -107,6 +107,12 @@ final class MakeupLogViewModel: NSObject {
     
     func editAnnotation(_ annotation: FaceAnnotation) {
         updateAnnotation(annotation)
+    }
+    
+    func addPicture(type: String, image: UIImage) {
+        repository.insertFacePart(logID: logID, type: type, image: image) { (log) in
+            self.state = .part(partID: log!.partsList.last!.id)
+        }
     }
 }
 

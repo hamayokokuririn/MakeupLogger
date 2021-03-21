@@ -41,10 +41,33 @@ final class MakeupLogViewController: UIViewController {
     }
     
     @objc private func takeNewPhoto() {
-        alert.selectPhotoAction = { image in
-            print("写真を追加")
+        alert.selectPhotoAction = {[weak self] image in
+            self?.partSelect(image: image)
         }
         alert.show(presenter: self)
+    }
+    
+    func partSelect(image: UIImage) {
+        let alert = UIAlertController(title: "select type",
+                                      message: nil,
+                                      preferredStyle: .alert)
+        let cameraAction = UIAlertAction(title: "eye",
+                                        style: .default) {[weak self] _ in
+            self?.viewModel.addPicture(type: "eye", image: image)
+        }
+        alert.addAction(cameraAction)
+        
+        let photoLibraryAction = UIAlertAction(title: "nose",
+                                               style: .default) {[weak self] _ in
+            self?.viewModel.addPicture(type: "nose", image: image)
+        }
+        alert.addAction(photoLibraryAction)
+        let cancelAction = UIAlertAction(title: "mouse",
+                                               style: .default) {[weak self] _ in
+            self?.viewModel.addPicture(type: "mouse", image: image)
+        }
+        alert.addAction(cancelAction)
+        present(alert, animated: true, completion: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -57,14 +80,6 @@ final class MakeupLogViewController: UIViewController {
         view.backgroundColor = .systemGray3
         
         view.addSubview(segment)
-        viewModel.segmentActionList { (actions) in
-            var index = 0
-            actions.forEach {
-                segment.insertSegment(action: $0, at: index, animated: false)
-                index += 1
-            }
-        }
-        segment.selectedSegmentIndex = 0
         
         view.addSubview(imageCollection)
         imageCollection.dataSource = viewModel
@@ -102,10 +117,26 @@ final class MakeupLogViewController: UIViewController {
 extension MakeupLogViewController: MakeupLogViewModelDelegate {
     func viewModel(_ model: MakeupLogViewModel, didChange state: MakeupLogViewModel.ViewState, cellForRowAt indexPath: IndexPath) {
         tableView.isHidden = state == .face
+        
+        self.imageCollection.reloadData()
         self.imageCollection.selectItem(at: indexPath,
                                         animated: true,
                                         scrollPosition: .left)
         self.tableView.reloadData()
+        
+        self.reloadSegment()
+        segment.selectedSegmentIndex = indexPath.row
+    }
+    
+    private func reloadSegment() {
+        segment.removeAllSegments()
+        viewModel.segmentActionList { (actions) in
+            var index = 0
+            actions.forEach {
+                segment.insertSegment(action: $0, at: index, animated: false)
+                index += 1
+            }
+        }
     }
     
     func viewModelAddAnnotation(_ model: MakeupLogViewModel) {

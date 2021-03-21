@@ -56,11 +56,12 @@ class TakePhotoAlert: NSObject {
 extension TakePhotoAlert: UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            presenter?.dismiss(animated: true, completion: nil)
             selectPhotoAction?(image)
-        } else {
-            print("error")
+            return
         }
         presenter?.dismiss(animated: true, completion: nil)
+        print("error")
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

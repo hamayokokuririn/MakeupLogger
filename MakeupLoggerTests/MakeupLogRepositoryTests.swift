@@ -10,7 +10,7 @@ import XCTest
 
 class MakeupLogRepositoryTests: XCTestCase {
     let logID = "log_1"
-    let partID = "facePart_1"
+    let partID = FacePart.ID(idNumber: 1)
     let annotationID = "faceAnnotation_1"
     lazy var faceAnnotation1 = FaceAnnotation(id: annotationID, text: "1")
     
@@ -34,7 +34,8 @@ class MakeupLogRepositoryTests: XCTestCase {
     }
     
     func testUpdateFacePart() throws {
-        let newPart = FacePart(id: "facePart_2", type: "nose", image: UIImage(), annotations: [])
+        let id = FacePart.ID(idNumber: 2)
+        let newPart = FacePart(id: id, type: "nose", image: UIImage(), annotations: [])
         repository.updateFacePart(logID: logID, part: newPart) { log in
             XCTAssertNil(log)
         }
@@ -77,6 +78,18 @@ class MakeupLogRepositoryTests: XCTestCase {
             }
             XCTAssertEqual(annotations.count, 2)
             XCTAssertEqual(annotations[1], faceAnnotation2)
+        }
+    }
+    
+    func testInsertFacePart() {
+        let partList = repository.logMap[logID]?.partsList
+        XCTAssertEqual(partList!.count, 1)
+
+        let id = FacePart.ID(idNumber: 2)
+        repository.insertFacePart(logID: logID, type: "nose", image: UIImage()) { (log) in
+            XCTAssertEqual(log!.partsList.count, 2)
+            XCTAssertEqual(log!.partsList[0].id, partID)
+            XCTAssertEqual(log!.partsList[1].id, id)
         }
     }
 }

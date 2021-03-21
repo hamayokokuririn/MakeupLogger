@@ -16,7 +16,23 @@ struct MakeupLog {
 }
 
 struct FacePart: Equatable, Hashable {
-    let id: String
+    struct ID: Equatable {
+        private let header = "facepart"
+        private let idNumber: Int
+        private var id: String {
+            header + "_" + idNumber.description
+        }
+        
+        init(idNumber: Int) {
+            self.idNumber = idNumber
+        }
+        
+        func makeNextID() -> ID {
+            ID(idNumber: self.idNumber + 1)
+        }
+    }
+    
+    let id: ID
     let type: String
     let image: UIImage
     var annotations: [FaceAnnotation]
