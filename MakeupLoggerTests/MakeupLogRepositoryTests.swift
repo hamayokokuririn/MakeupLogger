@@ -109,4 +109,20 @@ class MakeupLogRepositoryTests: XCTestCase {
             XCTAssertEqual(annotations[0].id, FaceAnnotation.FAID())
         }
     }
+    
+    func testInsertMakeupLog() {
+        XCTAssertEqual(repository.logMap.count, 1)
+        repository.insertMakeupLog(title: "test",
+                                   body: "test_body",
+                                   image: UIImage()) { (log) in
+            guard let log = log else {
+                XCTFail()
+                return
+            }
+            XCTAssertEqual(log.title, "test")
+            XCTAssertEqual(log.body, "test_body")
+            XCTAssertEqual(log.id, MakeupLog.ID(idNumber: 2))
+            XCTAssertEqual(log.partsList.count, 0)
+        }
+    }
 }

@@ -25,7 +25,8 @@ struct MakeupLog: Equatable, Hashable {
         }
     }
     let id: ID
-    let title: String
+    var title: String
+    var body: String?
     let image: UIImage
     var partsList: [FacePart]
     

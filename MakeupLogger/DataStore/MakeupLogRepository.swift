@@ -10,6 +10,7 @@ import UIKit
 
 protocol MakeupLogRepository {
     func getLogList(completion: ([MakeupLog]) -> Void)
+    func insertMakeupLog(title: String, body: String?, image: UIImage, completion: (MakeupLog?) -> Void)
     func updateFacePart(logID: MakeupLog.ID, part: FacePart, completion: (MakeupLog?) -> Void)
     func insertFacePart(logID: MakeupLog.ID, type: String, image: UIImage, completion: (MakeupLog?) -> Void)
     func updateFaceAnnotation(logID: MakeupLog.ID, partID: FacePart.ID, faceAnnotation: FaceAnnotation, completion: (MakeupLog?) -> Void)
@@ -72,6 +73,28 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
     
     func getLogList(completion: (([MakeupLog]) -> Void)) {
         completion(logList)
+    }
+    
+    func insertMakeupLog(title: String, body: String?, image: UIImage, completion: (MakeupLog?) -> Void) {
+        if logList.isEmpty {
+            let id = MakeupLog.ID(idNumber: 0)
+            let log = MakeupLog(id: id,
+                                title: title,
+                                body: body,
+                                image: image,
+                                partsList: [])
+            logMap[id] = log
+            completion(log)
+            return
+        }
+        let nextID = logList.last!.id.makeNextID()
+        let log = MakeupLog(id: nextID,
+                            title: title,
+                            body: body,
+                            image: image,
+                            partsList: [])
+        logMap[id] = log
+        completion(log)
     }
     
     func updateFacePart(logID: MakeupLog.ID, part: FacePart, completion: (MakeupLog?) -> Void) {
