@@ -112,9 +112,8 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
     
     func insertFaceAnnotation(logID: MakeupLog.ID, partID: FacePart.ID, completion: (MakeupLog?) -> Void) {
         if var log = logMap[logID],
-           let partIndex = log.partsList.firstIndex(where: {$0.id == partID}),
-           let id = log.partsList[partIndex].annotations.last?.id.makeNextAnnotationID() {
-            
+           let partIndex = log.partsList.firstIndex(where: {$0.id == partID}) {
+            let id = log.partsList[partIndex].makeNextFaceAnnotationID()
             let faceAnnotation = FaceAnnotation(id: id, text: String(id.id))
             log.partsList[partIndex].annotations.append(faceAnnotation)
             logMap[logID] = log

@@ -91,4 +91,22 @@ class MakeupLogRepositoryTests: XCTestCase {
             XCTAssertEqual(log!.partsList[1].id, id)
         }
     }
+    
+    func testInsertFaceAnnotation_新しいパーツに対して() {
+        repository.insertFacePart(logID: logID,
+                                  type: "nose",
+                                  image: UIImage(), completion: {_ in })
+        let partList = repository.logMap[logID]?.partsList
+        XCTAssertEqual(partList!.count, 2)
+
+        let newPartID = partList![1].id
+        repository.insertFaceAnnotation(logID: logID,
+                                        partID: newPartID) { log in
+            guard let annotations = log?.partsList.first(where: {$0.id == newPartID})?.annotations else {
+                return XCTFail()
+            }
+            XCTAssertEqual(annotations.count, 1)
+            XCTAssertEqual(annotations[0].id, FaceAnnotation.FAID())
+        }
+    }
 }

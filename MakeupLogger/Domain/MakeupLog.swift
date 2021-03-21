@@ -63,4 +63,11 @@ struct FacePart: Equatable, Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
+    
+    func makeNextFaceAnnotationID() -> FaceAnnotation.FAID {
+        if annotations.isEmpty {
+            return FaceAnnotation.FAID()
+        }
+        return annotations.last!.id.makeNextAnnotationID()
+    }
 }

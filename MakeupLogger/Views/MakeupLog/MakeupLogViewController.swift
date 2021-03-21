@@ -143,6 +143,7 @@ extension MakeupLogViewController: MakeupLogViewModelDelegate {
         imageCollection.reloadData()
         tableView.reloadData()
         let row = tableView.numberOfRows(inSection: 0)
+        guard row > 0 else {return}
         tableView.scrollToRow(at: IndexPath(row: row - 1, section: 0), at: .bottom, animated: true)
     }
     
