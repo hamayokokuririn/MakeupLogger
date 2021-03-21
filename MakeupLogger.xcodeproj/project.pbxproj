@@ -24,6 +24,8 @@
 		2446ED2425D776BD005BD9F3 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED2325D776BD005BD9F3 /* Comment.swift */; };
 		2446ED2625D77A28005BD9F3 /* ColorPallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED2525D77A28005BD9F3 /* ColorPallet.swift */; };
 		2446ED2A25D893E4005BD9F3 /* AnnotationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED2925D893E4005BD9F3 /* AnnotationDetailViewController.swift */; };
+		245A0921260787C100BD3063 /* AddNewMakeupLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245A0920260787C100BD3063 /* AddNewMakeupLogViewController.swift */; };
+		245A09262607895800BD3063 /* AddNewMakeupLogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245A09252607895800BD3063 /* AddNewMakeupLogViewModel.swift */; };
 		24B1128125A9576100EE8DEA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B1128025A9576100EE8DEA /* AppDelegate.swift */; };
 		24B1128325A9576100EE8DEA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B1128225A9576100EE8DEA /* SceneDelegate.swift */; };
 		24B1128A25A9576300EE8DEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 24B1128925A9576300EE8DEA /* Assets.xcassets */; };
@@ -69,6 +71,8 @@
 		2446ED2325D776BD005BD9F3 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		2446ED2525D77A28005BD9F3 /* ColorPallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPallet.swift; sourceTree = "<group>"; };
 		2446ED2925D893E4005BD9F3 /* AnnotationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationDetailViewController.swift; sourceTree = "<group>"; };
+		245A0920260787C100BD3063 /* AddNewMakeupLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewMakeupLogViewController.swift; sourceTree = "<group>"; };
+		245A09252607895800BD3063 /* AddNewMakeupLogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewMakeupLogViewModel.swift; sourceTree = "<group>"; };
 		24B1127D25A9576100EE8DEA /* MakeupLogger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MakeupLogger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		24B1128025A9576100EE8DEA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		24B1128225A9576100EE8DEA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -157,6 +161,7 @@
 		2446ED1E25D57130005BD9F3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				245A091F2607873400BD3063 /* AddNewMakeupLog */,
 				242447C225E0EF82002290F2 /* MakeupLogList */,
 				242447C725E0F388002290F2 /* MakeupLog */,
 				2446ED2825D893BB005BD9F3 /* AnnotationDetail */,
@@ -183,6 +188,15 @@
 				242447B325D89927002290F2 /* AnnotationDetailViewModel.swift */,
 			);
 			path = AnnotationDetail;
+			sourceTree = "<group>";
+		};
+		245A091F2607873400BD3063 /* AddNewMakeupLog */ = {
+			isa = PBXGroup;
+			children = (
+				245A0920260787C100BD3063 /* AddNewMakeupLogViewController.swift */,
+				245A09252607895800BD3063 /* AddNewMakeupLogViewModel.swift */,
+			);
+			path = AddNewMakeupLog;
 			sourceTree = "<group>";
 		};
 		24B1127425A9576100EE8DEA = {
@@ -383,6 +397,7 @@
 				242447B425D89927002290F2 /* AnnotationDetailViewModel.swift in Sources */,
 				242447B725D8B1E1002290F2 /* TakePhotoAlert.swift in Sources */,
 				242447C625E0F00D002290F2 /* MakeupLogListViewModel.swift in Sources */,
+				245A09262607895800BD3063 /* AddNewMakeupLogViewModel.swift in Sources */,
 				24B1128125A9576100EE8DEA /* AppDelegate.swift in Sources */,
 				2446ED1D25D54790005BD9F3 /* AnnotationMoveImageView.swift in Sources */,
 				2446ED2A25D893E4005BD9F3 /* AnnotationDetailViewController.swift in Sources */,
@@ -399,6 +414,7 @@
 				24B112CA25B2D70100EE8DEA /* Annotation.swift in Sources */,
 				24B112BC25B1A54A00EE8DEA /* CommentListAdapter.swift in Sources */,
 				242447C125E0EBEA002290F2 /* MakeupLog.swift in Sources */,
+				245A0921260787C100BD3063 /* AddNewMakeupLogViewController.swift in Sources */,
 				242447C425E0EFBF002290F2 /* MakeupLogListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

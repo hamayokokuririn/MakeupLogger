@@ -38,10 +38,29 @@ final class MakeupLogListViewController: UIViewController {
         view.addSubview(tableView)
         tableView.delegate = viewModel
         tableView.dataSource = viewModel
+        
+        let item = UIBarButtonItem(barButtonSystemItem: .add,
+                                   target: self, action: #selector(addNewMakeupLog))
+        self.navigationItem.rightBarButtonItem = item
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         tableView.frame = view.frame
+    }
+    
+    @objc private func addNewMakeupLog() {
+        // 新規のログを追加する画面を表示
+        let vc = AddNewMakeupLogViewController(repository: viewModel.repository)
+        let navigation = UINavigationController(rootViewController: vc)
+        navigation.presentationController?.delegate = self
+        present(navigation, animated: true, completion: nil)
+    }
+}
+
+extension MakeupLogListViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        dismiss(animated: true, completion: nil)
+        viewModel.fetchLog()
     }
 }

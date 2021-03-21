@@ -93,7 +93,7 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
                             body: body,
                             image: image,
                             partsList: [])
-        logMap[id] = log
+        logMap[nextID] = log
         completion(log)
     }
     
