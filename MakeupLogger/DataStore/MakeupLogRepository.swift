@@ -31,7 +31,7 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
     let faceID = FaceAnnotation.FAID(id: 1)
     let colorID = ColorPalletAnnotation.CPID(id: 1)
     lazy var eyeAnnotation: FaceAnnotation = { FaceAnnotation(id: faceID,
-                                                              text: "1",
+                                                              text: "88",
                                                               pointRatioOnImage: PointRatio(x: 0.1, y: 0.2),
                                                               comment: Comment(text: "暗めにする"),
                                                               colorPallet: colorPallet,

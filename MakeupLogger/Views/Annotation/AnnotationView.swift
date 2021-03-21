@@ -16,8 +16,11 @@ class AnnotationView<A: Annotation>: UILabel {
         
         backgroundColor = .red
         frame.size = CGSize(width: 40, height: 40)
+        layer.cornerRadius = 20
+        clipsToBounds = true
         text = annotation.text
         textColor = .white
+        font = .boldSystemFont(ofSize: 24)
         textAlignment = .center
         isUserInteractionEnabled = true
     }

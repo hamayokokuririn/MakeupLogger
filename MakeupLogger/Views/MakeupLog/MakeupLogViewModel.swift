@@ -123,7 +123,7 @@ extension MakeupLogViewModel: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "id",
                                                       for: indexPath)
-        cell.backgroundColor = .green
+        cell.backgroundColor = .white
         cell.contentView.subviews.forEach {
             $0.removeFromSuperview()
         }

@@ -19,7 +19,6 @@ final class MakeupLogViewController: UIViewController {
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: imageWidth, height: imageHeight)
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.backgroundColor = .red
         collection.isScrollEnabled = false
          
         return collection
