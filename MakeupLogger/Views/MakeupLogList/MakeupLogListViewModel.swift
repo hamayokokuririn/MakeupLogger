@@ -9,17 +9,33 @@ import Foundation
 import UIKit
 
 final class MakeupLogListViewModel: NSObject {
-    let repository: MakeupLogRepository
+    enum Section: Int, CaseIterable {
+        case makeupLog
+        case colorPallet
+        
+        var title: String {
+            switch self {
+            case .makeupLog:
+                return "メイク"
+            case .colorPallet:
+                return "カラー"
+            }
+        }
+    }
+    
+    let makeupLogRepository: MakeupLogRepository
+    let colorPalletRepository: ColorPalletRepository
     var list = [MakeupLog]()
     var didFinishReloadList: (() -> Void)? = nil
     var didSelectLog: ((MakeupLog) -> Void)? = nil
     
-    init(repository: MakeupLogRepository) {
-        self.repository = repository
+    init(makeupLogRepository: MakeupLogRepository, colorPalletRepository: ColorPalletRepository) {
+        self.makeupLogRepository = makeupLogRepository
+        self.colorPalletRepository = colorPalletRepository
     }
     
     func fetchLog() {
-        repository.getLogList { logList in
+        makeupLogRepository.getLogList { logList in
             self.list = logList
             self.didFinishReloadList?()
         }
@@ -28,7 +44,15 @@ final class MakeupLogListViewModel: NSObject {
 
 extension MakeupLogListViewModel: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        list.count
+        guard let section = Section(rawValue: section) else {
+            return 0
+        }
+        switch section {
+        case .makeupLog:
+            return list.count
+        case .colorPallet:
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -38,6 +62,16 @@ extension MakeupLogListViewModel: UITableViewDataSource {
         return cell
     }
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        Section.allCases.count
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard let section = Section(rawValue: section) else {
+            return ""
+        }
+        return section.title
+    }
 }
 
 extension MakeupLogListViewModel: UITableViewDelegate {

@@ -13,8 +13,8 @@ final class MakeupLogListViewController: UIViewController {
     
     let tableView = UITableView()
     
-    init(repository: MakeupLogRepository) {
-        self.viewModel = MakeupLogListViewModel(repository: repository)
+    init(makeupLogRepository: MakeupLogRepository, colorPalletRepository: ColorPalletRepository) {
+        self.viewModel = MakeupLogListViewModel(makeupLogRepository: makeupLogRepository, colorPalletRepository: colorPalletRepository)
         super.init(nibName: nil, bundle: nil)
         
         viewModel.didFinishReloadList = {
@@ -51,7 +51,7 @@ final class MakeupLogListViewController: UIViewController {
     
     @objc private func addNewMakeupLog() {
         // 新規のログを追加する画面を表示
-        let vc = AddNewMakeupLogViewController(repository: viewModel.repository)
+        let vc = AddNewMakeupLogViewController(repository: viewModel.makeupLogRepository)
         let navigation = UINavigationController(rootViewController: vc)
         navigation.presentationController?.delegate = self
         present(navigation, animated: true, completion: nil)
