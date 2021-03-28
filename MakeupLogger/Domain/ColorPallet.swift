@@ -14,7 +14,7 @@ struct ColorPallet: Codable {
     var imageFileName: String
     var annotationList: [ColorPalletAnnotation]
     
-    struct ColorPalletID: Codable {
+    struct ColorPalletID: Codable, Hashable {
         let id: String
     }
 }

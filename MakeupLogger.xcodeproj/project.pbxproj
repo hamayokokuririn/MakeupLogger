@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2409D2942610837E00A3C995 /* ColorPalletRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2409D2932610837E00A3C995 /* ColorPalletRepository.swift */; };
 		242447B425D89927002290F2 /* AnnotationDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447B325D89927002290F2 /* AnnotationDetailViewModel.swift */; };
 		242447B725D8B1E1002290F2 /* TakePhotoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447B625D8B1E1002290F2 /* TakePhotoAlert.swift */; };
 		242447BA25E0A625002290F2 /* MakeupLogRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447B925E0A625002290F2 /* MakeupLogRepository.swift */; };
@@ -54,6 +55,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2409D2932610837E00A3C995 /* ColorPalletRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalletRepository.swift; sourceTree = "<group>"; };
 		242447B325D89927002290F2 /* AnnotationDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationDetailViewModel.swift; sourceTree = "<group>"; };
 		242447B625D8B1E1002290F2 /* TakePhotoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakePhotoAlert.swift; sourceTree = "<group>"; };
 		242447B925E0A625002290F2 /* MakeupLogRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeupLogRepository.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				242447B925E0A625002290F2 /* MakeupLogRepository.swift */,
+				2409D2932610837E00A3C995 /* ColorPalletRepository.swift */,
 			);
 			path = DataStore;
 			sourceTree = "<group>";
@@ -416,6 +419,7 @@
 				242447C125E0EBEA002290F2 /* MakeupLog.swift in Sources */,
 				245A0921260787C100BD3063 /* AddNewMakeupLogViewController.swift in Sources */,
 				242447C425E0EFBF002290F2 /* MakeupLogListViewController.swift in Sources */,
+				2409D2942610837E00A3C995 /* ColorPalletRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
