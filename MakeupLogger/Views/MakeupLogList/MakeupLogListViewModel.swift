@@ -29,6 +29,8 @@ final class MakeupLogListViewModel: NSObject {
     var colorPalletList = [ColorPallet]()
     var didFinishReloadList: (() -> Void)? = nil
     var didSelectLog: ((MakeupLog) -> Void)? = nil
+    var didSelectAddMakeupLog: (() -> Void)? = nil
+    var didSelectAddColorPallet: (() -> Void)? = nil
     
     init(makeupLogRepository: MakeupLogRepository, colorPalletRepository: ColorPalletRepository) {
         self.makeupLogRepository = makeupLogRepository
@@ -43,6 +45,29 @@ final class MakeupLogListViewModel: NSObject {
                 self.didFinishReloadList?()
             }
         }
+    }
+    
+    func showAlert(presenter: UIViewController) {
+        let alert = UIAlertController(title: "何を追加しますか？",
+                                      message: nil,
+                                      preferredStyle: .alert)
+        let cameraAction = UIAlertAction(title: "メイクを追加",
+                                        style: .default) { _ in
+            self.didSelectAddMakeupLog?()
+        }
+        alert.addAction(cameraAction)
+        
+        let photoLibraryAction = UIAlertAction(title: "カラーを追加",
+                                               style: .default) { _ in
+            self.didSelectAddColorPallet?()
+        }
+        alert.addAction(photoLibraryAction)
+        let cancelAction = UIAlertAction(title: "キャンセル",
+                                               style: .cancel) { _ in
+            presenter.dismiss(animated: false, completion: nil)
+        }
+        alert.addAction(cancelAction)
+        presenter.present(alert, animated: true, completion: nil)
     }
 }
 

@@ -25,6 +25,14 @@ final class MakeupLogListViewController: UIViewController {
             let vc = MakeupLogViewController(log: log)
             self.navigationController?.pushViewController(vc, animated: true)
         }
+        
+        viewModel.didSelectAddMakeupLog = {
+            self.addNewMakeupLog()
+        }
+        
+        viewModel.didSelectAddColorPallet = {
+            self.addNewColorPallet()
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -40,7 +48,8 @@ final class MakeupLogListViewController: UIViewController {
         tableView.dataSource = viewModel
         
         let item = UIBarButtonItem(barButtonSystemItem: .add,
-                                   target: self, action: #selector(addNewMakeupLog))
+                                   target: self,
+                                   action: #selector(didPushAddButton))
         self.navigationItem.rightBarButtonItem = item
     }
     
@@ -49,12 +58,24 @@ final class MakeupLogListViewController: UIViewController {
         tableView.frame = view.frame
     }
     
-    @objc private func addNewMakeupLog() {
+    @objc private func didPushAddButton() {
+        viewModel.showAlert(presenter: self)
+    }
+    
+    private func addNewMakeupLog() {
         // 新規のログを追加する画面を表示
         let vc = AddNewMakeupLogViewController(repository: viewModel.makeupLogRepository)
         let navigation = UINavigationController(rootViewController: vc)
         navigation.presentationController?.delegate = self
         present(navigation, animated: true, completion: nil)
+    }
+    
+    private func addNewColorPallet() {
+        // 新規のカラーを追加する画面を表示
+//        let vc = AddNewMakeupLogViewController(repository: viewModel.makeupLogRepository)
+//        let navigation = UINavigationController(rootViewController: vc)
+//        navigation.presentationController?.delegate = self
+//        present(navigation, animated: true, completion: nil)
     }
 }
 
