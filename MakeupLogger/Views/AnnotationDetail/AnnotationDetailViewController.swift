@@ -47,7 +47,7 @@ final class AnnotationDetailViewController: UIViewController {
         
         view.addSubview(colorPalletImage)
         colorPalletImage.backgroundColor = .black
-        colorPalletImage.image = UIImage(named: annotation.colorPallet?.imageFileName ?? "")
+        colorPalletImage.image = annotation.colorPallet?.image
         colorPalletImage.contentMode = .scaleAspectFit
         annotation.colorPallet?.annotationList.forEach {
             let view = AnnotationView(annotation: $0)

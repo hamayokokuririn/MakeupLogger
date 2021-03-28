@@ -38,10 +38,10 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
     lazy var colorPalletAnnotation3 = ColorPalletAnnotation(id: colorID3,
                                                             text: "3",
                                                             pointRatioOnImage: PointRatio(x: 0.6, y: 0))
-    let id = ColorPallet.ColorPalletID(id: "test")
+    let id = ColorPallet.ColorPalletID(idNumber: 0)
     lazy var colorPallet = ColorPallet(id: id,
                                        title: "color_pallet",
-                                       imageFileName: "sample_color_pallet",
+                                       image: UIImage(named: "sample_color_pallet"),
                                        annotationList: [colorPalletAnnotation1,
                                                         colorPalletAnnotation2,
                                                         colorPalletAnnotation3])

@@ -8,7 +8,7 @@
 import Foundation
 import CoreGraphics
 
-protocol Annotation: Codable {
+protocol Annotation {
     associatedtype ID: AnnotationID
     var id: ID { get }
     var text: String { get }
