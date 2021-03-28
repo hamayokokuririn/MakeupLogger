@@ -25,7 +25,8 @@ final class MakeupLogListViewModel: NSObject {
     
     let makeupLogRepository: MakeupLogRepository
     let colorPalletRepository: ColorPalletRepository
-    var list = [MakeupLog]()
+    var makeupLogList = [MakeupLog]()
+    var colorPalletList = [ColorPallet]()
     var didFinishReloadList: (() -> Void)? = nil
     var didSelectLog: ((MakeupLog) -> Void)? = nil
     
@@ -36,8 +37,11 @@ final class MakeupLogListViewModel: NSObject {
     
     func fetchLog() {
         makeupLogRepository.getLogList { logList in
-            self.list = logList
-            self.didFinishReloadList?()
+            self.makeupLogList = logList
+            colorPalletRepository.getColorPalletList { list in
+                self.colorPalletList = list
+                self.didFinishReloadList?()
+            }
         }
     }
 }
@@ -49,16 +53,25 @@ extension MakeupLogListViewModel: UITableViewDataSource {
         }
         switch section {
         case .makeupLog:
-            return list.count
+            return makeupLogList.count
         case .colorPallet:
-            return 0
+            return colorPalletList.count
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.imageView?.image = list[indexPath.row].image
-        cell.textLabel?.text = list[indexPath.row].title
+        guard let section = Section(rawValue: indexPath.section) else {
+            return cell
+        }
+        switch section {
+        case .makeupLog:
+            cell.imageView?.image = makeupLogList[indexPath.row].image
+            cell.textLabel?.text = makeupLogList[indexPath.row].title
+        case .colorPallet:
+            cell.imageView?.image = colorPalletList[indexPath.row].image
+            cell.textLabel?.text = colorPalletList[indexPath.row].title
+        }
         return cell
     }
     
@@ -77,8 +90,18 @@ extension MakeupLogListViewModel: UITableViewDataSource {
 extension MakeupLogListViewModel: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        let id = indexPath.row
-        let log = list[id]
-        didSelectLog?(log)
+        guard let section = Section(rawValue: indexPath.section) else {
+            return
+        }
+        switch section {
+        case .makeupLog:
+            let id = indexPath.row
+            let log = makeupLogList[id]
+            didSelectLog?(log)
+        case .colorPallet:
+            // カラーパレット編集を行う
+            return
+        }
+        
     }
 }
