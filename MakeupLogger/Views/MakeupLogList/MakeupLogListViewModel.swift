@@ -29,6 +29,7 @@ final class MakeupLogListViewModel: NSObject {
     var colorPalletList = [ColorPallet]()
     var didFinishReloadList: (() -> Void)? = nil
     var didSelectLog: ((MakeupLog) -> Void)? = nil
+    var didSelectColorPallet: ((ColorPallet) -> Void)? = nil
     var didSelectAddMakeupLog: (() -> Void)? = nil
     var didSelectAddColorPallet: (() -> Void)? = nil
     
@@ -125,8 +126,9 @@ extension MakeupLogListViewModel: UITableViewDelegate {
             didSelectLog?(log)
         case .colorPallet:
             // カラーパレット編集を行う
-            return
+            let row = indexPath.row
+            let colorPallet = colorPalletList[row]
+            didSelectColorPallet?(colorPallet)
         }
-        
     }
 }

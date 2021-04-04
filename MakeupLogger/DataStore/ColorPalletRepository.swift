@@ -13,11 +13,14 @@ protocol ColorPalletRepository {
     func insertColorPallet(title: String,
                            image: UIImage,
                            completion: (ColorPallet?) -> Void)
+    func updateColorPallet(id: ColorPallet.ColorPalletID,
+                           title: String,
+                           image: UIImage,
+                           completion: (ColorPallet?) -> Void)
     func updateAnnotation(id: ColorPallet.ColorPalletID,
                           annotation: ColorPalletAnnotation,
                           completion: (ColorPallet?) -> Void)
     func insertAnnotation(id: ColorPallet.ColorPalletID,
-                          annotationID: ColorPalletAnnotation.CPID,
                           completion: (ColorPallet?) -> Void)
     
     var cache: [ColorPallet.ColorPalletID: ColorPallet] { get }
@@ -81,14 +84,42 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
         completion(pallet)
     }
     
+    func updateColorPallet(id: ColorPallet.ColorPalletID, title: String, image: UIImage, completion: (ColorPallet?) -> Void) {
+        guard var pallet = cache[id] else {
+            completion(nil)
+            return
+        }
+        pallet.title = title
+        pallet.image = image
+        cache[id] = pallet
+        completion(pallet)
+    }
+    
     func updateAnnotation(id: ColorPallet.ColorPalletID, annotation: ColorPalletAnnotation, completion: (ColorPallet?) -> Void) {
         
     }
     
-    func insertAnnotation(id: ColorPallet.ColorPalletID, annotationID: ColorPalletAnnotation.CPID, completion: (ColorPallet?) -> Void) {
-        
+    func insertAnnotation(id: ColorPallet.ColorPalletID, completion: (ColorPallet?) -> Void) {
+        guard let colorPallet = cache[id] else {
+            completion(nil)
+            return
+        }
+        let list = colorPallet.annotationList
+        if list.isEmpty {
+            let annotationID = ColorPalletAnnotation.CPID(id: 0)
+            let annotation = ColorPalletAnnotation(id: annotationID,
+                                                   text: annotationID.id.description,
+                                                   pointRatioOnImage: .zero)
+            cache[id]?.annotationList.append(annotation)
+            completion(cache[id]!)
+            return
+        }
+        let annotationID = list.last!.id.makeNextAnnotationID()
+        let annotation = ColorPalletAnnotation(id: annotationID,
+                                               text: annotationID.id.description,
+                                               pointRatioOnImage: .zero)
+        cache[id]?.annotationList.append(annotation)
+        completion(cache[id]!)
     }
-    
-    
     
 }

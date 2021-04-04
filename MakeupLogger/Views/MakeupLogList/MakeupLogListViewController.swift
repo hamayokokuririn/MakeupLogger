@@ -26,6 +26,11 @@ final class MakeupLogListViewController: UIViewController {
             self.navigationController?.pushViewController(vc, animated: true)
         }
         
+        viewModel.didSelectColorPallet = {
+            let vc = ColorPalletViewController(colorPallet: $0, repository: colorPalletRepository)
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        
         viewModel.didSelectAddMakeupLog = {
             self.addNewMakeupLog()
         }
