@@ -11,7 +11,7 @@ import UIKit
 protocol ColorPalletRepository {
     func getColorPalletList(completion: ([ColorPallet]) -> Void)
     func insertColorPallet(title: String,
-                           imageFileName: String,
+                           image: UIImage,
                            completion: (ColorPallet?) -> Void)
     func updateAnnotation(id: ColorPallet.ColorPalletID,
                           annotation: ColorPalletAnnotation,
@@ -59,8 +59,26 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
         completion(palletList)
     }
     
-    func insertColorPallet(title: String, imageFileName: String, completion: (ColorPallet?) -> Void) {
-        
+    func insertColorPallet(title: String,
+                           image: UIImage,
+                           completion: (ColorPallet?) -> Void) {
+        if palletList.isEmpty {
+            let id = ColorPallet.ColorPalletID(idNumber: 0)
+            let pallet = ColorPallet(id: id,
+                                     title: title,
+                                     image: image,
+                                     annotationList: [])
+            cache[id] = pallet
+            completion(pallet)
+            return
+        }
+        let nextID = palletList.last!.id.makeNextID()
+        let pallet = ColorPallet(id: nextID,
+                                 title: title,
+                                 image: image,
+                                 annotationList: [])
+        cache[nextID] = pallet
+        completion(pallet)
     }
     
     func updateAnnotation(id: ColorPallet.ColorPalletID, annotation: ColorPalletAnnotation, completion: (ColorPallet?) -> Void) {

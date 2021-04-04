@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2409D2942610837E00A3C995 /* ColorPalletRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2409D2932610837E00A3C995 /* ColorPalletRepository.swift */; };
+		2417377E2619FD3A0040DDF2 /* AddNewColorPalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2417377D2619FD3A0040DDF2 /* AddNewColorPalletViewController.swift */; };
+		241737802619FD9C0040DDF2 /* AddNewColorPalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2417377F2619FD9C0040DDF2 /* AddNewColorPalletViewModel.swift */; };
 		242447B425D89927002290F2 /* AnnotationDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447B325D89927002290F2 /* AnnotationDetailViewModel.swift */; };
 		242447B725D8B1E1002290F2 /* TakePhotoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447B625D8B1E1002290F2 /* TakePhotoAlert.swift */; };
 		242447BA25E0A625002290F2 /* MakeupLogRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447B925E0A625002290F2 /* MakeupLogRepository.swift */; };
@@ -56,6 +58,8 @@
 
 /* Begin PBXFileReference section */
 		2409D2932610837E00A3C995 /* ColorPalletRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalletRepository.swift; sourceTree = "<group>"; };
+		2417377D2619FD3A0040DDF2 /* AddNewColorPalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewColorPalletViewController.swift; sourceTree = "<group>"; };
+		2417377F2619FD9C0040DDF2 /* AddNewColorPalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewColorPalletViewModel.swift; sourceTree = "<group>"; };
 		242447B325D89927002290F2 /* AnnotationDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationDetailViewModel.swift; sourceTree = "<group>"; };
 		242447B625D8B1E1002290F2 /* TakePhotoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakePhotoAlert.swift; sourceTree = "<group>"; };
 		242447B925E0A625002290F2 /* MakeupLogRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeupLogRepository.swift; sourceTree = "<group>"; };
@@ -116,6 +120,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2417377C2619FD0C0040DDF2 /* AddNewColorPallet */ = {
+			isa = PBXGroup;
+			children = (
+				2417377D2619FD3A0040DDF2 /* AddNewColorPalletViewController.swift */,
+				2417377F2619FD9C0040DDF2 /* AddNewColorPalletViewModel.swift */,
+			);
+			path = AddNewColorPallet;
+			sourceTree = "<group>";
+		};
 		242447B525D8B1C6002290F2 /* Service */ = {
 			isa = PBXGroup;
 			children = (
@@ -164,6 +177,7 @@
 		2446ED1E25D57130005BD9F3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				2417377C2619FD0C0040DDF2 /* AddNewColorPallet */,
 				245A091F2607873400BD3063 /* AddNewMakeupLog */,
 				242447C225E0EF82002290F2 /* MakeupLogList */,
 				242447C725E0F388002290F2 /* MakeupLog */,
@@ -400,6 +414,7 @@
 				242447B425D89927002290F2 /* AnnotationDetailViewModel.swift in Sources */,
 				242447B725D8B1E1002290F2 /* TakePhotoAlert.swift in Sources */,
 				242447C625E0F00D002290F2 /* MakeupLogListViewModel.swift in Sources */,
+				2417377E2619FD3A0040DDF2 /* AddNewColorPalletViewController.swift in Sources */,
 				245A09262607895800BD3063 /* AddNewMakeupLogViewModel.swift in Sources */,
 				24B1128125A9576100EE8DEA /* AppDelegate.swift in Sources */,
 				2446ED1D25D54790005BD9F3 /* AnnotationMoveImageView.swift in Sources */,
@@ -410,6 +425,7 @@
 				242447BC25E0EB65002290F2 /* FaceAnnotation.swift in Sources */,
 				24B1128325A9576100EE8DEA /* SceneDelegate.swift in Sources */,
 				2446ED2425D776BD005BD9F3 /* Comment.swift in Sources */,
+				241737802619FD9C0040DDF2 /* AddNewColorPalletViewModel.swift in Sources */,
 				242447C925E0F398002290F2 /* MakeupLogViewController.swift in Sources */,
 				242447BF25E0EB9A002290F2 /* ColorPalletAnnotation.swift in Sources */,
 				2446ED2225D774D5005BD9F3 /* CommentCell.swift in Sources */,
@@ -588,6 +604,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 39WWX2FY3V;
 				INFOPLIST_FILE = MakeupLogger/Info.plist;
@@ -596,8 +613,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = saitoh0526.k.MakeupLogger;
+				PRODUCT_BUNDLE_IDENTIFIER = com.saitoh.k.makeuplogger;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -608,6 +626,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 39WWX2FY3V;
 				INFOPLIST_FILE = MakeupLogger/Info.plist;
@@ -616,8 +635,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = saitoh0526.k.MakeupLogger;
+				PRODUCT_BUNDLE_IDENTIFIER = com.saitoh.k.makeuplogger;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

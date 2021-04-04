@@ -1,26 +1,24 @@
 //
-//  AddNewMakeupLogViewController.swift
+//  AddNewColorPalletViewController.swift
 //  MakeupLogger
 //
-//  Created by 齋藤健悟 on 2021/03/21.
+//  Created by 齋藤健悟 on 2021/04/04.
 //
 
 import Foundation
 import UIKit
 
-/// タイトルと写真を選択する
-final class AddNewMakeupLogViewController: UIViewController {
+final class AddNewColorPalletViewController: UIViewController {
     let titleTextField = UITextField()
-    let bodyTextField = UITextField()
     let selectPhotoButton = UIButton()
     let selectedPhotoImage = UIImageView()
     let completeButton = UIButton()
     
     let alert = TakePhotoAlert()
-    let viewModel: AddNewMakeupLogViewModel
+    let viewModel: AddNewColorPalletViewModel
     
-    init(repository: MakeupLogRepository) {
-        viewModel = AddNewMakeupLogViewModel(repository: repository)
+    init(repository: ColorPalletRepository) {
+        viewModel = AddNewColorPalletViewModel(repository: repository)
         super.init(nibName: nil, bundle: nil)
         viewModel.completeAction = {
             // 閉じる
@@ -42,13 +40,6 @@ final class AddNewMakeupLogViewController: UIViewController {
         titleTextField.placeholder = "タイトル"
         titleTextField.backgroundColor = .white
         titleTextField.delegate = viewModel
-        titleTextField.tag = AddNewMakeupLogViewModel.TextFieldType.title.rawValue
-        
-        view.addSubview(bodyTextField)
-        bodyTextField.placeholder = "説明"
-        bodyTextField.backgroundColor = .white
-        bodyTextField.delegate = viewModel
-        bodyTextField.tag = AddNewMakeupLogViewModel.TextFieldType.body.rawValue
         
         view.addSubview(selectPhotoButton)
         selectPhotoButton.setTitle("写真選択", for: .normal)
@@ -62,7 +53,7 @@ final class AddNewMakeupLogViewController: UIViewController {
         completeButton.setTitle("完了", for: .normal)
         completeButton.addTarget(self, action: #selector(didPushComplete), for: .touchUpInside)
         
-        title = "新規ログを追加"
+        title = "新規カラーパレットを追加"
     }
     
     override func viewWillLayoutSubviews() {
@@ -74,10 +65,9 @@ final class AddNewMakeupLogViewController: UIViewController {
             return
         }
         titleTextField.frame = CGRect(x: 0, y: barY + margin, width: viewWidth, height: 30)
-        bodyTextField.frame = CGRect(x: 0, y: titleTextField.frame.maxY + margin, width: viewWidth, height: 30)
         
         selectPhotoButton.sizeToFit()
-        selectPhotoButton.frame.origin = CGPoint(x: 0, y: bodyTextField.frame.maxY + margin)
+        selectPhotoButton.frame.origin = CGPoint(x: 0, y: titleTextField.frame.maxY + margin)
         
         selectedPhotoImage.frame = CGRect(x: 0, y: selectPhotoButton.frame.maxY + margin, width: viewWidth, height: 300)
         

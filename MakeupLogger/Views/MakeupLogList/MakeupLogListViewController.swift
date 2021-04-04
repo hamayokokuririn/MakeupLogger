@@ -72,10 +72,10 @@ final class MakeupLogListViewController: UIViewController {
     
     private func addNewColorPallet() {
         // 新規のカラーを追加する画面を表示
-//        let vc = AddNewMakeupLogViewController(repository: viewModel.makeupLogRepository)
-//        let navigation = UINavigationController(rootViewController: vc)
-//        navigation.presentationController?.delegate = self
-//        present(navigation, animated: true, completion: nil)
+        let vc = AddNewColorPalletViewController(repository: viewModel.colorPalletRepository)
+        let navigation = UINavigationController(rootViewController: vc)
+        navigation.presentationController?.delegate = self
+        present(navigation, animated: true, completion: nil)
     }
 }
 

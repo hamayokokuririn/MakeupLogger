@@ -15,7 +15,7 @@ struct ColorPallet {
     var annotationList: [ColorPalletAnnotation]
     
     struct ColorPalletID: Codable, Hashable {
-        private let prefix = "colorpallet"
+        private var prefix = "colorpallet"
         private let idNumber: Int
         private var id: String {
             prefix + "-" + idNumber.description
