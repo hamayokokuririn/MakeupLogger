@@ -77,6 +77,8 @@ final class ColorPalletViewController: UIViewController {
         completeButton.addTarget(self, action: #selector(didPushComplete), for: .touchUpInside)
         
         title = "カラーパレットを編集"
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     override func viewWillLayoutSubviews() {
@@ -143,5 +145,11 @@ final class ColorPalletViewController: UIViewController {
             }
             
         }
+    }
+}
+
+extension ColorPalletViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return false
     }
 }
