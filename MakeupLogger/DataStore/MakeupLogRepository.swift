@@ -32,7 +32,7 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
     let faceID = FaceAnnotation.FAID(id: 1)
     let colorID = ColorPalletAnnotation.CPID(id: 1)
     lazy var eyeAnnotation: FaceAnnotation = { FaceAnnotation(id: faceID,
-                                                              text: "88",
+                                                              text: "1",
                                                               pointRatioOnImage: PointRatio(x: 0.1, y: 0.2),
                                                               comment: Comment(text: "暗めにする"),
                                                               colorPallet: colorPallet,
@@ -115,17 +115,22 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
     }
     
     func insertFacePart(logID: MakeupLog.ID, type: String, image: UIImage, completion: (MakeupLog?) -> Void) {
-        if var log = logMap[logID],
-           let id = log.partsList.last?.id.makeNextID() {
-            let part = FacePart(id: id, type: type, image: image,
-                                annotations: [])
-            log.partsList.append(part)
-            logMap[logID] = log
-            completion(log)
-            notifyChanged()
-        } else {
+        guard var log = logMap[logID] else {
             completion(nil)
+            return
         }
+        let nextID: FacePart.ID
+        if log.partsList.isEmpty {
+            nextID = FacePart.ID(idNumber: 0)
+        } else {
+            nextID = log.partsList.last!.id.makeNextID()
+        }
+        let part = FacePart(id: nextID, type: type, image: image,
+                            annotations: [])
+        log.partsList.append(part)
+        logMap[logID] = log
+        completion(log)
+        notifyChanged()
     }
     
     func updateFaceAnnotation(logID: MakeupLog.ID, partID: FacePart.ID, faceAnnotation: FaceAnnotation, completion: (MakeupLog?) -> Void) {
