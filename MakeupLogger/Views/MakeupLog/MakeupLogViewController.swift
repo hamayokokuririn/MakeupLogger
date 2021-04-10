@@ -37,6 +37,8 @@ final class MakeupLogViewController: UIViewController {
         
         let item = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(takeNewPhoto))
         self.navigationItem.rightBarButtonItem = item
+        
+        title = log.title
     }
     
     @objc private func takeNewPhoto() {
