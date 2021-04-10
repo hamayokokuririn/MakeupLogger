@@ -13,6 +13,7 @@ extension ColorPalletViewController: AnnotationMoveImageViewDelegate {
     
     func annotationMoveImageView(_ view: AnnotationMoveImageView<ColorPalletViewController>, didTouched annotationViewFrame: CGRect, and id: AnnotationID) {
         
+        viewModel.didAnnotationUpdate(view, didTouched: annotationViewFrame, and: id)
     }
 }
 
@@ -27,13 +28,11 @@ final class ColorPalletViewController: UIViewController {
     let viewModel: ColorPalletViewModel
     
     init(colorPallet: ColorPallet, repository: ColorPalletRepository) {
-        viewModel = ColorPalletViewModel(colorPallet: colorPallet,
+        viewModel = ColorPalletViewModel(colorPalletID: colorPallet.id,
                                          repository: repository)
         super.init(nibName: nil, bundle: nil)
         viewModel.completeAction = {
-            // 閉じる
-            guard let pc = self.navigationController?.presentationController else {return}
-            pc.delegate?.presentationControllerDidDismiss?(pc)
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -48,7 +47,7 @@ final class ColorPalletViewController: UIViewController {
         
         view.addSubview(titleTextField)
         titleTextField.placeholder = "タイトル"
-        titleTextField.text = viewModel.colorPallet.title
+        titleTextField.text = viewModel.title
         titleTextField.backgroundColor = .white
         titleTextField.delegate = viewModel
         
@@ -57,16 +56,17 @@ final class ColorPalletViewController: UIViewController {
         selectPhotoButton.addTarget(self, action: #selector(didPushSelectPhoto), for: .touchUpInside)
         
         view.addSubview(selectedPhotoImage)
-        selectedPhotoImage.image = viewModel.colorPallet.image
+        selectedPhotoImage.image = viewModel.image
         selectedPhotoImage.contentMode = .scaleAspectFit
         selectedPhotoImage.backgroundColor = .black
         selectedPhotoImage.delegate = self
         selectedPhotoImage.isUserInteractionEnabled = true
         selectedPhotoImage.contentMode = .scaleAspectFit
-        viewModel.colorPallet.annotationList.forEach {
+        viewModel.annotationList.forEach {
             let annotation = AnnotationView(annotation: $0)
             selectedPhotoImage.addSubview(annotation)
         }
+        selectedPhotoImage.adjustAnnotationViewFrame()
         
         view.addSubview(addAnnotationButton)
         addAnnotationButton.setTitle("アノテーション追加", for: .normal)

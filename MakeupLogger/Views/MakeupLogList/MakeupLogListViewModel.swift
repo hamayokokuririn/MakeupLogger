@@ -36,9 +36,20 @@ final class MakeupLogListViewModel: NSObject {
     init(makeupLogRepository: MakeupLogRepository, colorPalletRepository: ColorPalletRepository) {
         self.makeupLogRepository = makeupLogRepository
         self.colorPalletRepository = colorPalletRepository
+        super.init()
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(fetchLog),
+                                               name: .didLogUpdate,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(fetchLog),
+                                               name: .didColorPalletUpdate,
+                                               object: nil)
     }
     
-    func fetchLog() {
+    @objc func fetchLog() {
         makeupLogRepository.getLogList { logList in
             self.makeupLogList = logList
             colorPalletRepository.getColorPalletList { list in

@@ -8,7 +8,11 @@
 import Foundation
 import UIKit
 
-struct ColorPallet {
+struct ColorPallet: Equatable {
+    static func == (lhs: ColorPallet, rhs: ColorPallet) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     let id: ColorPalletID
     var title: String
     var image: UIImage?

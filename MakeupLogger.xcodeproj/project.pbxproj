@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2409D2942610837E00A3C995 /* ColorPalletRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2409D2932610837E00A3C995 /* ColorPalletRepository.swift */; };
+		240BCD8B2621CAC70032814B /* NotificationName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 240BCD8A2621CAC70032814B /* NotificationName.swift */; };
 		2417377E2619FD3A0040DDF2 /* AddNewColorPalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2417377D2619FD3A0040DDF2 /* AddNewColorPalletViewController.swift */; };
 		241737802619FD9C0040DDF2 /* AddNewColorPalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2417377F2619FD9C0040DDF2 /* AddNewColorPalletViewModel.swift */; };
 		24173783261A01BE0040DDF2 /* ColorPalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24173782261A01BE0040DDF2 /* ColorPalletViewController.swift */; };
@@ -60,6 +61,7 @@
 
 /* Begin PBXFileReference section */
 		2409D2932610837E00A3C995 /* ColorPalletRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalletRepository.swift; sourceTree = "<group>"; };
+		240BCD8A2621CAC70032814B /* NotificationName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationName.swift; sourceTree = "<group>"; };
 		2417377D2619FD3A0040DDF2 /* AddNewColorPalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewColorPalletViewController.swift; sourceTree = "<group>"; };
 		2417377F2619FD9C0040DDF2 /* AddNewColorPalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewColorPalletViewModel.swift; sourceTree = "<group>"; };
 		24173782261A01BE0040DDF2 /* ColorPalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalletViewController.swift; sourceTree = "<group>"; };
@@ -124,6 +126,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		240BCD892621CAB00032814B /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				240BCD8A2621CAC70032814B /* NotificationName.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		2417377C2619FD0C0040DDF2 /* AddNewColorPallet */ = {
 			isa = PBXGroup;
 			children = (
@@ -253,6 +263,7 @@
 		24B1127F25A9576100EE8DEA /* MakeupLogger */ = {
 			isa = PBXGroup;
 			children = (
+				240BCD892621CAB00032814B /* Extension */,
 				242447B825E0A5F8002290F2 /* DataStore */,
 				242447B525D8B1C6002290F2 /* Service */,
 				2446ED1E25D57130005BD9F3 /* Views */,
@@ -442,6 +453,7 @@
 				2446ED2425D776BD005BD9F3 /* Comment.swift in Sources */,
 				241737802619FD9C0040DDF2 /* AddNewColorPalletViewModel.swift in Sources */,
 				242447C925E0F398002290F2 /* MakeupLogViewController.swift in Sources */,
+				240BCD8B2621CAC70032814B /* NotificationName.swift in Sources */,
 				242447BF25E0EB9A002290F2 /* ColorPalletAnnotation.swift in Sources */,
 				2446ED2225D774D5005BD9F3 /* CommentCell.swift in Sources */,
 				2446ED2025D5713C005BD9F3 /* AnnotationView.swift in Sources */,

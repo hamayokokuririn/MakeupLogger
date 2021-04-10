@@ -82,6 +82,7 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
                                  annotationList: [])
         cache[nextID] = pallet
         completion(pallet)
+        notifyChanged()
     }
     
     func updateColorPallet(id: ColorPallet.ColorPalletID, title: String, image: UIImage, completion: (ColorPallet?) -> Void) {
@@ -93,10 +94,23 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
         pallet.image = image
         cache[id] = pallet
         completion(pallet)
+        notifyChanged()
     }
     
     func updateAnnotation(id: ColorPallet.ColorPalletID, annotation: ColorPalletAnnotation, completion: (ColorPallet?) -> Void) {
-        
+        guard let colorPallet = cache[id] else {
+            completion(nil)
+            return
+        }
+        if let index = colorPallet.annotationList.firstIndex(where: {
+            $0.id == annotation.id
+        }) {
+            cache[id]?.annotationList[index] = annotation
+            completion(cache[id])
+            notifyChanged()
+        } else {
+            completion(nil)
+        }
     }
     
     func insertAnnotation(id: ColorPallet.ColorPalletID, completion: (ColorPallet?) -> Void) {
@@ -112,6 +126,7 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
                                                    pointRatioOnImage: .zero)
             cache[id]?.annotationList.append(annotation)
             completion(cache[id]!)
+            notifyChanged()
             return
         }
         let annotationID = list.last!.id.makeNextAnnotationID()
@@ -120,6 +135,11 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
                                                pointRatioOnImage: .zero)
         cache[id]?.annotationList.append(annotation)
         completion(cache[id]!)
+        
+        notifyChanged()
     }
     
+    private func notifyChanged() {
+        NotificationCenter.default.post(name: .didColorPalletUpdate, object: nil)
+    }
 }

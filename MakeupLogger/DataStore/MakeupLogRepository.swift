@@ -68,6 +68,7 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
     func setLog(logMap: [MakeupLog.ID: MakeupLog]? = nil) {
         if let map = logMap {
             self.logMap = map
+            notifyChanged()
         }
     }
     
@@ -76,6 +77,9 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
     }
     
     func insertMakeupLog(title: String, body: String?, image: UIImage, completion: (MakeupLog?) -> Void) {
+        defer {
+            notifyChanged()
+        }
         if logList.isEmpty {
             let id = MakeupLog.ID(idNumber: 0)
             let log = MakeupLog(id: id,
@@ -85,6 +89,7 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
                                 partsList: [])
             logMap[id] = log
             completion(log)
+            
             return
         }
         let nextID = logList.last!.id.makeNextID()
@@ -103,6 +108,7 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
             log.partsList[index] = part
             logMap[logID] = log
             completion(log)
+            notifyChanged()
         } else {
             completion(nil)
         }
@@ -116,6 +122,7 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
             log.partsList.append(part)
             logMap[logID] = log
             completion(log)
+            notifyChanged()
         } else {
             completion(nil)
         }
@@ -128,6 +135,7 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
             log.partsList[partIndex].annotations[faceIndex] = faceAnnotation
             logMap[logID] = log
             completion(log)
+            notifyChanged()
         } else {
             completion(nil)
         }
@@ -141,8 +149,13 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
             log.partsList[partIndex].annotations.append(faceAnnotation)
             logMap[logID] = log
             completion(log)
+            notifyChanged()
         } else {
             completion(nil)
         }
+    }
+    
+    private func notifyChanged() {
+        NotificationCenter.default.post(name: .didLogUpdate, object: nil)
     }
 }
