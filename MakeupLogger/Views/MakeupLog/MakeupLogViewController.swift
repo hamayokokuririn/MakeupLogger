@@ -149,12 +149,17 @@ extension MakeupLogViewController: MakeupLogViewModelDelegate {
     }
     
     func viewModel(_ model: MakeupLogViewModel, didSelect annotation: FaceAnnotation) {
-        let vc = AnnotationDetailViewController(annotation: annotation, repository: viewModel.colorPalletRepository)
-        let navigation = UINavigationController(rootViewController: vc)
-        navigation.presentationController?.delegate = self
-        present(navigation, animated: true, completion: nil)
+        if case .part(let partID) = viewModel.state {
+            let vc = AnnotationDetailViewController(logID: viewModel.logID,
+                                                    facePartID: partID,
+                                                    annotation: annotation,
+                                                    makeupLogRepository: viewModel.makeupLogRepository,
+                                                    colorPalletRepository: viewModel.colorPalletRepository)
+            let navigation = UINavigationController(rootViewController: vc)
+            navigation.presentationController?.delegate = self
+            present(navigation, animated: true, completion: nil)
+        }
     }
-    
 }
 
 extension MakeupLogViewController: UIAdaptivePresentationControllerDelegate {

@@ -16,9 +16,9 @@ final class MakeupLogListViewModel: NSObject {
         var title: String {
             switch self {
             case .makeupLog:
-                return "メイク"
+                return "メイクアップログ"
             case .colorPallet:
-                return "カラー"
+                return "カラーパレット"
             }
         }
     }

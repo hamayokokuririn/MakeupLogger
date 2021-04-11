@@ -23,8 +23,8 @@ final class AnnotationDetailViewController: UIViewController {
         
     private let changeColorPalletButton: UIButton = .init()
     
-    init(annotation: FaceAnnotation, repository: ColorPalletRepository) {
-        self.viewModel = AnnotationDetailViewModel(annotation: annotation, repository: repository)
+    init(logID: MakeupLog.ID, facePartID: FacePart.ID, annotation: FaceAnnotation, makeupLogRepository: MakeupLogRepository, colorPalletRepository: ColorPalletRepository) {
+        self.viewModel = AnnotationDetailViewModel(logID: logID, facePartID: facePartID, annotation: annotation, makeupLogRepository: makeupLogRepository, colorPalletRepository: colorPalletRepository)
         super.init(nibName: nil, bundle: nil)
         
         view.backgroundColor = .white
@@ -54,28 +54,40 @@ final class AnnotationDetailViewController: UIViewController {
         view.addSubview(colorPalletImage)
         colorPalletImage.backgroundColor = .black
         colorPalletImage.contentMode = .scaleAspectFit
+        colorPalletImage.isUserInteractionEnabled = true
+        colorPalletImage.movesSubviews = false
+        colorPalletImage.delegate = self
         
         view.addSubview(changeColorPalletButton)
-        changeColorPalletButton.setTitle("Change Color", for: .normal)
+        changeColorPalletButton.setTitle("カラーパレットの変更", for: .normal)
         changeColorPalletButton.addTarget(self, action: #selector(didPushChangeColorPalletButton), for: .touchUpInside)
         changeColorPalletButton.setTitleColor(.systemBlue, for: .normal)
         
         viewModel.getColorPallet() { pallet in
             setupColorPallet(colorPallet: pallet)
         }
+        
+        viewModel.didFinishUpdateAnnotation = { text in
+            self.selectedColorPalletAnnotationName.text = text
+            self.selectedColorPalletAnnotationName.sizeToFit()
+        }
     }
     
     private func setupColorPallet(colorPallet: ColorPallet) {
         selectedColorPalletName.text = colorPallet.title
-        selectedColorPalletAnnotationName.text = colorPallet.annotationList.filter {
+        let selectedColorAnnotation = colorPallet.annotationList.first(where: {
             $0.id == viewModel.annotation.selectedColorPalletAnnotationID
-        }.first?.text
+        })
+        selectedColorPalletAnnotationName.text = selectedColorAnnotation?.text
         colorPalletImage.image = colorPallet.image
         colorPallet.annotationList.forEach {
             let view = AnnotationView(annotation: $0)
             colorPalletImage.addSubview(view)
         }
         colorPalletImage.adjustAnnotationViewFrame()
+        if let id = selectedColorAnnotation?.id {
+            colorPalletImage.activateAnnotation(for: id)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -147,6 +159,7 @@ extension AnnotationDetailViewController: AnnotationMoveImageViewDelegate {
     typealias AnnotationType = ColorPalletAnnotation
     
     func annotationMoveImageView(_ view: AnnotationMoveImageView<AnnotationDetailViewController>, didTouched annotationViewFrame: CGRect, and id: AnnotationID) {
-        
+        viewModel.updateSelectedAnnotation(id: id)
+        colorPalletImage.activateAnnotation(for: id as! ColorPalletAnnotation.ID)
     }
 }

@@ -17,6 +17,8 @@ protocol AnnotationMoveImageViewDelegate: AnyObject {
 class AnnotationMoveImageView<D: AnnotationMoveImageViewDelegate>: UIImageView {
     weak var delegate: D?
     
+    var movesSubviews: Bool = true
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         print("Began")
@@ -35,7 +37,8 @@ class AnnotationMoveImageView<D: AnnotationMoveImageViewDelegate>: UIImageView {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
         guard let touch = touches.first,
-              let view = touch.view else {
+              let view = touch.view,
+              movesSubviews else {
             return
         }
         if view != self {
@@ -55,6 +58,20 @@ class AnnotationMoveImageView<D: AnnotationMoveImageViewDelegate>: UIImageView {
     
     func imageRect() -> CGRect {
         return AVMakeRect(aspectRatio: image!.size, insideRect: bounds)
+    }
+    
+    func activateAnnotation(for id: D.AnnotationType.ID) {
+        guard let annotationViews = subviews as? [AnnotationView<D.AnnotationType>] else {
+            return
+        }
+        annotationViews.forEach {
+            $0.backgroundColor = .black
+        }
+        if let view = annotationViews.first(where: {
+            $0.annotation.id.id == id.id
+        }) {
+            view.backgroundColor = .green
+        }
     }
     
 }
