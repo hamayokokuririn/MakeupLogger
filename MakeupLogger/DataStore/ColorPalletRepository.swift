@@ -29,10 +29,10 @@ protocol ColorPalletRepository {
 class ColorPalletRepositoryInMemory: ColorPalletRepository {
     static let shared = ColorPalletRepositoryInMemory()
     
-    let colorID1 = ColorPalletAnnotation.CPID(id: 1)
+    static let colorID1 = ColorPalletAnnotation.CPID(id: 1)
     let colorID2 = ColorPalletAnnotation.CPID(id: 2)
     let colorID3 = ColorPalletAnnotation.CPID(id: 3)
-    lazy var colorPalletAnnotation1 = ColorPalletAnnotation(id: colorID1,
+    lazy var colorPalletAnnotation1 = ColorPalletAnnotation(id: Self.colorID1,
                                                             text: "1",
                                                             pointRatioOnImage: PointRatio(x: 0, y: 0))
     lazy var colorPalletAnnotation2 = ColorPalletAnnotation(id: colorID2,
@@ -41,8 +41,8 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
     lazy var colorPalletAnnotation3 = ColorPalletAnnotation(id: colorID3,
                                                             text: "3",
                                                             pointRatioOnImage: PointRatio(x: 0.6, y: 0))
-    let id = ColorPallet.ColorPalletID(idNumber: 0)
-    lazy var colorPallet = ColorPallet(id: id,
+    static let id = ColorPallet.ColorPalletID(idNumber: 0)
+    lazy var colorPallet = ColorPallet(id: Self.id,
                                        title: "color_pallet",
                                        image: UIImage(named: "sample_color_pallet"),
                                        annotationList: [colorPalletAnnotation1,
@@ -50,7 +50,7 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
                                                         colorPalletAnnotation3])
     
     
-    lazy var cache: [ColorPallet.ColorPalletID : ColorPallet] = [id: colorPallet]
+    lazy var cache: [ColorPallet.ColorPalletID : ColorPallet] = [colorPallet.id: colorPallet]
     
     private var palletList: [ColorPallet] {
         cache.values.map {$0 as ColorPallet}

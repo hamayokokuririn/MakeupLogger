@@ -17,7 +17,7 @@ struct FaceAnnotation: Annotation, Equatable {
     let text: String
     var pointRatioOnImage: PointRatio = .zero
     var comment: Comment?
-    var colorPallet: ColorPallet?
+    var selectedColorPalletID: ColorPallet.ColorPalletID?
     var selectedColorPalletAnnotationID: ColorPalletAnnotation.CPID?
     
     struct FAID: AnnotationID, Equatable, Codable {

@@ -30,13 +30,13 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
                                         annotations: [eyeAnnotation])}()
     
     let faceID = FaceAnnotation.FAID(id: 1)
-    let colorID = ColorPalletAnnotation.CPID(id: 1)
+    let colorID = ColorPalletRepositoryInMemory.id
     lazy var eyeAnnotation: FaceAnnotation = { FaceAnnotation(id: faceID,
                                                               text: "1",
                                                               pointRatioOnImage: PointRatio(x: 0.1, y: 0.2),
                                                               comment: Comment(text: "暗めにする"),
-                                                              colorPallet: colorPallet,
-                                                              selectedColorPalletAnnotationID: colorID)}()
+                                                              selectedColorPalletID: colorID,
+                                                              selectedColorPalletAnnotationID: ColorPalletRepositoryInMemory.colorID1)}()
     
     let colorID1 = ColorPalletAnnotation.CPID(id: 1)
     let colorID2 = ColorPalletAnnotation.CPID(id: 2)
@@ -50,12 +50,6 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
     lazy var colorPalletAnnotation3 = ColorPalletAnnotation(id: colorID3,
                                                             text: "3",
                                                             pointRatioOnImage: PointRatio(x: 0.6, y: 0))
-    lazy var colorPallet = ColorPallet(id: ColorPallet.ColorPalletID(idNumber: 0),
-                                       title: "color_pallet",
-                                       image: UIImage(named: "sample_color_pallet"),
-                                       annotationList: [colorPalletAnnotation1,
-                                                        colorPalletAnnotation2,
-                                                        colorPalletAnnotation3])
     
     lazy var logMap = [id: log]
     

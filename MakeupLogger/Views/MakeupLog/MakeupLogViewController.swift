@@ -149,7 +149,7 @@ extension MakeupLogViewController: MakeupLogViewModelDelegate {
     }
     
     func viewModel(_ model: MakeupLogViewModel, didSelect annotation: FaceAnnotation) {
-        let vc = AnnotationDetailViewController(annotation: annotation)
+        let vc = AnnotationDetailViewController(annotation: annotation, repository: viewModel.colorPalletRepository)
         let navigation = UINavigationController(rootViewController: vc)
         navigation.presentationController?.delegate = self
         present(navigation, animated: true, completion: nil)
