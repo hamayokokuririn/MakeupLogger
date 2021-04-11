@@ -76,6 +76,7 @@ final class AddNewColorPalletViewController: UIViewController {
     }
     
     @objc private func didPushSelectPhoto() {
+        view.endEditing(true)
         alert.selectPhotoAction = {[weak self] image in
             // 写真選択時処理
             self?.selectedPhotoImage.image = image
