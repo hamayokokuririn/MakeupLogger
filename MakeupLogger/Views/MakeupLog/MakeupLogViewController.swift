@@ -35,7 +35,7 @@ final class MakeupLogViewController: UIViewController {
         viewModel.delegate = self
         viewModel.state = .face
         
-        let item = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(takeNewPhoto))
+        let item = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(takeNewPhoto))
         self.navigationItem.rightBarButtonItem = item
         
         title = log.title
@@ -43,32 +43,9 @@ final class MakeupLogViewController: UIViewController {
     
     @objc private func takeNewPhoto() {
         alert.selectPhotoAction = {[weak self] image in
-            self?.partSelect(image: image)
-        }
-        alert.show(presenter: self)
-    }
-    
-    func partSelect(image: UIImage) {
-        let alert = UIAlertController(title: "select type",
-                                      message: nil,
-                                      preferredStyle: .alert)
-        let cameraAction = UIAlertAction(title: "eye",
-                                        style: .default) {[weak self] _ in
             self?.viewModel.addPicture(type: "eye", image: image)
         }
-        alert.addAction(cameraAction)
-        
-        let photoLibraryAction = UIAlertAction(title: "nose",
-                                               style: .default) {[weak self] _ in
-            self?.viewModel.addPicture(type: "nose", image: image)
-        }
-        alert.addAction(photoLibraryAction)
-        let cancelAction = UIAlertAction(title: "mouse",
-                                               style: .default) {[weak self] _ in
-            self?.viewModel.addPicture(type: "mouse", image: image)
-        }
-        alert.addAction(cancelAction)
-        present(alert, animated: true, completion: nil)
+        alert.show(presenter: self)
     }
     
     required init?(coder: NSCoder) {

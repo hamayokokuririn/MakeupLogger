@@ -175,6 +175,6 @@ extension AnnotationDetailViewController: AnnotationMoveImageViewDelegate {
     
     func annotationMoveImageView(_ view: AnnotationMoveImageView<AnnotationDetailViewController>, didTouched annotationViewFrame: CGRect, and id: AnnotationID) {
         viewModel.updateSelectedAnnotation(id: id)
-        colorPalletImage.activateAnnotation(for: id as! ColorPalletAnnotation.ID)
+        colorPalletImage.activateAnnotation(for: id as? ColorPalletAnnotation.ID)
     }
 }
