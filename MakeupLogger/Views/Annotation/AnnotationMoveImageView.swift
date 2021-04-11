@@ -60,14 +60,15 @@ class AnnotationMoveImageView<D: AnnotationMoveImageViewDelegate>: UIImageView {
         return AVMakeRect(aspectRatio: image!.size, insideRect: bounds)
     }
     
-    func activateAnnotation(for id: D.AnnotationType.ID) {
+    func activateAnnotation(for id: D.AnnotationType.ID?) {
         guard let annotationViews = subviews as? [AnnotationView<D.AnnotationType>] else {
             return
         }
         annotationViews.forEach {
             $0.backgroundColor = .black
         }
-        if let view = annotationViews.first(where: {
+        if let id = id,
+           let view = annotationViews.first(where: {
             $0.annotation.id.id == id.id
         }) {
             view.backgroundColor = .green

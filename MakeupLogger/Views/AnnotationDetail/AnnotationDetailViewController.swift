@@ -67,6 +67,10 @@ final class AnnotationDetailViewController: UIViewController {
             setupColorPallet(colorPallet: pallet)
         }
         
+        viewModel.didFinishUpdateColorPallet = { colorPallet in
+            self.setupColorPallet(colorPallet: colorPallet)
+        }
+        
         viewModel.didFinishUpdateAnnotation = { text in
             self.selectedColorPalletAnnotationName.text = text
             self.selectedColorPalletAnnotationName.sizeToFit()
@@ -75,18 +79,22 @@ final class AnnotationDetailViewController: UIViewController {
     
     private func setupColorPallet(colorPallet: ColorPallet) {
         selectedColorPalletName.text = colorPallet.title
-        let selectedColorAnnotation = colorPallet.annotationList.first(where: {
-            $0.id == viewModel.annotation.selectedColorPalletAnnotationID
-        })
-        selectedColorPalletAnnotationName.text = selectedColorAnnotation?.text
         colorPalletImage.image = colorPallet.image
+        colorPalletImage.subviews.forEach {
+            $0.removeFromSuperview()
+        }
         colorPallet.annotationList.forEach {
             let view = AnnotationView(annotation: $0)
             colorPalletImage.addSubview(view)
         }
         colorPalletImage.adjustAnnotationViewFrame()
-        if let id = selectedColorAnnotation?.id {
-            colorPalletImage.activateAnnotation(for: id)
+        DispatchQueue.main.async {
+            let selectedColorPalletAnnotationID = self.viewModel.annotation.selectedColorPalletAnnotationID
+            let selectedColorAnnotation = colorPallet.annotationList.first(where: {
+                $0.id == selectedColorPalletAnnotationID
+            })
+            self.selectedColorPalletAnnotationName.text = selectedColorAnnotation?.text ?? "---"
+            self.colorPalletImage.activateAnnotation(for: selectedColorPalletAnnotationID)
         }
     }
     
@@ -130,7 +138,14 @@ final class AnnotationDetailViewController: UIViewController {
     }
     
     @objc private func didPushChangeColorPalletButton() {
-        print("カラーパレットの選択")
+        let vc = MakeupLogListViewController(mode: .selectColorPallet,
+                                             makeupLogRepository: MakeupLogRepositoryInMemory.shared,
+                                             colorPalletRepository: ColorPalletRepositoryInMemory.shared)
+        vc.viewModel.didSelectColorPallet = { colorPallet in
+            self.viewModel.updateSelectedColorPallet(colorPallet: colorPallet)
+            self.navigationController?.popViewController(animated: true)
+        }
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func close() {

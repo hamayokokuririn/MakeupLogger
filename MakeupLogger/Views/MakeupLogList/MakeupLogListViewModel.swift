@@ -23,6 +23,7 @@ final class MakeupLogListViewModel: NSObject {
         }
     }
     
+    let mode: MakeupLogListViewController.Mode
     let makeupLogRepository: MakeupLogRepository
     let colorPalletRepository: ColorPalletRepository
     var makeupLogList = [MakeupLog]()
@@ -33,7 +34,8 @@ final class MakeupLogListViewModel: NSObject {
     var didSelectAddMakeupLog: (() -> Void)? = nil
     var didSelectAddColorPallet: (() -> Void)? = nil
     
-    init(makeupLogRepository: MakeupLogRepository, colorPalletRepository: ColorPalletRepository) {
+    init(mode: MakeupLogListViewController.Mode, makeupLogRepository: MakeupLogRepository, colorPalletRepository: ColorPalletRepository) {
+        self.mode = mode
         self.makeupLogRepository = makeupLogRepository
         self.colorPalletRepository = colorPalletRepository
         super.init()
@@ -85,22 +87,38 @@ final class MakeupLogListViewModel: NSObject {
 
 extension MakeupLogListViewModel: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let section = Section(rawValue: section) else {
-            return 0
-        }
-        switch section {
-        case .makeupLog:
-            return makeupLogList.count
-        case .colorPallet:
+        switch mode {
+        case .top:
+            guard let section = Section(rawValue: section) else {
+                return 0
+            }
+            switch section {
+            case .makeupLog:
+                return makeupLogList.count
+            case .colorPallet:
+                return colorPalletList.count
+            }
+        case .selectColorPallet:
             return colorPalletList.count
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        guard let section = Section(rawValue: indexPath.section) else {
-            return cell
+        
+        switch mode {
+        case .top:
+            guard let section = Section(rawValue: indexPath.section) else {
+                return UITableViewCell()
+            }
+            return makeCell(section: section, indexPath: indexPath)
+        case .selectColorPallet:
+            return makeCell(section: .colorPallet, indexPath: indexPath)
         }
+        
+    }
+    
+    private func makeCell(section: Section, indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
         switch section {
         case .makeupLog:
             cell.imageView?.image = makeupLogList[indexPath.row].image
@@ -113,23 +131,42 @@ extension MakeupLogListViewModel: UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        Section.allCases.count
+        switch mode {
+        case .top:
+            return Section.allCases.count
+        case .selectColorPallet:
+            return 1
+        }
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        guard let section = Section(rawValue: section) else {
-            return ""
+        switch mode {
+        case .top:
+            guard let section = Section(rawValue: section) else {
+                return ""
+            }
+            return section.title
+        case .selectColorPallet:
+            return Section.colorPallet.title
         }
-        return section.title
     }
 }
 
 extension MakeupLogListViewModel: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        guard let section = Section(rawValue: indexPath.section) else {
-            return
+        switch mode {
+        case .top:
+            guard let section = Section(rawValue: indexPath.section) else {
+                return
+            }
+            didSelectRowAt(indexPath: indexPath, in: section)
+        case .selectColorPallet:
+            didSelectRowAt(indexPath: indexPath, in: .colorPallet)
         }
+    }
+    
+    private func didSelectRowAt(indexPath: IndexPath, in section: Section) {
         switch section {
         case .makeupLog:
             let id = indexPath.row

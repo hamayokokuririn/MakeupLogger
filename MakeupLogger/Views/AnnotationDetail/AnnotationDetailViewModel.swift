@@ -15,6 +15,7 @@ struct AnnotationDetailViewModel {
     let colorPalletRepository: ColorPalletRepository
     
     var didFinishUpdateAnnotation: ((String) -> Void)?
+    var didFinishUpdateColorPallet: ((ColorPallet) -> Void)?
     
     mutating func setComment(_ text: String) {
         annotation.comment = Comment(text: text)
@@ -26,6 +27,16 @@ struct AnnotationDetailViewModel {
                 $0.id == annotation.selectedColorPalletID
             }) else {return}
             completion(pallet)
+        }
+    }
+    
+    mutating func updateSelectedColorPallet(colorPallet: ColorPallet) {
+        annotation.selectedColorPalletID = colorPallet.id
+        makeupLogRepository.updateFaceAnnotation(logID: logID,
+                                                 partID: facePartID,
+                                                 faceAnnotation: annotation) { log in
+            // 描画の更新
+            didFinishUpdateColorPallet?(colorPallet)
         }
     }
     

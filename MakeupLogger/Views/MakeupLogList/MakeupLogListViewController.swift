@@ -9,12 +9,19 @@ import Foundation
 import UIKit
 
 final class MakeupLogListViewController: UIViewController {
+    enum Mode {
+        case top
+        case selectColorPallet
+    }
+    
+    let mode: Mode
     let viewModel: MakeupLogListViewModel
     
     let tableView = UITableView()
     
-    init(makeupLogRepository: MakeupLogRepository, colorPalletRepository: ColorPalletRepository) {
-        self.viewModel = MakeupLogListViewModel(makeupLogRepository: makeupLogRepository, colorPalletRepository: colorPalletRepository)
+    init(mode: Mode = .top, makeupLogRepository: MakeupLogRepository, colorPalletRepository: ColorPalletRepository) {
+        self.viewModel = MakeupLogListViewModel(mode: mode, makeupLogRepository: makeupLogRepository, colorPalletRepository: colorPalletRepository)
+        self.mode = mode
         super.init(nibName: nil, bundle: nil)
         
         viewModel.didFinishReloadList = {
