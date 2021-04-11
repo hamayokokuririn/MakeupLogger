@@ -38,7 +38,7 @@ struct MakeupLog: Equatable, Hashable {
 struct FacePart: Equatable, Hashable {
     struct ID: Equatable, Hashable {
         private let header = "facepart"
-        private let idNumber: Int
+        let idNumber: Int
         private var id: String {
             header + "_" + idNumber.description
         }

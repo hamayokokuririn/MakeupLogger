@@ -65,7 +65,7 @@ final class MakeupLogViewModel: NSObject {
     
     func segmentActionList(completion: ([UIAction]) -> Void) {
         var list = [UIAction]()
-        let action = UIAction(title: "face",
+        let action = UIAction(title: "1",
                               image: nil, identifier: nil, discoverabilityTitle: nil,
                               attributes: .destructive,
                               state: .on) { _ in
@@ -74,8 +74,11 @@ final class MakeupLogViewModel: NSObject {
         }
         list.append(action)
         repository.getLogList { (logList) in
-            for part in logList[0].partsList {
-                let action = UIAction(title: part.type,
+            guard let log = logList.first(where: {
+                $0.id == logID
+            }) else {return}
+            for part in log.partsList {
+                let action = UIAction(title: (part.id.idNumber + 1).description,
                                       image: nil,
                                       identifier: nil,
                                       discoverabilityTitle: nil,

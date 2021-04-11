@@ -121,7 +121,7 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
         }
         let nextID: FacePart.ID
         if log.partsList.isEmpty {
-            nextID = FacePart.ID(idNumber: 0)
+            nextID = FacePart.ID(idNumber: 1)
         } else {
             nextID = log.partsList.last!.id.makeNextID()
         }
