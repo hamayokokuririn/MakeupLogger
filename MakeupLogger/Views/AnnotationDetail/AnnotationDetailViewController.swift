@@ -39,8 +39,14 @@ final class AnnotationDetailViewController: UIViewController {
         textView.delegate = self
         textView.returnKeyType = .done
         
+        view.addSubview(selectedColorPallet)
+        selectedColorPallet.text = "選択中のカラーパレット："
+        
         view.addSubview(selectedColorPalletName)
         selectedColorPalletName.text = "---"
+        
+        view.addSubview(selectedColorPalletAnnotation)
+        selectedColorPalletAnnotation.text = "選択中のアノテーション："
         
         view.addSubview(selectedColorPalletAnnotationName)
         selectedColorPalletAnnotationName.text = "---"
@@ -88,11 +94,20 @@ final class AnnotationDetailViewController: UIViewController {
                                 width: view.frame.width,
                                 height: 100)
         
+        selectedColorPallet.sizeToFit()
+        selectedColorPallet.frame.origin = CGPoint(x: margin, y: textView.frame.maxY + CGFloat(8))
+        
         selectedColorPalletName.sizeToFit()
-        selectedColorPalletName.frame.origin = CGPoint(x: margin, y: textView.frame.maxY + CGFloat(8))
+        selectedColorPalletName.frame.origin = CGPoint(x: selectedColorPallet.frame.maxX + margin,
+                                                       y: textView.frame.maxY + CGFloat(8))
+        
+        selectedColorPalletAnnotation.sizeToFit()
+        selectedColorPalletAnnotation.frame.origin = CGPoint(x: margin,
+                                                             y: selectedColorPalletName.frame.maxY + CGFloat(8))
         
         selectedColorPalletAnnotationName.sizeToFit()
-        selectedColorPalletAnnotationName.frame.origin = CGPoint(x: margin, y: selectedColorPalletName.frame.maxY + CGFloat(8))
+        selectedColorPalletAnnotationName.frame.origin = CGPoint(x: selectedColorPalletAnnotation.frame.maxX + margin,
+                                                                 y: selectedColorPalletName.frame.maxY + CGFloat(8))
         
         colorPalletImage.frame.size = CGSize(width: view.frame.width - margin * 2, height: 300)
         colorPalletImage.frame.origin = CGPoint(x: margin, y: selectedColorPalletAnnotationName.frame.maxY + CGFloat(8))
