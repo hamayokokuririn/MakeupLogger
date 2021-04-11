@@ -13,8 +13,10 @@ final class AnnotationDetailViewController: UIViewController {
     
     private let commentTitle: UILabel = .init()
     private let textView: UITextView = .init()
-    private let selectedColorPalletTitle: UILabel = .init()
+    private let selectedColorPallet: UILabel = .init()
+    private let selectedColorPalletName: UILabel = .init()
     private let selectedColorPalletAnnotation: UILabel = .init()
+    private let selectedColorPalletAnnotationName: UILabel = .init()
     private lazy var colorPalletImage: AnnotationMoveImageView = {
         return AnnotationMoveImageView<AnnotationDetailViewController>()
     }()
@@ -37,11 +39,11 @@ final class AnnotationDetailViewController: UIViewController {
         textView.delegate = self
         textView.returnKeyType = .done
         
-        view.addSubview(selectedColorPalletTitle)
-        selectedColorPalletTitle.text = "---"
+        view.addSubview(selectedColorPalletName)
+        selectedColorPalletName.text = "---"
         
-        view.addSubview(selectedColorPalletAnnotation)
-        selectedColorPalletAnnotation.text = "---"
+        view.addSubview(selectedColorPalletAnnotationName)
+        selectedColorPalletAnnotationName.text = "---"
         
         view.addSubview(colorPalletImage)
         colorPalletImage.backgroundColor = .black
@@ -58,8 +60,8 @@ final class AnnotationDetailViewController: UIViewController {
     }
     
     private func setupColorPallet(colorPallet: ColorPallet) {
-        selectedColorPalletTitle.text = colorPallet.title
-        selectedColorPalletAnnotation.text = colorPallet.annotationList.filter {
+        selectedColorPalletName.text = colorPallet.title
+        selectedColorPalletAnnotationName.text = colorPallet.annotationList.filter {
             $0.id == viewModel.annotation.selectedColorPalletAnnotationID
         }.first?.text
         colorPalletImage.image = colorPallet.image
@@ -86,14 +88,14 @@ final class AnnotationDetailViewController: UIViewController {
                                 width: view.frame.width,
                                 height: 100)
         
-        selectedColorPalletTitle.sizeToFit()
-        selectedColorPalletTitle.frame.origin = CGPoint(x: margin, y: textView.frame.maxY + CGFloat(8))
+        selectedColorPalletName.sizeToFit()
+        selectedColorPalletName.frame.origin = CGPoint(x: margin, y: textView.frame.maxY + CGFloat(8))
         
-        selectedColorPalletAnnotation.sizeToFit()
-        selectedColorPalletAnnotation.frame.origin = CGPoint(x: margin, y: selectedColorPalletTitle.frame.maxY + CGFloat(8))
+        selectedColorPalletAnnotationName.sizeToFit()
+        selectedColorPalletAnnotationName.frame.origin = CGPoint(x: margin, y: selectedColorPalletName.frame.maxY + CGFloat(8))
         
         colorPalletImage.frame.size = CGSize(width: view.frame.width - margin * 2, height: 300)
-        colorPalletImage.frame.origin = CGPoint(x: margin, y: selectedColorPalletAnnotation.frame.maxY + CGFloat(8))
+        colorPalletImage.frame.origin = CGPoint(x: margin, y: selectedColorPalletAnnotationName.frame.maxY + CGFloat(8))
         colorPalletImage.adjustAnnotationViewFrame()
         
         changeColorPalletButton.sizeToFit()
