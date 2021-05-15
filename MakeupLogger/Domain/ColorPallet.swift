@@ -7,31 +7,45 @@
 
 import Foundation
 import UIKit
+import RealmSwift
 
-struct ColorPallet: Equatable {
-    static func == (lhs: ColorPallet, rhs: ColorPallet) -> Bool {
-        return lhs.id == rhs.id
+class ColorPallet: Object {
+    override init() {
+        super.init()
     }
     
-    let id: ColorPalletID
-    var title: String
-    var image: UIImage?
-    var annotationList: [ColorPalletAnnotation]
+    static func make(id: ColorPalletID, title: String, image: Data?, annotationList: [ColorPalletAnnotation]) -> ColorPallet {
+        let pallet = ColorPallet()
+        pallet.id = id
+        pallet.title = title
+        pallet.image = image
+        let list = List<ColorPalletAnnotation>()
+        annotationList.forEach {
+            list.append($0)
+        }
+        pallet.annotationList = list
+        return pallet
+    }
     
-    struct ColorPalletID: Codable, Hashable {
-        private var prefix = "colorpallet"
-        private let idNumber: Int
-        private var id: String {
-            prefix + "-" + idNumber.description
-        }
-        
-        init(idNumber: Int) {
-            self.idNumber = idNumber
-        }
-        
-        func makeNextID() -> ColorPalletID {
-            ColorPalletID(idNumber: self.idNumber + 1)
-        }
+    
+    @objc dynamic var id: ColorPalletID? = nil
+    @objc dynamic var title: String = ""
+    @objc dynamic var image: Data? = nil
+    var annotationList = List<ColorPalletAnnotation>()
+    
+}
+
+class ColorPalletID: Object, Codable {
+    @objc dynamic var id: Int = 0
+    
+    override init() {
+        super.init()
+    }
+    
+    func makeNextID() -> ColorPalletID {
+        let id = ColorPalletID()
+        id.id = self.id + 1
+        return id
     }
 }
 

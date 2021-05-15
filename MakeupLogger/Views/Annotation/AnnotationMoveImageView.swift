@@ -31,7 +31,7 @@ class AnnotationMoveImageView<D: AnnotationMoveImageViewDelegate>: UIImageView {
         }
         
         delegate?.annotationMoveImageView(self,
-                                          didTouched: view.frame, and: view.annotation.id)
+                                          didTouched: view.frame, and: view.annotation.id!)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -51,8 +51,8 @@ class AnnotationMoveImageView<D: AnnotationMoveImageViewDelegate>: UIImageView {
             $0 as? AnnotationView<D.AnnotationType>
         }.forEach {
             let imageRect = self.imageRect()
-            $0.frame.origin = CGPoint(x: CGFloat($0.annotation.pointRatioOnImage.x) * imageRect.width + imageRect.minX,
-                                      y: CGFloat($0.annotation.pointRatioOnImage.y) * imageRect.height + imageRect.minY)
+            $0.frame.origin = CGPoint(x: CGFloat($0.annotation.pointRatioOnImage!.x) * imageRect.width + imageRect.minX,
+                                      y: CGFloat($0.annotation.pointRatioOnImage!.y) * imageRect.height + imageRect.minY)
         }
     }
     
@@ -69,7 +69,7 @@ class AnnotationMoveImageView<D: AnnotationMoveImageViewDelegate>: UIImageView {
         }
         if let id = id,
            let view = annotationViews.first(where: {
-            $0.annotation.id.id == id.id
+            $0.annotation.id!.id == id.id
         }) {
             view.backgroundColor = .green
         }

@@ -56,7 +56,7 @@ class MakeupLogRepositoryTests: XCTestCase {
             XCTAssertNil(log)
         }
         
-        faceAnnotation1.comment = Comment(text: "test")
+        faceAnnotation1.comment = "test"
         repository.updateFaceAnnotation(logID: logID,
                                         partID: partID,
                                         faceAnnotation: faceAnnotation1) { log in

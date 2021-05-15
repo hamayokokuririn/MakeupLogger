@@ -121,10 +121,10 @@ extension MakeupLogListViewModel: UITableViewDataSource {
         let cell = UITableViewCell()
         switch section {
         case .makeupLog:
-            cell.imageView?.image = makeupLogList[indexPath.row].image
+            cell.imageView?.image = UIImage(data: makeupLogList[indexPath.row].image!)
             cell.textLabel?.text = makeupLogList[indexPath.row].title
         case .colorPallet:
-            cell.imageView?.image = colorPalletList[indexPath.row].image
+            cell.imageView?.image = UIImage(data: colorPalletList[indexPath.row].image!)
             cell.textLabel?.text = colorPalletList[indexPath.row].title
         }
         return cell

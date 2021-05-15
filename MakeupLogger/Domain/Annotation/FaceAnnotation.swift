@@ -6,29 +6,36 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct FaceAnnotation: Annotation, Equatable {
-    
-    static func == (lhs: FaceAnnotation, rhs: FaceAnnotation) -> Bool {
-        lhs.id == rhs.id
+class FaceAnnotation: Object, Annotation {
+    override init() {
+        super.init()
     }
-    typealias ID = FAID
-    var id: FAID
-    let text: String
-    var pointRatioOnImage: PointRatio = .zero
-    var comment: Comment?
-    var selectedColorPalletID: ColorPallet.ColorPalletID? {
+    
+    typealias ID = FaceAnnotationID
+    @objc dynamic var id: FaceAnnotationID? = FaceAnnotationID()
+    @objc dynamic var text: String = ""
+    @objc dynamic var pointRatioOnImage: PointRatio? = .zero
+    @objc dynamic var comment: String? = nil
+    @objc dynamic var selectedColorPalletID: ColorPalletID? {
         didSet {
             self.selectedColorPalletAnnotationID = nil
         }
     }
-    var selectedColorPalletAnnotationID: ColorPalletAnnotation.CPID?
+    var selectedColorPalletAnnotationID: ColorPalletAnnotationID? = nil
     
-    struct FAID: AnnotationID, Equatable, Codable {
-        var id: Int = 0
-        
-        func makeNextAnnotationID() -> FAID {
-            FAID(id: id + 1)
-        }
+}
+
+class FaceAnnotationID: Object, AnnotationID {
+    override init() {
+        super.init()
+    }
+    
+    @objc dynamic var id: Int = 0
+    func makeNextAnnotationID() -> Self {
+        let id = FaceAnnotationID()
+        id.id = self.id + 1
+        return id as! Self
     }
 }

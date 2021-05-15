@@ -28,7 +28,7 @@ final class ColorPalletViewController: UIViewController {
     let viewModel: ColorPalletViewModel
     
     init(colorPallet: ColorPallet, repository: ColorPalletRepository) {
-        viewModel = ColorPalletViewModel(colorPalletID: colorPallet.id,
+        viewModel = ColorPalletViewModel(colorPalletID: colorPallet.id!,
                                          repository: repository)
         super.init(nibName: nil, bundle: nil)
         viewModel.completeAction = {

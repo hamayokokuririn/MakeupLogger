@@ -13,44 +13,70 @@ protocol ColorPalletRepository {
     func insertColorPallet(title: String,
                            image: UIImage,
                            completion: (ColorPallet?) -> Void)
-    func updateColorPallet(id: ColorPallet.ColorPalletID,
+    func updateColorPallet(id: ColorPalletID,
                            title: String,
                            image: UIImage,
                            completion: (ColorPallet?) -> Void)
-    func updateAnnotation(id: ColorPallet.ColorPalletID,
+    func updateAnnotation(id: ColorPalletID,
                           annotation: ColorPalletAnnotation,
                           completion: (ColorPallet?) -> Void)
-    func insertAnnotation(id: ColorPallet.ColorPalletID,
+    func insertAnnotation(id: ColorPalletID,
                           completion: (ColorPallet?) -> Void)
     
-    var cache: [ColorPallet.ColorPalletID: ColorPallet] { get }
+    var cache: [ColorPalletID: ColorPallet] { get }
 }
 
 class ColorPalletRepositoryInMemory: ColorPalletRepository {
     static let shared = ColorPalletRepositoryInMemory()
     
-    static let colorID1 = ColorPalletAnnotation.CPID(id: 1)
-    let colorID2 = ColorPalletAnnotation.CPID(id: 2)
-    let colorID3 = ColorPalletAnnotation.CPID(id: 3)
-    lazy var colorPalletAnnotation1 = ColorPalletAnnotation(id: Self.colorID1,
-                                                            text: "1",
-                                                            pointRatioOnImage: PointRatio(x: 0, y: 0))
-    lazy var colorPalletAnnotation2 = ColorPalletAnnotation(id: colorID2,
-                                                            text: "2",
-                                                            pointRatioOnImage: PointRatio(x: 0.3, y: 0))
-    lazy var colorPalletAnnotation3 = ColorPalletAnnotation(id: colorID3,
-                                                            text: "3",
-                                                            pointRatioOnImage: PointRatio(x: 0.6, y: 0))
-    static let id = ColorPallet.ColorPalletID(idNumber: 0)
-    lazy var colorPallet = ColorPallet(id: Self.id,
-                                       title: "color_pallet",
-                                       image: UIImage(named: "sample_color_pallet"),
-                                       annotationList: [colorPalletAnnotation1,
-                                                        colorPalletAnnotation2,
-                                                        colorPalletAnnotation3])
+    lazy var colorID1: ColorPalletAnnotationID = {
+        let id = ColorPalletAnnotationID()
+        id.id = 1
+        return id
+    }()
+    lazy var colorID2: ColorPalletAnnotationID = {
+        let id = ColorPalletAnnotationID()
+        id.id = 2
+        return id
+    }()
+    lazy var colorID3: ColorPalletAnnotationID = {
+        let id = ColorPalletAnnotationID()
+        id.id = 3
+        return id
+    }()
+    
+    lazy var colorPalletAnnotation1 = ColorPalletAnnotation.make(id: colorID1,
+                                                                 text: "1",
+                                                                 pointRatioOnImage: PointRatio())
+    lazy var colorPalletAnnotation2 = ColorPalletAnnotation.make(id: colorID2,
+                                                                 text: "2",
+                                                                 pointRatioOnImage: {
+                                                                    let ratio = PointRatio()
+                                                                    ratio.x = 0.3
+                                                                    return ratio
+                                                                 }())
+    lazy var colorPalletAnnotation3 = ColorPalletAnnotation.make(id: colorID3,
+                                                                 text: "3",
+                                                                 pointRatioOnImage: {
+                                                                    let ratio = PointRatio()
+                                                                    ratio.x = 0.6
+                                                                    return ratio
+                                                                 }())
+    lazy var colorPalletId: ColorPalletID = {
+        let id = ColorPalletID()
+        id.id = 0
+        return id
+    }()
+    
+    lazy var colorPallet = ColorPallet.make(id: colorPalletId,
+                                            title: "color_pallet",
+                                            image: UIImage(named: "sample_color_pallet")?.pngData(),
+                                            annotationList: [colorPalletAnnotation1,
+                                                             colorPalletAnnotation2,
+                                                             colorPalletAnnotation3])
     
     
-    lazy var cache: [ColorPallet.ColorPalletID : ColorPallet] = [colorPallet.id: colorPallet]
+    lazy var cache: [ColorPalletID : ColorPallet] = [colorPallet.id!: colorPallet]
     
     private var palletList: [ColorPallet] {
         cache.values.map {$0 as ColorPallet}
@@ -66,38 +92,39 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
                            image: UIImage,
                            completion: (ColorPallet?) -> Void) {
         if palletList.isEmpty {
-            let id = ColorPallet.ColorPalletID(idNumber: 0)
-            let pallet = ColorPallet(id: id,
-                                     title: title,
-                                     image: image,
-                                     annotationList: [])
+            let id = ColorPalletID()
+            id.id = 0
+            let pallet = ColorPallet.make(id: id,
+                                          title: title,
+                                          image: image.pngData()!,
+                                          annotationList: [])
             cache[id] = pallet
             completion(pallet)
             return
         }
-        let nextID = palletList.last!.id.makeNextID()
-        let pallet = ColorPallet(id: nextID,
-                                 title: title,
-                                 image: image,
-                                 annotationList: [])
+        let nextID = palletList.last!.id!.makeNextID()
+        let pallet = ColorPallet.make(id: nextID,
+                                      title: title,
+                                      image: image.pngData()!,
+                                      annotationList: [])
         cache[nextID] = pallet
         completion(pallet)
         notifyChanged()
     }
     
-    func updateColorPallet(id: ColorPallet.ColorPalletID, title: String, image: UIImage, completion: (ColorPallet?) -> Void) {
-        guard var pallet = cache[id] else {
+    func updateColorPallet(id: ColorPalletID, title: String, image: UIImage, completion: (ColorPallet?) -> Void) {
+        guard let pallet = cache[id] else {
             completion(nil)
             return
         }
         pallet.title = title
-        pallet.image = image
+        pallet.image = image.pngData()!
         cache[id] = pallet
         completion(pallet)
         notifyChanged()
     }
     
-    func updateAnnotation(id: ColorPallet.ColorPalletID, annotation: ColorPalletAnnotation, completion: (ColorPallet?) -> Void) {
+    func updateAnnotation(id: ColorPalletID, annotation: ColorPalletAnnotation, completion: (ColorPallet?) -> Void) {
         guard let colorPallet = cache[id] else {
             completion(nil)
             return
@@ -113,15 +140,16 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
         }
     }
     
-    func insertAnnotation(id: ColorPallet.ColorPalletID, completion: (ColorPallet?) -> Void) {
+    func insertAnnotation(id: ColorPalletID, completion: (ColorPallet?) -> Void) {
         guard let colorPallet = cache[id] else {
             completion(nil)
             return
         }
         let list = colorPallet.annotationList
         if list.isEmpty {
-            let annotationID = ColorPalletAnnotation.CPID(id: 0)
-            let annotation = ColorPalletAnnotation(id: annotationID,
+            let annotationID = ColorPalletAnnotationID()
+            annotationID.id = 0
+            let annotation = ColorPalletAnnotation.make(id: annotationID,
                                                    text: annotationID.id.description,
                                                    pointRatioOnImage: .zero)
             cache[id]?.annotationList.append(annotation)
@@ -129,10 +157,10 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
             notifyChanged()
             return
         }
-        let annotationID = list.last!.id.makeNextAnnotationID()
-        let annotation = ColorPalletAnnotation(id: annotationID,
-                                               text: annotationID.id.description,
-                                               pointRatioOnImage: .zero)
+        let annotationID = list.last!.id!.makeNextAnnotationID()
+        let annotation = ColorPalletAnnotation.make(id: annotationID,
+                                                    text: annotationID.id.description,
+                                                    pointRatioOnImage: .zero)
         cache[id]?.annotationList.append(annotation)
         completion(cache[id]!)
         

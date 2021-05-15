@@ -29,7 +29,7 @@ final class MakeupLogViewController: UIViewController {
     
     let viewModel: MakeupLogViewModel
     init(log: MakeupLog) {
-        self.viewModel = MakeupLogViewModel(logID: log.id)
+        self.viewModel = MakeupLogViewModel(logID: log.id!)
         super.init(nibName: nil, bundle: nil)
         
         viewModel.delegate = self

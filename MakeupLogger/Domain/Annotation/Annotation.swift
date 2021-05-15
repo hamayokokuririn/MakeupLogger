@@ -7,12 +7,13 @@
 
 import Foundation
 import CoreGraphics
+import RealmSwift
 
 protocol Annotation {
     associatedtype ID: AnnotationID
-    var id: ID { get }
+    var id: ID? { get }
     var text: String { get }
-    var pointRatioOnImage: PointRatio { get }
+    var pointRatioOnImage: PointRatio? { get }
 }
 
 protocol AnnotationID {
@@ -20,22 +21,23 @@ protocol AnnotationID {
     func makeNextAnnotationID() -> Self
 }
 
-struct PointRatio: Codable {
-    var x: Float
-    var y: Float
+class PointRatio: Object, Codable {
+    @objc dynamic var x: Float = 0
+    @objc dynamic var y: Float = 0
     
     static var zero: PointRatio {
-        PointRatio(x: 0, y: 0)
+        return PointRatio()
+    }
+        
+    override init() {
+        super.init()
     }
     
-    init(x: Float, y: Float) {
-        self.x = x
-        self.y = y
-    }
-    
-    init(parentViewSize: CGSize, annotationPoint: CGPoint) {
-        self.x = Float(annotationPoint.x / parentViewSize.width)
-        self.y = Float(annotationPoint.y / parentViewSize.height)
+    static func make(parentViewSize: CGSize, annotationPoint: CGPoint) -> PointRatio {
+        let ratio = PointRatio()
+        ratio.x = Float(annotationPoint.x / parentViewSize.width)
+        ratio.y = Float(annotationPoint.y / parentViewSize.height)
+        return ratio
     }
 }
 

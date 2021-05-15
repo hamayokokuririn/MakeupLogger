@@ -14,7 +14,7 @@ final class ColorPalletViewModel: NSObject {
         case imageMissing
     }
     
-    let colorPalletID: ColorPallet.ColorPalletID
+    let colorPalletID: ColorPalletID
     private let repository: ColorPalletRepository
     var title: String?
     var image: UIImage?
@@ -22,7 +22,7 @@ final class ColorPalletViewModel: NSObject {
     
     var completeAction: (() -> Void)?
     
-    init(colorPalletID: ColorPallet.ColorPalletID, repository: ColorPalletRepository) {
+    init(colorPalletID: ColorPalletID, repository: ColorPalletRepository) {
         self.colorPalletID = colorPalletID
         self.repository = repository
         
@@ -32,8 +32,12 @@ final class ColorPalletViewModel: NSObject {
                 $0.id == colorPalletID
             }) {
                 self.title = colorPallet.title
-                self.image = colorPallet.image
-                self.annotationList = colorPallet.annotationList
+                self.image = UIImage(data: colorPallet.image!)
+                var list = [ColorPalletAnnotation]()
+                colorPallet.annotationList.forEach {
+                    list.append($0)
+                }
+                self.annotationList = list
             }
         }
     }
@@ -42,7 +46,11 @@ final class ColorPalletViewModel: NSObject {
         repository.insertAnnotation(id: colorPalletID) { pallet in
             completion(pallet)
             if let pallet = pallet {
-                annotationList = pallet.annotationList
+                var list = [ColorPalletAnnotation]()
+                pallet.annotationList.forEach {
+                    list.append($0)
+                }
+                annotationList = list
             }
         }
     }
@@ -66,15 +74,15 @@ final class ColorPalletViewModel: NSObject {
             if let colorPallet = palletList.first(where: {
                 $0.id == colorPalletID
             }) {
-                guard let id = id as? ColorPalletAnnotation.CPID,
-                      var annotation = colorPallet.annotationList.first(where: {
+                guard let id = id as? ColorPalletAnnotationID,
+                      let annotation = colorPallet.annotationList.first(where: {
                         $0.id == id
                       }) else {return}
                 let rect = view.imageRect()
                 let point = CGPoint(x: annotationViewFrame.minX - rect.minX,
                                     y: annotationViewFrame.minY - rect.minY)
-                let pointRatio = PointRatio(parentViewSize: rect.size,
-                                            annotationPoint: point)
+                let pointRatio = PointRatio.make(parentViewSize: rect.size,
+                                                 annotationPoint: point)
                 annotation.pointRatioOnImage = pointRatio
                 repository.updateAnnotation(id: colorPalletID,
                                             annotation: annotation,

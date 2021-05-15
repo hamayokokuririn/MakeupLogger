@@ -8,8 +8,8 @@
 import Foundation
 
 struct AnnotationDetailViewModel {
-    let logID: MakeupLog.ID
-    let facePartID: FacePart.ID
+    let logID: MakeupLogID
+    let facePartID: FacePartID
     var annotation: FaceAnnotation
     let makeupLogRepository: MakeupLogRepository
     let colorPalletRepository: ColorPalletRepository
@@ -18,7 +18,7 @@ struct AnnotationDetailViewModel {
     var didFinishUpdateColorPallet: ((ColorPallet) -> Void)?
     
     mutating func setComment(_ text: String) {
-        annotation.comment = Comment(text: text)
+        annotation.comment = text
     }
     
     func getColorPallet(completion: (ColorPallet) -> Void) {
@@ -41,7 +41,7 @@ struct AnnotationDetailViewModel {
     }
     
     mutating func updateSelectedAnnotation(id: AnnotationID) {
-        annotation.selectedColorPalletAnnotationID = id as? ColorPalletAnnotation.CPID
+        annotation.selectedColorPalletAnnotationID = id as? ColorPalletAnnotationID
         makeupLogRepository.updateFaceAnnotation(logID: logID,
                                                  partID: facePartID,
                                                  faceAnnotation: annotation) { _ in

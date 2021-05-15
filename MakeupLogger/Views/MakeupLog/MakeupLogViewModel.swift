@@ -17,7 +17,7 @@ protocol MakeupLogViewModelDelegate: AnyObject {
 final class MakeupLogViewModel: NSObject {
     enum ViewState {
         case face
-        case part(partID: FacePart.ID)
+        case part(partID: FacePartID)
     }
     
     var state: ViewState = .face {
@@ -43,12 +43,12 @@ final class MakeupLogViewModel: NSObject {
     weak var delegate: MakeupLogViewModelDelegate? = nil
     
     lazy var tableViewAdapter = CommentListAdapter(delegate: self)
-    let logID: MakeupLog.ID
+    let logID: MakeupLogID
     let makeupLogRepository: MakeupLogRepository
     let colorPalletRepository: ColorPalletRepository
     
     
-    init(logID: MakeupLog.ID,
+    init(logID: MakeupLogID,
          makeupLogRepository: MakeupLogRepository = MakeupLogRepositoryInMemory.shared,
          colorPalletRepository: ColorPalletRepository = ColorPalletRepositoryInMemory.shared
          ) {
@@ -84,14 +84,14 @@ final class MakeupLogViewModel: NSObject {
                 $0.id == logID
             }) else {return}
             for part in log.partsList {
-                let action = UIAction(title: (part.id.idNumber + 1).description,
+                let action = UIAction(title: (part.id!.id + 1).description,
                                       image: nil,
                                       identifier: nil,
                                       discoverabilityTitle: nil,
                                       attributes: .destructive,
                                       state: .off) { _ in
                     print(part.type)
-                    self.state = .part(partID: part.id)
+                    self.state = .part(partID: part.id!)
                 }
                 list.append(action)
             }
@@ -119,7 +119,7 @@ final class MakeupLogViewModel: NSObject {
     
     func addPicture(type: String, image: UIImage) {
         makeupLogRepository.insertFacePart(logID: logID, type: type, image: image) { (log) in
-            self.state = .part(partID: log!.partsList.last!.id)
+            self.state = .part(partID: log!.partsList.last!.id!)
         }
     }
 }
@@ -139,13 +139,13 @@ extension MakeupLogViewModel: UICollectionViewDataSource {
         if indexPath.row == 0 {
             let image = UIImageView()
             cell.contentView.addSubview(image)
-            image.image = makeupLogRepository.logMap[logID]!.image
+            image.image = UIImage(data: makeupLogRepository.logMap[logID]!.image!)
             image.frame.size = cell.frame.size
             image.contentMode = .scaleAspectFit
             return cell
         }
         let part = makeupLogRepository.logMap[logID]!.partsList[indexPath.row - 1]
-        let view = AnnotationMoveImageView<Self>(image: part.image)
+        let view = AnnotationMoveImageView<Self>(image: UIImage(data: part.image!)!)
         view.isUserInteractionEnabled = true
         view.frame.size = cell.frame.size
         view.contentMode = .scaleAspectFit
@@ -166,7 +166,11 @@ extension MakeupLogViewModel: CommentListAdapterDelegate {
     func commentListAdapterAnnotationList(_ adapter: CommentListAdapter) -> [FaceAnnotation] {
         if case .part(let partID) = state,
            let part = makeupLogRepository.logMap[logID]!.partsList.first(where: {$0.id == partID}) {
-            return part.annotations
+            var annotations = [FaceAnnotation]()
+            part.annotations.forEach {
+                annotations.append($0)
+            }
+            return annotations
         }
         return []
     }
@@ -191,13 +195,13 @@ extension MakeupLogViewModel: AnnotationMoveImageViewDelegate {
     func annotationMoveImageView(_ view: AnnotationMoveImageView<MakeupLogViewModel>, didTouched annotationViewFrame: CGRect, and id: AnnotationID) {
         if case .part(let partID) = state,
            let part = makeupLogRepository.logMap[logID]!.partsList.first(where: {$0.id == partID}),
-           let faceID = id as? FaceAnnotation.FAID,
-           var faceAnnotation = part.annotations.first(where: {$0.id == faceID}) {
+           let faceID = id as? FaceAnnotationID,
+           let faceAnnotation = part.annotations.first(where: {$0.id == faceID}) {
             let imageViewRect = view.imageRect()
             let point = CGPoint(x: annotationViewFrame.minX - imageViewRect.minX,
                                 y: annotationViewFrame.minY - imageViewRect.minY)
-            let pointRatio = PointRatio(parentViewSize: imageViewRect.size,
-                                        annotationPoint: point)
+            let pointRatio = PointRatio.make(parentViewSize: imageViewRect.size,
+                                             annotationPoint: point)
             faceAnnotation.pointRatioOnImage = pointRatio
             touchEnded(annotation: faceAnnotation)
         }

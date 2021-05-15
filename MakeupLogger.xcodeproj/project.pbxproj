@@ -40,6 +40,9 @@
 		24B112A325A9576300EE8DEA /* MakeupLoggerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B112A225A9576300EE8DEA /* MakeupLoggerUITests.swift */; };
 		24B112BC25B1A54A00EE8DEA /* CommentListAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B112BB25B1A54A00EE8DEA /* CommentListAdapter.swift */; };
 		24B112CA25B2D70100EE8DEA /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B112C925B2D70100EE8DEA /* Annotation.swift */; };
+		24BD230D264FDC350045C729 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BD230B264FDC350045C729 /* RealmSwift.framework */; };
+		24BD230F264FDC350045C729 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BD230C264FDC350045C729 /* Realm.framework */; };
+		24CA18F3263B93DB00DD2B9E /* RealmDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CA18F2263B93DB00DD2B9E /* RealmDatabase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +102,13 @@
 		24B112A425A9576300EE8DEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		24B112BB25B1A54A00EE8DEA /* CommentListAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentListAdapter.swift; sourceTree = "<group>"; };
 		24B112C925B2D70100EE8DEA /* Annotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
+		24BD230B264FDC350045C729 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
+		24BD230C264FDC350045C729 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
+		24CA18F2263B93DB00DD2B9E /* RealmDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDatabase.swift; sourceTree = "<group>"; };
+		24CA18F426425E8600DD2B9E /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = ../../Downloads/Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
+		24CA18F526425E8600DD2B9E /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = ../../Downloads/Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
+		24F7A722263AD56D000039AB /* RealmSwift.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = RealmSwift.xcframework; path = Carthage/Build/RealmSwift.xcframework; sourceTree = "<group>"; };
+		24F7A729263B841C000039AB /* Realm.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Realm.xcframework; path = Carthage/Build/Realm.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +116,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24BD230F264FDC350045C729 /* Realm.framework in Frameworks */,
+				24BD230D264FDC350045C729 /* RealmSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -165,6 +177,7 @@
 			children = (
 				242447B925E0A625002290F2 /* MakeupLogRepository.swift */,
 				2409D2932610837E00A3C995 /* ColorPalletRepository.swift */,
+				24CA18F2263B93DB00DD2B9E /* RealmDatabase.swift */,
 			);
 			path = DataStore;
 			sourceTree = "<group>";
@@ -247,6 +260,7 @@
 				24B1129625A9576300EE8DEA /* MakeupLoggerTests */,
 				24B112A125A9576300EE8DEA /* MakeupLoggerUITests */,
 				24B1127E25A9576100EE8DEA /* Products */,
+				24F7A721263AD56D000039AB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -307,6 +321,19 @@
 			path = Domain;
 			sourceTree = "<group>";
 		};
+		24F7A721263AD56D000039AB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				24CA18F426425E8600DD2B9E /* Realm.framework */,
+				24BD230C264FDC350045C729 /* Realm.framework */,
+				24CA18F526425E8600DD2B9E /* RealmSwift.framework */,
+				24BD230B264FDC350045C729 /* RealmSwift.framework */,
+				24F7A729263B841C000039AB /* Realm.xcframework */,
+				24F7A722263AD56D000039AB /* RealmSwift.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -317,6 +344,7 @@
 				24B1127925A9576100EE8DEA /* Sources */,
 				24B1127A25A9576100EE8DEA /* Frameworks */,
 				24B1127B25A9576100EE8DEA /* Resources */,
+				24CA18FB26425F2200DD2B9E /* carthage */,
 			);
 			buildRules = (
 			);
@@ -431,6 +459,29 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		24CA18FB26425F2200DD2B9E /* carthage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Realm.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/RealmSwift.framework",
+			);
+			name = carthage;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/usr/local/bin/carthage copy-frameworks\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		24B1127925A9576100EE8DEA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -446,6 +497,7 @@
 				2446ED1D25D54790005BD9F3 /* AnnotationMoveImageView.swift in Sources */,
 				2446ED2A25D893E4005BD9F3 /* AnnotationDetailViewController.swift in Sources */,
 				242447BA25E0A625002290F2 /* MakeupLogRepository.swift in Sources */,
+				24CA18F3263B93DB00DD2B9E /* RealmDatabase.swift in Sources */,
 				242447CB25E0F3BB002290F2 /* MakeupLogViewModel.swift in Sources */,
 				2446ED2625D77A28005BD9F3 /* ColorPallet.swift in Sources */,
 				242447BC25E0EB65002290F2 /* FaceAnnotation.swift in Sources */,
@@ -635,6 +687,10 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 39WWX2FY3V;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = MakeupLogger/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -657,6 +713,10 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 39WWX2FY3V;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = MakeupLogger/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (

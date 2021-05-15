@@ -23,7 +23,7 @@ final class AnnotationDetailViewController: UIViewController {
         
     private let changeColorPalletButton: UIButton = .init()
     
-    init(logID: MakeupLog.ID, facePartID: FacePart.ID, annotation: FaceAnnotation, makeupLogRepository: MakeupLogRepository, colorPalletRepository: ColorPalletRepository) {
+    init(logID: MakeupLogID, facePartID: FacePartID, annotation: FaceAnnotation, makeupLogRepository: MakeupLogRepository, colorPalletRepository: ColorPalletRepository) {
         self.viewModel = AnnotationDetailViewModel(logID: logID, facePartID: facePartID, annotation: annotation, makeupLogRepository: makeupLogRepository, colorPalletRepository: colorPalletRepository)
         super.init(nibName: nil, bundle: nil)
         
@@ -34,7 +34,7 @@ final class AnnotationDetailViewController: UIViewController {
         commentTitle.text = "Comment"
         
         view.addSubview(textView)
-        textView.text = annotation.comment?.text
+        textView.text = annotation.comment
         textView.backgroundColor = .systemGray6
         textView.delegate = self
         textView.returnKeyType = .done
@@ -79,7 +79,7 @@ final class AnnotationDetailViewController: UIViewController {
     
     private func setupColorPallet(colorPallet: ColorPallet) {
         selectedColorPalletName.text = colorPallet.title
-        colorPalletImage.image = colorPallet.image
+        colorPalletImage.image = UIImage(data: colorPallet.image!)
         colorPalletImage.subviews.forEach {
             $0.removeFromSuperview()
         }

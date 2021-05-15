@@ -6,7 +6,5 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct Comment: Codable {
-    var text: String = ""
-}
