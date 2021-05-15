@@ -29,9 +29,8 @@ final class MakeupLogListViewController: UIViewController {
         }
         
         viewModel.didSelectLog = { log in
-//            let vc = MakeupLogViewController(log: log)
-//            self.navigationController?.pushViewController(vc, animated: true)
-            print(TodoRealmDatabase.shared.select(title: "kengo2").title)
+            let vc = MakeupLogViewController(log: log)
+            self.navigationController?.pushViewController(vc, animated: true)
         }
         
         viewModel.didSelectColorPallet = {
@@ -72,9 +71,7 @@ final class MakeupLogListViewController: UIViewController {
     }
     
     @objc private func didPushAddButton() {
-//        viewModel.showAlert(presenter: self)
-        TodoRealmDatabase.shared.addTodoItem(title: "kengo2")
-        
+        viewModel.showAlert(presenter: self)
     }
     
     private func addNewMakeupLog() {
