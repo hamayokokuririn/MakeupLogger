@@ -82,11 +82,9 @@ class MakeupLogRealmRepository: MakeupLogRepository {
             return
         }
         
-        let partsList = log.partsList
-        partsList[index] = part
         do {
             try realm.write {
-                realm.create(MakeupLog.self, value: ["partsList": partsList], update: .all)
+                log.partsList[index] = part
             }
         } catch {
             print(#function + "updateFaceParts")

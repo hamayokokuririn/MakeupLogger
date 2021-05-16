@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import RealmSwift
 
 protocol ColorPalletRepository {
     func getColorPalletList(completion: ([ColorPallet]) -> Void)
@@ -24,6 +25,140 @@ protocol ColorPalletRepository {
                           completion: (ColorPallet?) -> Void)
     
     var cache: [ColorPalletID: ColorPallet] { get }
+}
+
+class ColorPalletRealmRepository: ColorPalletRepository {
+    
+    private var realm: Realm!
+    
+    static let shared = ColorPalletRealmRepository()
+    private init() {
+        var config = Realm.Configuration.init()
+        config.schemaVersion = 0
+        realm = try! Realm(configuration: config)
+    }
+    
+    var cache: [ColorPalletID : ColorPallet] {
+        get {
+            let result = realm.objects(ColorPallet.self).map { $0 }
+            let array = Array(result)
+            var dic = [ColorPalletID : ColorPallet]()
+            array.forEach {
+                dic[$0.id!] = $0
+            }
+            return dic
+        }
+        
+    }
+    
+    func getColorPalletList(completion: ([ColorPallet]) -> Void) {
+        let result = realm.objects(ColorPallet.self).map { $0 }
+        let array = Array(result)
+        completion(array)
+    }
+    
+    func insertColorPallet(title: String, image: UIImage, completion: (ColorPallet?) -> Void) {
+        let result = realm.objects(ColorPallet.self).map { $0 }
+        let array = Array(result)
+        if array.isEmpty {
+            let id = ColorPalletID()
+            id.id = 0
+            let pallet = ColorPallet.make(id: id,
+                                          title: title,
+                                          image: image.pngData()!,
+                                          annotationList: [])
+            realm.add(pallet)
+            completion(pallet)
+            notifyChanged()
+            return
+        }
+        let nextID = array.last!.id!.makeNextID()
+        let pallet = ColorPallet.make(id: nextID,
+                                      title: title,
+                                      image: image.pngData()!,
+                                      annotationList: [])
+        realm.add(pallet)
+        completion(pallet)
+        notifyChanged()
+    }
+    
+    func updateColorPallet(id: ColorPalletID, title: String, image: UIImage, completion: (ColorPallet?) -> Void) {
+        guard let pallet = cache[id] else {
+            completion(nil)
+            return
+        }
+        do {
+            try realm.write {
+                pallet.title = title
+                pallet.image = image.pngData()!
+            }
+        } catch {
+            print(#function + "update failed")
+        }
+        completion(pallet)
+        notifyChanged()
+    }
+    
+    func updateAnnotation(id: ColorPalletID, annotation: ColorPalletAnnotation, completion: (ColorPallet?) -> Void) {
+        guard let pallet = cache[id],
+              let index = pallet.annotationList.firstIndex(where: {
+                $0.id == annotation.id
+              }) else {
+            completion(nil)
+            return
+        }
+        do {
+            try realm.write {
+                pallet.annotationList[index] = annotation
+            }
+        } catch {
+            print(#function + "update failed")
+        }
+        completion(pallet)
+        notifyChanged()
+    }
+    
+    func insertAnnotation(id: ColorPalletID, completion: (ColorPallet?) -> Void) {
+        guard let pallet = cache[id] else {
+            completion(nil)
+            return
+        }
+        let list = pallet.annotationList
+        if list.isEmpty {
+            let annotationID = ColorPalletAnnotationID()
+            annotationID.id = 0
+            let annotation = ColorPalletAnnotation.make(id: annotationID,
+                                                   text: annotationID.id.description,
+                                                   pointRatioOnImage: .zero)
+            do {
+                try realm.write {
+                    pallet.annotationList.append(annotation)
+                }
+            } catch {
+                print(#function + "insert failed")
+            }
+            completion(pallet)
+            notifyChanged()
+            return
+        }
+        let annotationID = list.last!.id!.makeNextAnnotationID()
+        let annotation = ColorPalletAnnotation.make(id: annotationID,
+                                                    text: annotationID.id.description,
+                                                    pointRatioOnImage: .zero)
+        do {
+            try realm.write {
+                pallet.annotationList.append(annotation)
+            }
+        } catch {
+            print(#function + "insert failed")
+        }
+        completion(pallet)
+        notifyChanged()
+    }
+    
+    private func notifyChanged() {
+        NotificationCenter.default.post(name: .didColorPalletUpdate, object: nil)
+    }
 }
 
 class ColorPalletRepositoryInMemory: ColorPalletRepository {
