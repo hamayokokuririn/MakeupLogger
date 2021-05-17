@@ -52,24 +52,32 @@ class MakeupLogRealmRepository: MakeupLogRepository {
         }
         let result = realm.objects(MakeupLog.self).map { $0 }
         let array = Array(result)
+        let log: MakeupLog
         if array.isEmpty {
             let id = MakeupLogID(id: 0)
-            let log = MakeupLog.make(id: id,
+            log = MakeupLog.make(id: id,
                                      title: title,
                                      body: body,
                                      image: image.pngData()!,
                                      partsList: [])
-            realm.add(log)
-            completion(log)
+        } else {
+            let nextID = array.last!.id!.makeNextID()
+            log = MakeupLog.make(id: nextID,
+                                title: title,
+                                body: body,
+                                image: image.pngData()!,
+                                partsList: [])
         }
-        let nextID = array.last!.id!.makeNextID()
-        let log = MakeupLog.make(id: nextID,
-                            title: title,
-                            body: body,
-                            image: image.pngData()!,
-                            partsList: [])
-        realm.add(log)
-        completion(log)
+        
+        do {
+            try realm.write {
+                realm.add(log)
+                completion(log)
+            }
+        } catch {
+            print(#function + "insert failed")
+            completion(nil)
+        }
     }
     
     func updateFacePart(logID: MakeupLogID, part: FacePart, completion: (MakeupLog?) -> Void) {
@@ -85,12 +93,13 @@ class MakeupLogRealmRepository: MakeupLogRepository {
         do {
             try realm.write {
                 log.partsList[index] = part
+                completion(log)
+                notifyChanged()
             }
         } catch {
             print(#function + "updateFaceParts")
+            completion(nil)
         }
-        completion(log)
-        notifyChanged()
     }
     
     func insertFacePart(logID: MakeupLogID, type: String, image: UIImage, completion: (MakeupLog?) -> Void) {

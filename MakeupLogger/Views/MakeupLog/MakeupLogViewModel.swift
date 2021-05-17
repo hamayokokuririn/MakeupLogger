@@ -49,9 +49,8 @@ final class MakeupLogViewModel: NSObject {
     
     
     init(logID: MakeupLogID,
-         makeupLogRepository: MakeupLogRepository = MakeupLogRepositoryInMemory.shared,
-         colorPalletRepository: ColorPalletRepository = ColorPalletRepositoryInMemory.shared
-         ) {
+         makeupLogRepository: MakeupLogRepository,
+         colorPalletRepository: ColorPalletRepository) {
         self.logID = logID
         self.makeupLogRepository = makeupLogRepository
         self.colorPalletRepository = colorPalletRepository

@@ -29,7 +29,9 @@ final class MakeupLogListViewController: UIViewController {
         }
         
         viewModel.didSelectLog = { log in
-            let vc = MakeupLogViewController(log: log)
+            let vc = MakeupLogViewController(log: log,
+                                             makeupLogRepository: makeupLogRepository,
+                                             colorPalletRepository: colorPalletRepository)
             self.navigationController?.pushViewController(vc, animated: true)
         }
         

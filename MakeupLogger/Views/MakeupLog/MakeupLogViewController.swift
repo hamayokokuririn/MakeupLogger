@@ -28,8 +28,12 @@ final class MakeupLogViewController: UIViewController {
     let alert = TakePhotoAlert()
     
     let viewModel: MakeupLogViewModel
-    init(log: MakeupLog) {
-        self.viewModel = MakeupLogViewModel(logID: log.id!)
+    init(log: MakeupLog,
+         makeupLogRepository: MakeupLogRepository,
+         colorPalletRepository: ColorPalletRepository) {
+        self.viewModel = MakeupLogViewModel(logID: log.id!,
+                                            makeupLogRepository: makeupLogRepository,
+                                            colorPalletRepository: colorPalletRepository)
         super.init(nibName: nil, bundle: nil)
         
         viewModel.delegate = self

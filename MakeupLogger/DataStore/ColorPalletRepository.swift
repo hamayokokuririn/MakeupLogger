@@ -60,10 +60,11 @@ class ColorPalletRealmRepository: ColorPalletRepository {
     func insertColorPallet(title: String, image: UIImage, completion: (ColorPallet?) -> Void) {
         let result = realm.objects(ColorPallet.self).map { $0 }
         let array = Array(result)
+        let pallet: ColorPallet
         if array.isEmpty {
             let id = ColorPalletID()
             id.id = 0
-            let pallet = ColorPallet.make(id: id,
+            pallet = ColorPallet.make(id: id,
                                           title: title,
                                           image: image.pngData()!,
                                           annotationList: [])
@@ -71,15 +72,24 @@ class ColorPalletRealmRepository: ColorPalletRepository {
             completion(pallet)
             notifyChanged()
             return
+        } else {
+            let nextID = array.last!.id!.makeNextID()
+            pallet = ColorPallet.make(id: nextID,
+                                          title: title,
+                                          image: image.pngData()!,
+                                          annotationList: [])
         }
-        let nextID = array.last!.id!.makeNextID()
-        let pallet = ColorPallet.make(id: nextID,
-                                      title: title,
-                                      image: image.pngData()!,
-                                      annotationList: [])
-        realm.add(pallet)
-        completion(pallet)
-        notifyChanged()
+        
+        do {
+            try realm.write {
+                realm.add(pallet)
+                completion(pallet)
+                notifyChanged()
+            }
+        } catch {
+            print(#function + "insert failed")
+            completion(nil)
+        }
     }
     
     func updateColorPallet(id: ColorPalletID, title: String, image: UIImage, completion: (ColorPallet?) -> Void) {
@@ -91,12 +101,14 @@ class ColorPalletRealmRepository: ColorPalletRepository {
             try realm.write {
                 pallet.title = title
                 pallet.image = image.pngData()!
+                completion(pallet)
+                notifyChanged()
             }
         } catch {
             print(#function + "update failed")
+            completion(nil)
         }
-        completion(pallet)
-        notifyChanged()
+        
     }
     
     func updateAnnotation(id: ColorPalletID, annotation: ColorPalletAnnotation, completion: (ColorPallet?) -> Void) {

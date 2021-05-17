@@ -139,8 +139,8 @@ final class AnnotationDetailViewController: UIViewController {
     
     @objc private func didPushChangeColorPalletButton() {
         let vc = MakeupLogListViewController(mode: .selectColorPallet,
-                                             makeupLogRepository: MakeupLogRepositoryInMemory.shared,
-                                             colorPalletRepository: ColorPalletRepositoryInMemory.shared)
+                                             makeupLogRepository: viewModel.makeupLogRepository,
+                                             colorPalletRepository: viewModel.colorPalletRepository)
         vc.viewModel.didSelectColorPallet = { colorPallet in
             self.viewModel.updateSelectedColorPallet(colorPallet: colorPallet)
             self.navigationController?.popViewController(animated: true)
