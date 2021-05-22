@@ -32,6 +32,13 @@ class ColorPallet: Object {
     @objc dynamic var image: Data? = nil
     var annotationList = List<ColorPalletAnnotation>()
     
+    override func isEqual(_ object: Any?) -> Bool {
+        guard let pallet = object as? ColorPallet else {
+            return false
+        }
+        return pallet.id == self.id
+    }
+    
 }
 
 class ColorPalletID: Object, Codable {
@@ -45,6 +52,13 @@ class ColorPalletID: Object, Codable {
         let id = ColorPalletID()
         id.id = self.id + 1
         return id
+    }
+    
+    override func isEqual(_ object: Any?) -> Bool {
+        guard let objectID = object as? ColorPalletID else {
+            return false
+        }
+        return self.id == objectID.id
     }
 }
 

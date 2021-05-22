@@ -27,6 +27,12 @@ class ColorPalletAnnotation: Object, Annotation {
     @objc dynamic var text: String = ""
     @objc dynamic var pointRatioOnImage: PointRatio? = .zero
     
+    override func isEqual(_ object: Any?) -> Bool {
+        guard let annotation = object as? ColorPalletAnnotation else {
+            return false
+        }
+        return self.id == annotation.id
+    }
 }
 
 class ColorPalletAnnotationID: Object, AnnotationID, Codable {
@@ -35,5 +41,12 @@ class ColorPalletAnnotationID: Object, AnnotationID, Codable {
         let id = ColorPalletAnnotationID()
         id.id = self.id + 1
         return id as! Self
+    }
+    
+    override func isEqual(_ object: Any?) -> Bool {
+        guard let objectID = object as? ColorPalletAnnotationID else {
+            return false
+        }
+        return self.id == objectID.id
     }
 }

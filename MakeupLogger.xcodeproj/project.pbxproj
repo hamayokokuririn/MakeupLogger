@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		24014B252652BAB100786076 /* FacePart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24014B242652BAB100786076 /* FacePart.swift */; };
 		2409D2942610837E00A3C995 /* ColorPalletRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2409D2932610837E00A3C995 /* ColorPalletRepository.swift */; };
 		240BCD8B2621CAC70032814B /* NotificationName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 240BCD8A2621CAC70032814B /* NotificationName.swift */; };
 		2417377E2619FD3A0040DDF2 /* AddNewColorPalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2417377D2619FD3A0040DDF2 /* AddNewColorPalletViewController.swift */; };
@@ -62,6 +63,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		24014B242652BAB100786076 /* FacePart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacePart.swift; sourceTree = "<group>"; };
 		2409D2932610837E00A3C995 /* ColorPalletRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalletRepository.swift; sourceTree = "<group>"; };
 		240BCD8A2621CAC70032814B /* NotificationName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationName.swift; sourceTree = "<group>"; };
 		2417377D2619FD3A0040DDF2 /* AddNewColorPalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewColorPalletViewController.swift; sourceTree = "<group>"; };
@@ -314,6 +316,7 @@
 				242447BD25E0EB7C002290F2 /* Annotation */,
 				2446ED2525D77A28005BD9F3 /* ColorPallet.swift */,
 				242447C025E0EBEA002290F2 /* MakeupLog.swift */,
+				24014B242652BAB100786076 /* FacePart.swift */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -522,6 +525,7 @@
 				24B1128325A9576100EE8DEA /* SceneDelegate.swift in Sources */,
 				241737802619FD9C0040DDF2 /* AddNewColorPalletViewModel.swift in Sources */,
 				242447C925E0F398002290F2 /* MakeupLogViewController.swift in Sources */,
+				24014B252652BAB100786076 /* FacePart.swift in Sources */,
 				240BCD8B2621CAC70032814B /* NotificationName.swift in Sources */,
 				242447BF25E0EB9A002290F2 /* ColorPalletAnnotation.swift in Sources */,
 				2446ED2225D774D5005BD9F3 /* CommentCell.swift in Sources */,

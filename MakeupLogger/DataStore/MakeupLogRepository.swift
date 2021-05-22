@@ -46,6 +46,16 @@ class MakeupLogRealmRepository: MakeupLogRepository {
         completion(array)
     }
     
+    func compressData(image: UIImage) -> Data? {
+        guard let count = image.pngData()?.count else {
+            return nil
+        }
+        if count > 1 * 1024 * 1024 {
+            return image.jpegData(compressionQuality: 0.5)
+        }
+        return image.pngData()
+    }
+    
     func insertMakeupLog(title: String, body: String?, image: UIImage, completion: (MakeupLog?) -> Void) {
         defer {
             notifyChanged()
@@ -58,14 +68,14 @@ class MakeupLogRealmRepository: MakeupLogRepository {
             log = MakeupLog.make(id: id,
                                      title: title,
                                      body: body,
-                                     image: image.pngData()!,
+                                     image: compressData(image: image)!,
                                      partsList: [])
         } else {
             let nextID = array.last!.id!.makeNextID()
             log = MakeupLog.make(id: nextID,
                                 title: title,
                                 body: body,
-                                image: image.pngData()!,
+                                image: compressData(image: image)!,
                                 partsList: [])
         }
         
@@ -105,7 +115,8 @@ class MakeupLogRealmRepository: MakeupLogRepository {
     func insertFacePart(logID: MakeupLogID, type: String, image: UIImage, completion: (MakeupLog?) -> Void) {
         let result = realm.objects(MakeupLog.self).map { $0 }
         let array = Array(result)
-        guard let log = array.first(where: {$0.id == logID}) else {
+        guard let log = array.first(where: {$0.id == logID}),
+              let data = compressData(image: image) else {
             completion(nil)
             return
         }
@@ -116,12 +127,18 @@ class MakeupLogRealmRepository: MakeupLogRepository {
         } else {
             nextID = log.partsList.last!.id!.makeNextID()
         }
-        let part = FacePart.make(id: nextID, type: type, image: image.pngData()!,
-                            annotations: [])
-        updateFacePart(logID: logID, part: part, completion: { log in
-            completion(log)
-            notifyChanged()
-        })
+        let part = FacePart.make(id: nextID,
+                                 type: type,
+                                 image: data,
+                                 annotations: [])
+        do {
+            try realm.write {
+                log.partsList.append(part)
+            }
+        } catch {
+            print(#function + "パーツ追加失敗")
+            fatalError()
+        }
     }
     
     func updateFaceAnnotation(logID: MakeupLogID, partID: FacePartID, faceAnnotation: FaceAnnotation, completion: (MakeupLog?) -> Void) {

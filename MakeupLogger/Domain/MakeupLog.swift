@@ -18,7 +18,7 @@ class MakeupLog: Object {
         log.id = id
         log.title = title
         log.body = body
-        log.image = image
+        log.imagePath = image
         let list = List<FacePart>()
         partsList.forEach {
             list.append($0)
@@ -30,9 +30,15 @@ class MakeupLog: Object {
     @objc dynamic var id: MakeupLogID? = nil
     @objc dynamic var title: String = ""
     @objc dynamic var body: String? = nil
-    @objc dynamic var image: Data? = nil
+    @objc dynamic var imagePath: Data? = nil
     var partsList: List<FacePart> = List<FacePart>()
     
+    override func isEqual(_ object: Any?) -> Bool {
+        guard let log = object as? MakeupLog else {
+            return false
+        }
+        return self.id == log.id
+    }
 }
 
 class MakeupLogID: Object {
@@ -51,50 +57,11 @@ class MakeupLogID: Object {
     func makeNextID() -> MakeupLogID {
         MakeupLogID(id: self.id + 1)
     }
-}
-
-class FacePart: Object {
-    override init() {
-        super.init()
-    }
     
-    static func make(id: FacePartID, type: String, image: Data, annotations: [FaceAnnotation]) -> FacePart {
-        let part = FacePart()
-        part.id = id
-        part.type = type
-        part.image = image
-        let list = List<FaceAnnotation>()
-        annotations.forEach { list.append($0)}
-        part.annotations = list
-        return part
-    }
-    
-    @objc dynamic var id: FacePartID? = nil
-    @objc dynamic var type: String = ""
-    @objc dynamic var image: Data? = nil
-    var annotations: List<FaceAnnotation> = List<FaceAnnotation>()
-    
-    static func == (lhs: FacePart, rhs: FacePart) -> Bool {
-        return lhs.id == rhs.id
-    }
-    
-    func makeNextFaceAnnotationID() -> FaceAnnotationID {
-        if annotations.isEmpty {
-            return FaceAnnotationID()
+    override func isEqual(_ object: Any?) -> Bool {
+        guard let objectID = object as? MakeupLogID else {
+            return false
         }
-        return annotations.last!.id!.makeNextAnnotationID()
-    }
-}
-
-class FacePartID: Object {
-    @objc dynamic var id: Int = 0
-    override init() {
-        super.init()
-    }
-    
-    func makeNextID() -> FacePartID {
-        let id = FacePartID()
-        id.id = self.id + 1
-        return id
+        return self.id == objectID.id
     }
 }

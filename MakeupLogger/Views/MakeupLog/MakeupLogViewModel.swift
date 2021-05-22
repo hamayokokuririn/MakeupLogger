@@ -118,14 +118,19 @@ final class MakeupLogViewModel: NSObject {
     
     func addPicture(type: String, image: UIImage) {
         makeupLogRepository.insertFacePart(logID: logID, type: type, image: image) { (log) in
-            self.state = .part(partID: log!.partsList.last!.id!)
+            guard let log = log else {
+                print(#function + "画像追加失敗")
+                return
+            }
+            self.state = .part(partID: log.partsList.last!.id!)
         }
     }
 }
 
 extension MakeupLogViewModel: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return makeupLogRepository.logMap[logID]!.partsList.count + 1
+//        return makeupLogRepository.logMap[logID]!.partsList.count + 1
+        1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -138,7 +143,7 @@ extension MakeupLogViewModel: UICollectionViewDataSource {
         if indexPath.row == 0 {
             let image = UIImageView()
             cell.contentView.addSubview(image)
-            image.image = UIImage(data: makeupLogRepository.logMap[logID]!.image!)
+            image.image = UIImage(data: makeupLogRepository.logMap[logID]!.imagePath!)
             image.frame.size = cell.frame.size
             image.contentMode = .scaleAspectFit
             return cell
