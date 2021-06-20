@@ -143,23 +143,27 @@ extension MakeupLogViewModel: UICollectionViewDataSource {
         if indexPath.row == 0 {
             let image = UIImageView()
             cell.contentView.addSubview(image)
-            image.image = UIImage(data: makeupLogRepository.logMap[logID]!.imagePath!)
+            if let imageData = MakeupLogRepositoryInMemory.imageData(imagePath: makeupLogRepository.logMap[logID]!.imagePath) {
+                image.image = UIImage(data: imageData)
+            }
             image.frame.size = cell.frame.size
             image.contentMode = .scaleAspectFit
             return cell
         }
         let part = makeupLogRepository.logMap[logID]!.partsList[indexPath.row - 1]
-        let view = AnnotationMoveImageView<Self>(image: UIImage(data: part.image!)!)
-        view.isUserInteractionEnabled = true
-        view.frame.size = cell.frame.size
-        view.contentMode = .scaleAspectFit
-        part.annotations.forEach {
-            let annotation = AnnotationView(annotation: $0)
-            view.addSubview(annotation)
+        if let imageData = MakeupLogRepositoryInMemory.imageData(imagePath: part.imagePath) {
+            let view = AnnotationMoveImageView<Self>(image: UIImage(data: imageData)!)
+            view.isUserInteractionEnabled = true
+            view.frame.size = cell.frame.size
+            view.contentMode = .scaleAspectFit
+            part.annotations.forEach {
+                let annotation = AnnotationView(annotation: $0)
+                view.addSubview(annotation)
+            }
+            view.adjustAnnotationViewFrame()
+            view.delegate = self as? Self
+            cell.contentView.addSubview(view)
         }
-        view.adjustAnnotationViewFrame()
-        view.delegate = self as? Self
-        cell.contentView.addSubview(view)
         cell.contentView.isUserInteractionEnabled = true
         return cell
     }

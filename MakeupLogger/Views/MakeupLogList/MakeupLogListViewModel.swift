@@ -121,7 +121,9 @@ extension MakeupLogListViewModel: UITableViewDataSource {
         let cell = UITableViewCell()
         switch section {
         case .makeupLog:
-            cell.imageView?.image = UIImage(data: makeupLogList[indexPath.row].imagePath!)
+            if let imageData = MakeupLogRepositoryInMemory.imageData(imagePath: makeupLogList[indexPath.row].imagePath) {
+                cell.imageView?.image = UIImage(data: imageData)
+            }
             cell.textLabel?.text = makeupLogList[indexPath.row].title
         case .colorPallet:
             cell.imageView?.image = UIImage(data: colorPalletList[indexPath.row].image!)

@@ -13,11 +13,11 @@ class FacePart: Object {
         super.init()
     }
     
-    static func make(id: FacePartID, type: String, image: Data, annotations: [FaceAnnotation]) -> FacePart {
+    static func make(id: FacePartID, type: String, imagePath: String, annotations: [FaceAnnotation]) -> FacePart {
         let part = FacePart()
         part.id = id
         part.type = type
-        part.image = image
+        part.imagePath = imagePath
         let list = List<FaceAnnotation>()
         annotations.forEach { list.append($0)}
         part.annotations = list
@@ -26,7 +26,7 @@ class FacePart: Object {
     
     @objc dynamic var id: FacePartID? = nil
     @objc dynamic var type: String = ""
-    @objc dynamic var image: Data? = nil
+    @objc dynamic var imagePath: String = ""
     var annotations: List<FaceAnnotation> = List<FaceAnnotation>()
     
     static func == (lhs: FacePart, rhs: FacePart) -> Bool {
@@ -65,5 +65,13 @@ class FacePartID: Object {
             return false
         }
         return self.id == id.id
+    }
+    
+    var folderName: String {
+        "facepart"
+    }
+    
+    var fileName: String {
+        id.description + ".png"
     }
 }

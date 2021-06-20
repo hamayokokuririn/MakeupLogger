@@ -20,6 +20,29 @@ protocol MakeupLogRepository {
     var logMap: [MakeupLogID: MakeupLog] { get }
 }
 
+extension MakeupLogRepository {
+    static func saveImage(folderName: String, fileName: String, pngData: Data) -> String {
+        let folderURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent(folderName)
+        let url = folderURL.appendingPathComponent(fileName)
+        do {
+            try pngData.write(to: url)
+        } catch {
+            try! FileManager.default.createDirectory(at: folderURL, withIntermediateDirectories: true, attributes: nil)
+            try! pngData.write(to: url)
+        }
+        
+        return url.absoluteString
+    }
+    
+    static func imageData(imagePath: String) -> Data? {
+        guard let url = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(imagePath) else {
+            return nil
+        }
+        print(url.path)
+        return FileManager.default.contents(atPath: url.path)
+    }
+}
+
 class MakeupLogRealmRepository: MakeupLogRepository {
     var logMap: [MakeupLogID : MakeupLog] {
         let result = Array(realm.objects(MakeupLog.self).map { $0 })
@@ -36,7 +59,7 @@ class MakeupLogRealmRepository: MakeupLogRepository {
     
     private init() {
         var config = Realm.Configuration.init()
-        config.schemaVersion = 0
+        config.schemaVersion = 1
         realm = try! Realm(configuration: config)
     }
     
@@ -65,17 +88,22 @@ class MakeupLogRealmRepository: MakeupLogRepository {
         let log: MakeupLog
         if array.isEmpty {
             let id = MakeupLogID(id: 0)
+            let imagePath = Self.saveImage(folderName: id.folderName(),
+                                           fileName: id.filename(),
+                                           pngData: compressData(image: image)!)
             log = MakeupLog.make(id: id,
                                      title: title,
                                      body: body,
-                                     image: compressData(image: image)!,
+                                     imagePath: imagePath,
                                      partsList: [])
         } else {
             let nextID = array.last!.id!.makeNextID()
+            let imagePath = Self.saveImage(folderName: nextID.folderName(), fileName: nextID.filename(), pngData: compressData(image: image)!)
+                
             log = MakeupLog.make(id: nextID,
                                 title: title,
                                 body: body,
-                                image: compressData(image: image)!,
+                                imagePath: imagePath,
                                 partsList: [])
         }
         
@@ -127,9 +155,11 @@ class MakeupLogRealmRepository: MakeupLogRepository {
         } else {
             nextID = log.partsList.last!.id!.makeNextID()
         }
+        let imagePath = MakeupLogRepositoryInMemory.saveImage(folderName: nextID.folderName, fileName: nextID.fileName, pngData: data)
+            
         let part = FacePart.make(id: nextID,
                                  type: type,
-                                 image: data,
+                                 imagePath: imagePath,
                                  annotations: [])
         do {
             try realm.write {
@@ -189,18 +219,20 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
     static let shared = MakeupLogRepositoryInMemory()
     
     let id = MakeupLogID(id: 1)
+    var imagePath = ""
     lazy var log: MakeupLog = MakeupLog.make(id: id,
                                              title: "makeup_sample",
-                                             image: #imageLiteral(resourceName: "sample_face").pngData()!,
+                                             imagePath: imagePath,
                                              partsList: [eye])
-    lazy var eye: FacePart = { FacePart.make(id: {
+    lazy var eye: FacePart = {
         let id = FacePartID()
         id.id = 0
-        return id
-    }(),
-    type: "eye",
-    image: #imageLiteral(resourceName: "sample_eye_line").pngData()!,
-    annotations: [eyeAnnotation])}()
+        return FacePart.make(id: id,
+                             type: "eye",
+                             imagePath: MakeupLogRepositoryInMemory.saveImage(folderName: id.folderName,
+                                                                              fileName: id.fileName,
+                                                                              pngData: #imageLiteral(resourceName: "sample_eye_line").pngData()!),
+                             annotations: [eyeAnnotation])}()
     
     
     lazy var faceID: FaceAnnotationID = {
@@ -266,7 +298,10 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
         logMap.values.map {$0 as MakeupLog}
     }
     
-    private init() {}
+    private init() {
+        let sample = #imageLiteral(resourceName: "sample_face").pngData()!
+        imagePath = Self.saveImage(folderName: id.folderName(), fileName: id.filename(), pngData: sample)
+    }
     
     func setLog(logMap: [MakeupLogID: MakeupLog]? = nil) {
         if let map = logMap {
@@ -288,7 +323,7 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
             let log = MakeupLog.make(id: id,
                                      title: title,
                                      body: body,
-                                     image: image.pngData()!,
+                                     imagePath: Self.saveImage(folderName: id.folderName(), fileName: id.filename(), pngData: image.pngData()!),
                                      partsList: [])
             logMap[id] = log
             completion(log)
@@ -299,7 +334,7 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
         let log = MakeupLog.make(id: nextID,
                                  title: title,
                                  body: body,
-                                 image: image.pngData()!,
+                                 imagePath: Self.saveImage(folderName: id.folderName(), fileName: id.filename(), pngData: image.pngData()!),
                                  partsList: [])
         logMap[nextID] = log
         completion(log)
@@ -328,7 +363,9 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
         } else {
             nextID = log.partsList.last!.id!.makeNextID()
         }
-        let part = FacePart.make(id: nextID, type: type, image: image.pngData()!,
+        let part = FacePart.make(id: nextID,
+                                 type: type,
+                                 imagePath: MakeupLogRepositoryInMemory.saveImage(folderName: nextID.folderName, fileName: nextID.folderName, pngData: image.pngData()!),
                             annotations: [])
         log.partsList.append(part)
         logMap[logID] = log
