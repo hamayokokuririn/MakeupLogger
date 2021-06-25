@@ -31,7 +31,7 @@ extension MakeupLogRepository {
             try! pngData.write(to: url)
         }
         
-        return url.absoluteString
+        return folderName + "/" + fileName
     }
     
     static func imageData(imagePath: String) -> Data? {

@@ -129,8 +129,8 @@ final class MakeupLogViewModel: NSObject {
 
 extension MakeupLogViewModel: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return makeupLogRepository.logMap[logID]!.partsList.count + 1
-        1
+        // 顔全体写真とパーツの合計
+        return makeupLogRepository.logMap[logID]!.partsList.count + 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

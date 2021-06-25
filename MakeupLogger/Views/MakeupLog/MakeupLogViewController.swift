@@ -25,9 +25,10 @@ final class MakeupLogViewController: UIViewController {
     }()
     
     let tableView = UITableView()
-    let alert = TakePhotoAlert()
     
+    let alert = TakePhotoAlert()
     let viewModel: MakeupLogViewModel
+    
     init(log: MakeupLog,
          makeupLogRepository: MakeupLogRepository,
          colorPalletRepository: ColorPalletRepository) {
@@ -37,7 +38,6 @@ final class MakeupLogViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         
         viewModel.delegate = self
-        viewModel.state = .face
         
         let item = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(takeNewPhoto))
         self.navigationItem.rightBarButtonItem = item
