@@ -32,8 +32,8 @@ class MakeupLogRepositoryTests: XCTestCase {
     }()
 
     lazy var annotations = [faceAnnotation1]
-    lazy var facePart = FacePart.make(id: partID, type: "eye", image: Data(), annotations: annotations)
-    lazy var log = MakeupLog.make(id: logID, title: "1", image: Data(), partsList: [facePart])
+    lazy var facePart = FacePart.make(id: partID, type: "eye", imagePath: "", annotations: annotations)
+    lazy var log = MakeupLog.make(id: logID, title: "1", imagePath: "", partsList: [facePart])
     let repository = MakeupLogRepositoryInMemory.shared
 
     lazy var annotationID2: FaceAnnotationID = {
@@ -62,7 +62,7 @@ class MakeupLogRepositoryTests: XCTestCase {
     func testUpdateFacePart() throws {
         let id = FacePartID()
         id.id = 2
-        let newPart = FacePart.make(id: id, type: "nose", image: Data(), annotations: [])
+        let newPart = FacePart.make(id: id, type: "nose", imagePath: "", annotations: [])
         repository.updateFacePart(logID: logID, part: newPart) { log in
             XCTAssertNil(log)
         }

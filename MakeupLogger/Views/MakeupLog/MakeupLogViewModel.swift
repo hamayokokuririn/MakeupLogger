@@ -43,15 +43,16 @@ final class MakeupLogViewModel: NSObject {
     weak var delegate: MakeupLogViewModelDelegate? = nil
     
     lazy var tableViewAdapter = CommentListAdapter(delegate: self)
-    let logID: MakeupLogID
+    private(set) var log: MakeupLog
+    
     let makeupLogRepository: MakeupLogRepository
     let colorPalletRepository: ColorPalletRepository
     
     
-    init(logID: MakeupLogID,
+    init(log: MakeupLog,
          makeupLogRepository: MakeupLogRepository,
          colorPalletRepository: ColorPalletRepository) {
-        self.logID = logID
+        self.log = log
         self.makeupLogRepository = makeupLogRepository
         self.colorPalletRepository = colorPalletRepository
         super.init()
@@ -60,11 +61,16 @@ final class MakeupLogViewModel: NSObject {
         
     private func appendAnnotation() {
         if case .part(let partID) = self.state {
-            self.makeupLogRepository.insertFaceAnnotation(logID: logID,
-                                                 partID: partID,
-                                                 completion: {_ in
-                                                    self.state = .part(partID: partID)
-                                                 })
+            self.makeupLogRepository.insertFaceAnnotation(logID: log.id!,
+                                                          partID: partID,
+                                                          completion: { log in
+                guard let log = log else {
+                    return
+                }
+                self.log = log
+                self.state = .part(partID: partID)
+                
+            })
         }
     }
     
@@ -80,7 +86,7 @@ final class MakeupLogViewModel: NSObject {
         list.append(action)
         makeupLogRepository.getLogList { (logList) in
             guard let log = logList.first(where: {
-                $0.id == logID
+                $0.id == log.id
             }) else {return}
             for part in log.partsList {
                 let action = UIAction(title: part.type,
@@ -114,9 +120,13 @@ final class MakeupLogViewModel: NSObject {
     
     private func updateAnnotation(_ annotation: FaceAnnotation) {
         if case .part(let partID) = self.state {
-            makeupLogRepository.updateFaceAnnotation(logID: logID,
+            makeupLogRepository.updateFaceAnnotation(logID: log.id!,
                                             partID: partID,
-                                            faceAnnotation: annotation) {_ in
+                                            faceAnnotation: annotation) { log in
+                guard let log = log else {
+                    return
+                }
+                self.log = log
                 self.state = .part(partID: partID)
             }
         }
@@ -131,11 +141,12 @@ final class MakeupLogViewModel: NSObject {
     }
     
     func addPicture(type: String, image: UIImage) {
-        makeupLogRepository.insertFacePart(logID: logID, type: type, image: image) { (log) in
+        makeupLogRepository.insertFacePart(logID: log.id!, type: type, image: image) { log in
             guard let log = log else {
                 print(#function + "画像追加失敗")
                 return
             }
+            self.log = log
             self.state = .part(partID: log.partsList.last!.id!)
         }
     }
@@ -144,7 +155,7 @@ final class MakeupLogViewModel: NSObject {
 extension MakeupLogViewModel: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // 顔全体写真とパーツの合計
-        return makeupLogRepository.logMap[logID]!.partsList.count + 1
+        return log.partsList.count + 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -157,15 +168,15 @@ extension MakeupLogViewModel: UICollectionViewDataSource {
         if indexPath.row == 0 {
             let image = UIImageView()
             cell.contentView.addSubview(image)
-            if let imageData = MakeupLogRepositoryInMemory.imageData(imagePath: makeupLogRepository.logMap[logID]!.imagePath) {
+            if let imageData = makeupLogRepository.imageData(imagePath: log.imagePath) {
                 image.image = UIImage(data: imageData)
             }
             image.frame.size = cell.frame.size
             image.contentMode = .scaleAspectFit
             return cell
         }
-        let part = makeupLogRepository.logMap[logID]!.partsList[indexPath.row - 1]
-        if let imageData = MakeupLogRepositoryInMemory.imageData(imagePath: part.imagePath) {
+        let part = log.partsList[indexPath.row - 1]
+        if let imageData = makeupLogRepository.imageData(imagePath: part.imagePath) {
             let view = AnnotationMoveImageView<Self>(image: UIImage(data: imageData)!)
             view.isUserInteractionEnabled = true
             view.frame.size = cell.frame.size
@@ -187,7 +198,7 @@ extension MakeupLogViewModel: UICollectionViewDataSource {
 extension MakeupLogViewModel: CommentListAdapterDelegate {
     func commentListAdapterAnnotationList(_ adapter: CommentListAdapter) -> [FaceAnnotation] {
         if case .part(let partID) = state,
-           let part = makeupLogRepository.logMap[logID]!.partsList.first(where: {$0.id == partID}) {
+           let part = log.partsList.first(where: {$0.id == partID}) {
             var annotations = [FaceAnnotation]()
             part.annotations.forEach {
                 annotations.append($0)
@@ -199,7 +210,7 @@ extension MakeupLogViewModel: CommentListAdapterDelegate {
     
     func commentListAdapter(_ adapter: CommentListAdapter, didSelectCommentCell index: Int) {
         if case .part(let partID) = state,
-           let part = makeupLogRepository.logMap[logID]!.partsList.first(where: {$0.id == partID}) {
+           let part = log.partsList.first(where: {$0.id == partID}) {
             delegate?.viewModel(self, didSelect: part.annotations[index])
         }
         return
@@ -216,7 +227,7 @@ extension MakeupLogViewModel: AnnotationMoveImageViewDelegate {
     
     func annotationMoveImageView(_ view: AnnotationMoveImageView<MakeupLogViewModel>, didTouched annotationViewFrame: CGRect, and id: AnnotationID) {
         if case .part(let partID) = state,
-           let part = makeupLogRepository.logMap[logID]!.partsList.first(where: {$0.id == partID}),
+           let part = log.partsList.first(where: {$0.id == partID}),
            let faceID = id as? FaceAnnotationID,
            let faceAnnotation = part.annotations.first(where: {$0.id == faceID}) {
             let imageViewRect = view.imageRect()

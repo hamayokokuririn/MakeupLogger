@@ -34,6 +34,7 @@
 		245A09262607895800BD3063 /* AddNewMakeupLogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245A09252607895800BD3063 /* AddNewMakeupLogViewModel.swift */; };
 		247FC89A2686AD1900392045 /* FileIOUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247FC8992686AD1900392045 /* FileIOUtil.swift */; };
 		247FC89E2686B0DC00392045 /* Image+Compress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247FC89D2686B0DC00392045 /* Image+Compress.swift */; };
+		247FC8A0268784A000392045 /* MakeupLogRepositoryInMemory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247FC89F268784A000392045 /* MakeupLogRepositoryInMemory.swift */; };
 		24B1128125A9576100EE8DEA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B1128025A9576100EE8DEA /* AppDelegate.swift */; };
 		24B1128325A9576100EE8DEA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B1128225A9576100EE8DEA /* SceneDelegate.swift */; };
 		24B1128A25A9576300EE8DEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 24B1128925A9576300EE8DEA /* Assets.xcassets */; };
@@ -92,6 +93,7 @@
 		245A09252607895800BD3063 /* AddNewMakeupLogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewMakeupLogViewModel.swift; sourceTree = "<group>"; };
 		247FC8992686AD1900392045 /* FileIOUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileIOUtil.swift; sourceTree = "<group>"; };
 		247FC89D2686B0DC00392045 /* Image+Compress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Compress.swift"; sourceTree = "<group>"; };
+		247FC89F268784A000392045 /* MakeupLogRepositoryInMemory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeupLogRepositoryInMemory.swift; sourceTree = "<group>"; };
 		24B1127D25A9576100EE8DEA /* MakeupLogger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MakeupLogger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		24B1128025A9576100EE8DEA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		24B1128225A9576100EE8DEA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 				242447B925E0A625002290F2 /* MakeupLogRepository.swift */,
 				2409D2932610837E00A3C995 /* ColorPalletRepository.swift */,
 				24CA18F2263B93DB00DD2B9E /* RealmDatabase.swift */,
+				247FC89F268784A000392045 /* MakeupLogRepositoryInMemory.swift */,
 			);
 			path = DataStore;
 			sourceTree = "<group>";
@@ -541,6 +544,7 @@
 				242447C925E0F398002290F2 /* MakeupLogViewController.swift in Sources */,
 				24014B252652BAB100786076 /* FacePart.swift in Sources */,
 				240BCD8B2621CAC70032814B /* NotificationName.swift in Sources */,
+				247FC8A0268784A000392045 /* MakeupLogRepositoryInMemory.swift in Sources */,
 				242447BF25E0EB9A002290F2 /* ColorPalletAnnotation.swift in Sources */,
 				2446ED2225D774D5005BD9F3 /* CommentCell.swift in Sources */,
 				2446ED2025D5713C005BD9F3 /* AnnotationView.swift in Sources */,

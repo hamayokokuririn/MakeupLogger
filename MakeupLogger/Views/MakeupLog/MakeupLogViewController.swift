@@ -32,7 +32,7 @@ final class MakeupLogViewController: UIViewController {
     init(log: MakeupLog,
          makeupLogRepository: MakeupLogRepository,
          colorPalletRepository: ColorPalletRepository) {
-        self.viewModel = MakeupLogViewModel(logID: log.id!,
+        self.viewModel = MakeupLogViewModel(log: log,
                                             makeupLogRepository: makeupLogRepository,
                                             colorPalletRepository: colorPalletRepository)
         super.init(nibName: nil, bundle: nil)
@@ -138,7 +138,7 @@ extension MakeupLogViewController: MakeupLogViewModelDelegate {
     
     func viewModel(_ model: MakeupLogViewModel, didSelect annotation: FaceAnnotation) {
         if case .part(let partID) = viewModel.state {
-            let vc = AnnotationDetailViewController(logID: viewModel.logID,
+            let vc = AnnotationDetailViewController(logID: viewModel.log.id!,
                                                     facePartID: partID,
                                                     annotation: annotation,
                                                     makeupLogRepository: viewModel.makeupLogRepository,
