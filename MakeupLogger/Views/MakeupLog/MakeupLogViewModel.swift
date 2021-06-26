@@ -30,7 +30,7 @@ final class MakeupLogViewModel: NSObject {
                 makeupLogRepository.getLogList { logList in
                     let log = logList[0]
                     if let part = log.partsList.firstIndex(where: {$0.id == partID}) {
-                        let path = IndexPath(item: part.signum() + 1, section: 0)
+                        let path = IndexPath(item: part + 1, section: 0)
                         delegate?.viewModel(self, didChange: state, cellForRowAt: path)
                     }
                     

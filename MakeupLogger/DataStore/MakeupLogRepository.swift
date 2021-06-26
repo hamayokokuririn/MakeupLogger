@@ -137,6 +137,8 @@ class MakeupLogRealmRepository: MakeupLogRepository {
         do {
             try realm.write {
                 log.partsList.append(part)
+                completion(log)
+                notifyChanged()
             }
         } catch {
             print(#function + "パーツ追加失敗")
