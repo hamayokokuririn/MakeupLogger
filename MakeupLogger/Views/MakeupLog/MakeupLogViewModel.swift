@@ -70,7 +70,7 @@ final class MakeupLogViewModel: NSObject {
     
     func segmentActionList(completion: ([UIAction]) -> Void) {
         var list = [UIAction]()
-        let action = UIAction(title: "1",
+        let action = UIAction(title: "face",
                               image: nil, identifier: nil, discoverabilityTitle: nil,
                               attributes: .destructive,
                               state: .on) { _ in
@@ -83,7 +83,7 @@ final class MakeupLogViewModel: NSObject {
                 $0.id == logID
             }) else {return}
             for part in log.partsList {
-                let action = UIAction(title: (part.id!.id + 1).description,
+                let action = UIAction(title: part.type,
                                       image: nil,
                                       identifier: nil,
                                       discoverabilityTitle: nil,
@@ -95,6 +95,20 @@ final class MakeupLogViewModel: NSObject {
                 list.append(action)
             }
             completion(list)
+        }
+    }
+    
+    func selectedSegmentIndex(index: (Int) -> Void)  {
+        switch state {
+        case .face:
+            return index(0)
+        case .part(let id):
+            makeupLogRepository.getLogList { list in
+                let i = list.firstIndex { log in
+                    log.id == id
+                }
+                index(i ?? 0)
+            }
         }
     }
     

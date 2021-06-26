@@ -70,6 +70,8 @@ final class MakeupLogViewController: UIViewController {
         view.addSubview(tableView)
         tableView.delegate = viewModel.tableViewAdapter
         tableView.dataSource = viewModel.tableViewAdapter
+        
+        self.reloadSegment()
     }
     
     override func viewWillLayoutSubviews() {
@@ -118,6 +120,11 @@ extension MakeupLogViewController: MakeupLogViewModelDelegate {
                 segment.insertSegment(action: $0, at: index, animated: false)
                 index += 1
             }
+        }
+        // 設定しないと何も選択されていない状態になる
+        segment.selectedSegmentIndex = 0
+        viewModel.selectedSegmentIndex { i in
+            segment.selectedSegmentIndex = i
         }
     }
     
