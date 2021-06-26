@@ -32,6 +32,8 @@
 		2446ED2A25D893E4005BD9F3 /* AnnotationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446ED2925D893E4005BD9F3 /* AnnotationDetailViewController.swift */; };
 		245A0921260787C100BD3063 /* AddNewMakeupLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245A0920260787C100BD3063 /* AddNewMakeupLogViewController.swift */; };
 		245A09262607895800BD3063 /* AddNewMakeupLogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245A09252607895800BD3063 /* AddNewMakeupLogViewModel.swift */; };
+		247FC89A2686AD1900392045 /* FileIOUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247FC8992686AD1900392045 /* FileIOUtil.swift */; };
+		247FC89E2686B0DC00392045 /* Image+Compress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247FC89D2686B0DC00392045 /* Image+Compress.swift */; };
 		24B1128125A9576100EE8DEA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B1128025A9576100EE8DEA /* AppDelegate.swift */; };
 		24B1128325A9576100EE8DEA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B1128225A9576100EE8DEA /* SceneDelegate.swift */; };
 		24B1128A25A9576300EE8DEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 24B1128925A9576300EE8DEA /* Assets.xcassets */; };
@@ -88,6 +90,8 @@
 		2446ED2925D893E4005BD9F3 /* AnnotationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationDetailViewController.swift; sourceTree = "<group>"; };
 		245A0920260787C100BD3063 /* AddNewMakeupLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewMakeupLogViewController.swift; sourceTree = "<group>"; };
 		245A09252607895800BD3063 /* AddNewMakeupLogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewMakeupLogViewModel.swift; sourceTree = "<group>"; };
+		247FC8992686AD1900392045 /* FileIOUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileIOUtil.swift; sourceTree = "<group>"; };
+		247FC89D2686B0DC00392045 /* Image+Compress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Compress.swift"; sourceTree = "<group>"; };
 		24B1127D25A9576100EE8DEA /* MakeupLogger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MakeupLogger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		24B1128025A9576100EE8DEA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		24B1128225A9576100EE8DEA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -142,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				240BCD8A2621CAC70032814B /* NotificationName.swift */,
+				247FC89D2686B0DC00392045 /* Image+Compress.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -253,6 +258,14 @@
 			path = AddNewMakeupLog;
 			sourceTree = "<group>";
 		};
+		247FC8982686ACDE00392045 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				247FC8992686AD1900392045 /* FileIOUtil.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
 		24B1127425A9576100EE8DEA = {
 			isa = PBXGroup;
 			children = (
@@ -277,6 +290,7 @@
 		24B1127F25A9576100EE8DEA /* MakeupLogger */ = {
 			isa = PBXGroup;
 			children = (
+				247FC8982686ACDE00392045 /* Utility */,
 				240BCD892621CAB00032814B /* Extension */,
 				242447B825E0A5F8002290F2 /* DataStore */,
 				242447B525D8B1C6002290F2 /* Service */,
@@ -533,7 +547,9 @@
 				24B112CA25B2D70100EE8DEA /* Annotation.swift in Sources */,
 				24B112BC25B1A54A00EE8DEA /* CommentListAdapter.swift in Sources */,
 				242447C125E0EBEA002290F2 /* MakeupLog.swift in Sources */,
+				247FC89A2686AD1900392045 /* FileIOUtil.swift in Sources */,
 				245A0921260787C100BD3063 /* AddNewMakeupLogViewController.swift in Sources */,
+				247FC89E2686B0DC00392045 /* Image+Compress.swift in Sources */,
 				24173785261A02860040DDF2 /* ColorPalletViewModel.swift in Sources */,
 				242447C425E0EFBF002290F2 /* MakeupLogListViewController.swift in Sources */,
 				2409D2942610837E00A3C995 /* ColorPalletRepository.swift in Sources */,

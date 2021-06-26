@@ -13,11 +13,11 @@ class ColorPallet: Object {
         super.init()
     }
     
-    static func make(id: ColorPalletID, title: String, image: Data?, annotationList: [ColorPalletAnnotation]) -> ColorPallet {
+    static func make(id: ColorPalletID, title: String, imagePath: String, annotationList: [ColorPalletAnnotation]) -> ColorPallet {
         let pallet = ColorPallet()
         pallet.id = id
         pallet.title = title
-        pallet.image = image
+        pallet.imagePath = imagePath
         let list = List<ColorPalletAnnotation>()
         annotationList.forEach {
             list.append($0)
@@ -29,7 +29,7 @@ class ColorPallet: Object {
     
     @objc dynamic var id: ColorPalletID? = nil
     @objc dynamic var title: String = ""
-    @objc dynamic var image: Data? = nil
+    @objc dynamic var imagePath: String = ""
     var annotationList = List<ColorPalletAnnotation>()
     
     override func isEqual(_ object: Any?) -> Bool {
@@ -59,6 +59,14 @@ class ColorPalletID: Object, Codable {
             return false
         }
         return self.id == objectID.id
+    }
+    
+    func folderName() -> String {
+        "colorpallet"
+    }
+    
+    func filename() -> String {
+        id.description + ".png"
     }
 }
 

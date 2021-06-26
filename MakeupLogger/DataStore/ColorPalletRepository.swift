@@ -27,6 +27,22 @@ protocol ColorPalletRepository {
     var cache: [ColorPalletID: ColorPallet] { get }
 }
 
+extension ColorPalletRepository {
+    static func saveImage(folderName: String, fileName: String, pngData: Data) -> String {
+        do {
+            try FileIOUtil.saveToDocument(folderName: folderName, fileName: fileName, data: pngData)
+        } catch {
+            print("🥲ColorPallet画像の保存に失敗しました🥲")
+        }
+        
+        return folderName + "/" + fileName
+    }
+    
+    static func imageData(imagePath: String) -> Data? {
+        return FileIOUtil.getImageDataFromDocument(path: imagePath)
+    }
+}
+
 class ColorPalletRealmRepository: ColorPalletRepository {
     
     private var realm: Realm!
@@ -58,26 +74,27 @@ class ColorPalletRealmRepository: ColorPalletRepository {
     }
     
     func insertColorPallet(title: String, image: UIImage, completion: (ColorPallet?) -> Void) {
+        guard let data = image.compressData() else {
+            completion(nil)
+            return
+        }
         let result = realm.objects(ColorPallet.self).map { $0 }
         let array = Array(result)
         let pallet: ColorPallet
         if array.isEmpty {
             let id = ColorPalletID()
-            id.id = 0
+            let path = Self.saveImage(folderName: id.folderName(), fileName: id.filename(), pngData: data)
             pallet = ColorPallet.make(id: id,
-                                          title: title,
-                                          image: image.pngData()!,
-                                          annotationList: [])
-            realm.add(pallet)
-            completion(pallet)
-            notifyChanged()
-            return
+                                      title: title,
+                                      imagePath: path,
+                                      annotationList: [])
         } else {
             let nextID = array.last!.id!.makeNextID()
+            let path = Self.saveImage(folderName: nextID.folderName(), fileName: nextID.filename(), pngData: data)
             pallet = ColorPallet.make(id: nextID,
-                                          title: title,
-                                          image: image.pngData()!,
-                                          annotationList: [])
+                                      title: title,
+                                      imagePath: path,
+                                      annotationList: [])
         }
         
         do {
@@ -93,14 +110,16 @@ class ColorPalletRealmRepository: ColorPalletRepository {
     }
     
     func updateColorPallet(id: ColorPalletID, title: String, image: UIImage, completion: (ColorPallet?) -> Void) {
-        guard let pallet = cache[id] else {
+        guard let pallet = cache[id],
+            let data = image.compressData() else {
             completion(nil)
             return
         }
         do {
+            let path = Self.saveImage(folderName: id.folderName(), fileName: id.filename(), pngData: data)
             try realm.write {
                 pallet.title = title
-                pallet.image = image.pngData()!
+                pallet.imagePath = path
                 completion(pallet)
                 notifyChanged()
             }
@@ -215,12 +234,18 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
         return id
     }()
     
-    lazy var colorPallet = ColorPallet.make(id: colorPalletId,
-                                            title: "color_pallet",
-                                            image: UIImage(named: "sample_color_pallet")?.pngData(),
-                                            annotationList: [colorPalletAnnotation1,
-                                                             colorPalletAnnotation2,
-                                                             colorPalletAnnotation3])
+    lazy var colorPallet: ColorPallet = {
+        let path = Self.saveImage(folderName: colorPalletId.folderName(),
+                                  fileName: colorPalletId.filename(),
+                                  pngData: UIImage(named: "sample_color_pallet")!.compressData()!)
+        let pallet = ColorPallet.make(id: colorPalletId,
+                                      title: "color_pallet",
+                                      imagePath: path,
+                                      annotationList: [colorPalletAnnotation1,
+                                                       colorPalletAnnotation2,
+                                                       colorPalletAnnotation3])
+        return pallet
+    }()
     
     
     lazy var cache: [ColorPalletID : ColorPallet] = [colorPallet.id!: colorPallet]
@@ -238,21 +263,23 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
     func insertColorPallet(title: String,
                            image: UIImage,
                            completion: (ColorPallet?) -> Void) {
+        let data = image.compressData()!
         if palletList.isEmpty {
             let id = ColorPalletID()
-            id.id = 0
+            let path = Self.saveImage(folderName: id.folderName(), fileName: id.filename(), pngData: data)
             let pallet = ColorPallet.make(id: id,
                                           title: title,
-                                          image: image.pngData()!,
+                                          imagePath: path,
                                           annotationList: [])
             cache[id] = pallet
             completion(pallet)
             return
         }
         let nextID = palletList.last!.id!.makeNextID()
+        let path = Self.saveImage(folderName: nextID.folderName(), fileName: nextID.filename(), pngData: data)
         let pallet = ColorPallet.make(id: nextID,
                                       title: title,
-                                      image: image.pngData()!,
+                                      imagePath: path,
                                       annotationList: [])
         cache[nextID] = pallet
         completion(pallet)
@@ -260,12 +287,14 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
     }
     
     func updateColorPallet(id: ColorPalletID, title: String, image: UIImage, completion: (ColorPallet?) -> Void) {
-        guard let pallet = cache[id] else {
+        guard let pallet = cache[id],
+            let data = image.compressData() else {
             completion(nil)
             return
         }
         pallet.title = title
-        pallet.image = image.pngData()!
+        let path = Self.saveImage(folderName: id.folderName(), fileName: id.filename(), pngData: data)
+        pallet.imagePath = path
         cache[id] = pallet
         completion(pallet)
         notifyChanged()

@@ -22,24 +22,17 @@ protocol MakeupLogRepository {
 
 extension MakeupLogRepository {
     static func saveImage(folderName: String, fileName: String, pngData: Data) -> String {
-        let folderURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent(folderName)
-        let url = folderURL.appendingPathComponent(fileName)
         do {
-            try pngData.write(to: url)
+            try FileIOUtil.saveToDocument(folderName: folderName, fileName: fileName, data: pngData)
         } catch {
-            try! FileManager.default.createDirectory(at: folderURL, withIntermediateDirectories: true, attributes: nil)
-            try! pngData.write(to: url)
+            print("🥲ColorPallet画像の保存に失敗しました🥲")
         }
         
         return folderName + "/" + fileName
     }
     
     static func imageData(imagePath: String) -> Data? {
-        guard let url = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(imagePath) else {
-            return nil
-        }
-        print(url.path)
-        return FileManager.default.contents(atPath: url.path)
+        return FileIOUtil.getImageDataFromDocument(path: imagePath)
     }
 }
 
@@ -69,16 +62,6 @@ class MakeupLogRealmRepository: MakeupLogRepository {
         completion(array)
     }
     
-    func compressData(image: UIImage) -> Data? {
-        guard let count = image.pngData()?.count else {
-            return nil
-        }
-        if count > 1 * 1024 * 1024 {
-            return image.jpegData(compressionQuality: 0.5)
-        }
-        return image.pngData()
-    }
-    
     func insertMakeupLog(title: String, body: String?, image: UIImage, completion: (MakeupLog?) -> Void) {
         defer {
             notifyChanged()
@@ -90,7 +73,7 @@ class MakeupLogRealmRepository: MakeupLogRepository {
             let id = MakeupLogID(id: 0)
             let imagePath = Self.saveImage(folderName: id.folderName(),
                                            fileName: id.filename(),
-                                           pngData: compressData(image: image)!)
+                                           pngData: image.compressData()!)
             log = MakeupLog.make(id: id,
                                      title: title,
                                      body: body,
@@ -98,7 +81,7 @@ class MakeupLogRealmRepository: MakeupLogRepository {
                                      partsList: [])
         } else {
             let nextID = array.last!.id!.makeNextID()
-            let imagePath = Self.saveImage(folderName: nextID.folderName(), fileName: nextID.filename(), pngData: compressData(image: image)!)
+            let imagePath = Self.saveImage(folderName: nextID.folderName(), fileName: nextID.filename(), pngData: image.compressData()!)
                 
             log = MakeupLog.make(id: nextID,
                                 title: title,
@@ -144,7 +127,7 @@ class MakeupLogRealmRepository: MakeupLogRepository {
         let result = realm.objects(MakeupLog.self).map { $0 }
         let array = Array(result)
         guard let log = array.first(where: {$0.id == logID}),
-              let data = compressData(image: image) else {
+              let data = image.compressData() else {
             completion(nil)
             return
         }
@@ -155,7 +138,7 @@ class MakeupLogRealmRepository: MakeupLogRepository {
         } else {
             nextID = log.partsList.last!.id!.makeNextID()
         }
-        let imagePath = MakeupLogRepositoryInMemory.saveImage(folderName: nextID.folderName, fileName: nextID.fileName, pngData: data)
+        let imagePath = Self.saveImage(folderName: nextID.folderName, fileName: nextID.fileName, pngData: data)
             
         let part = FacePart.make(id: nextID,
                                  type: type,

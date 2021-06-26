@@ -79,7 +79,9 @@ final class AnnotationDetailViewController: UIViewController {
     
     private func setupColorPallet(colorPallet: ColorPallet) {
         selectedColorPalletName.text = colorPallet.title
-        colorPalletImage.image = UIImage(data: colorPallet.image!)
+        if let data = ColorPalletRealmRepository.imageData(imagePath: colorPallet.imagePath) {
+            colorPalletImage.image = UIImage(data: data)
+        }
         colorPalletImage.subviews.forEach {
             $0.removeFromSuperview()
         }

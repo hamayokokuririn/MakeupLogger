@@ -32,7 +32,9 @@ final class ColorPalletViewModel: NSObject {
                 $0.id == colorPalletID
             }) {
                 self.title = colorPallet.title
-                self.image = UIImage(data: colorPallet.image!)
+                if let data = FileIOUtil.getImageDataFromDocument(path: colorPallet.imagePath) {
+                    self.image = UIImage(data: data)
+                }
                 var list = [ColorPalletAnnotation]()
                 colorPallet.annotationList.forEach {
                     list.append($0)

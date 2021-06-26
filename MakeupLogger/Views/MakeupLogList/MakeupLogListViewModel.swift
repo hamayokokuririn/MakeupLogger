@@ -126,7 +126,9 @@ extension MakeupLogListViewModel: UITableViewDataSource {
             }
             cell.textLabel?.text = makeupLogList[indexPath.row].title
         case .colorPallet:
-            cell.imageView?.image = UIImage(data: colorPalletList[indexPath.row].image!)
+            if let data = ColorPalletRealmRepository.imageData(imagePath: colorPalletList[indexPath.row].imagePath) {
+                cell.imageView?.image = UIImage(data: data)
+            }
             cell.textLabel?.text = colorPalletList[indexPath.row].title
         }
         return cell
