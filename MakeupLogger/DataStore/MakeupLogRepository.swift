@@ -122,12 +122,7 @@ class MakeupLogRealmRepository: MakeupLogRepository {
             return
         }
         
-        let nextID: FacePartID
-        if log.partsList.isEmpty {
-            nextID = FacePartID()
-        } else {
-            nextID = log.partsList.last!.id!.makeNextID()
-        }
+        let nextID = FacePartID()
         let imagePath = saveImage(folderName: nextID.folderName, fileName: nextID.fileName, pngData: data)
             
         let part = FacePart.make(id: nextID,

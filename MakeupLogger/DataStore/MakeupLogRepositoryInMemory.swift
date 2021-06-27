@@ -11,15 +11,17 @@ import UIKit
 class MakeupLogRepositoryInMemory: MakeupLogRepository {
     static let shared = MakeupLogRepositoryInMemory()
     
+    var nextID: FacePartID? = nil
+    
     let id = MakeupLogID(id: 1)
     var imagePath = ""
+    
     lazy var log: MakeupLog = MakeupLog.make(id: id,
                                              title: "makeup_sample",
                                              imagePath: imagePath,
                                              partsList: [eye])
     lazy var eye: FacePart = {
         let id = FacePartID()
-        id.id = 0
         return FacePart.make(id: id,
                              type: "eye",
                              imagePath: saveImage(folderName: id.folderName,
@@ -150,15 +152,15 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
             completion(nil)
             return
         }
-        let nextID: FacePartID
-        if log.partsList.isEmpty {
-            nextID = FacePartID()
+        let id: FacePartID
+        if let nextID = nextID {
+            id = nextID
         } else {
-            nextID = log.partsList.last!.id!.makeNextID()
+            id = FacePartID()
         }
-        let part = FacePart.make(id: nextID,
+        let part = FacePart.make(id: id,
                                  type: type,
-                                 imagePath: saveImage(folderName: nextID.folderName, fileName: nextID.folderName, pngData: image.pngData()!),
+                                 imagePath: saveImage(folderName: id.folderName, fileName: id.folderName, pngData: image.pngData()!),
                             annotations: [])
         log.partsList.append(part)
         logMap[logID] = log

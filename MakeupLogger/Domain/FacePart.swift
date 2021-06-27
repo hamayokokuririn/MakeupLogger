@@ -27,6 +27,7 @@ class FacePart: Object {
     @objc dynamic var id: FacePartID? = nil
     @objc dynamic var type: String = ""
     @objc dynamic var imagePath: String = ""
+    @objc dynamic var createAt = Date()
     var annotations: List<FaceAnnotationObject> = List<FaceAnnotationObject>()
     
     static func == (lhs: FacePart, rhs: FacePart) -> Bool {
@@ -49,15 +50,9 @@ class FacePart: Object {
 }
 
 class FacePartID: Object {
-    @objc dynamic var id: Int = 0
+    @objc dynamic var id: String = UUID().uuidString
     override init() {
         super.init()
-    }
-    
-    func makeNextID() -> FacePartID {
-        let id = FacePartID()
-        id.id = self.id + 1
-        return id
     }
     
     override func isEqual(_ object: Any?) -> Bool {
@@ -72,6 +67,6 @@ class FacePartID: Object {
     }
     
     var fileName: String {
-        id.description + ".png"
+        id + ".png"
     }
 }
