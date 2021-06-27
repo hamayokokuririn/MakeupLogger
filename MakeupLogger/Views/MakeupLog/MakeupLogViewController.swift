@@ -71,7 +71,7 @@ final class MakeupLogViewController: UIViewController {
         tableView.delegate = viewModel.tableViewAdapter
         tableView.dataSource = viewModel.tableViewAdapter
         
-        self.reloadSegment()
+        viewModel.state = .face
     }
     
     override func viewWillLayoutSubviews() {
