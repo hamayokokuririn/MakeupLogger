@@ -31,6 +31,7 @@ class MakeupLog: Object {
     @objc dynamic var title: String = ""
     @objc dynamic var body: String? = nil
     @objc dynamic var imagePath: String = ""
+    @objc dynamic var createAt = Date()
     var partsList: List<FacePart> = List<FacePart>()
     
     override func isEqual(_ object: Any?) -> Bool {
@@ -42,20 +43,10 @@ class MakeupLog: Object {
 }
 
 class MakeupLogID: Object {
-    @objc dynamic var id: Int
+    @objc dynamic var id: String = UUID().uuidString
     
     override init() {
-        self.id = 0
         super.init()
-    }
-    
-    convenience init(id: Int) {
-        self.init()
-        self.id = id
-    }
-    
-    func makeNextID() -> MakeupLogID {
-        MakeupLogID(id: self.id + 1)
     }
     
     override func isEqual(_ object: Any?) -> Bool {

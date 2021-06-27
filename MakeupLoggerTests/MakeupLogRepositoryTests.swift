@@ -11,7 +11,6 @@ import XCTest
 class MakeupLogRepositoryTests: XCTestCase {
     lazy var logID: MakeupLogID = {
         let id = MakeupLogID()
-        id.id = 1
         return id
     }()
     lazy var partID: FacePartID = {
@@ -20,7 +19,6 @@ class MakeupLogRepositoryTests: XCTestCase {
     }()
     lazy var annotationID: FaceAnnotationID = {
         let id = FaceAnnotationID()
-        id.id = 1
         return id
     }()
     lazy var faceAnnotation1: FaceAnnotationObject = {
@@ -37,7 +35,6 @@ class MakeupLogRepositoryTests: XCTestCase {
 
     lazy var annotationID2: FaceAnnotationID = {
         let id = FaceAnnotationID()
-        id.id = 2
         return id
     }()
     lazy var faceAnnotation2: FaceAnnotationObject = {
@@ -110,7 +107,7 @@ class MakeupLogRepositoryTests: XCTestCase {
         XCTAssertEqual(partList!.count, 1)
 
         let nextID = FacePartID()
-        repository.nextID = nextID
+        repository.nextFacePartID = nextID
         repository.insertFacePart(logID: logID, type: "nose", image: #imageLiteral(resourceName: "sample_eye_line")) { (log) in
             XCTAssertEqual(log!.partsList.count, 2)
             XCTAssertEqual(log!.partsList[0].id, partID)
@@ -127,13 +124,15 @@ class MakeupLogRepositoryTests: XCTestCase {
         XCTAssertEqual(partList!.count, 2)
 
         let newPartID = partList![1].id!
+        let nextID = FaceAnnotationID()
+        repository.nextFaceAnnotationID = nextID
         repository.insertFaceAnnotation(logID: logID,
                                         partID: newPartID) { log in
             guard let annotations = log?.partsList.first(where: {$0.id == newPartID})?.annotations else {
                 return XCTFail()
             }
             XCTAssertEqual(annotations.count, 1)
-            XCTAssertEqual(annotations[0].id!.id, 0)
+            XCTAssertEqual(annotations[0].id!.id, nextID.id)
         }
     }
 
@@ -149,7 +148,6 @@ class MakeupLogRepositoryTests: XCTestCase {
             XCTAssertEqual(log.title, "test")
             XCTAssertEqual(log.body, "test_body")
             let result = MakeupLogID()
-            result.id = 2
             XCTAssertEqual(log.id!.id, result.id)
             XCTAssertEqual(log.partsList.count, 0)
         }

@@ -34,13 +34,6 @@ class FacePart: Object {
         return lhs.id == rhs.id
     }
     
-    func makeNextFaceAnnotationID() -> FaceAnnotationID {
-        if annotations.isEmpty {
-            return FaceAnnotationID()
-        }
-        return annotations.last!.id!.makeNextAnnotationID()
-    }
-    
     override func isEqual(_ object: Any?) -> Bool {
         guard let part = object as? FacePart else {
             return false

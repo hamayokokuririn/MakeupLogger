@@ -30,6 +30,7 @@ class ColorPallet: Object {
     @objc dynamic var id: ColorPalletID? = nil
     @objc dynamic var title: String = ""
     @objc dynamic var imagePath: String = ""
+    @objc dynamic var createAt = Date()
     var annotationList = List<ColorPalletAnnotationObject>()
     
     override func isEqual(_ object: Any?) -> Bool {
@@ -42,16 +43,10 @@ class ColorPallet: Object {
 }
 
 class ColorPalletID: Object, Codable {
-    @objc dynamic var id: Int = 0
+    @objc dynamic var id: String = UUID().uuidString
     
     override init() {
         super.init()
-    }
-    
-    func makeNextID() -> ColorPalletID {
-        let id = ColorPalletID()
-        id.id = self.id + 1
-        return id
     }
     
     override func isEqual(_ object: Any?) -> Bool {

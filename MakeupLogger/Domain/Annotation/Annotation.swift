@@ -16,7 +16,6 @@ protocol Annotation {
 }
 
 protocol AnnotationID {
-    var id: Int { get }
-    func makeNextAnnotationID() -> Self
+    var id: String { get }
 }
 

@@ -56,29 +56,16 @@ class MakeupLogRealmRepository: MakeupLogRepository {
         defer {
             notifyChanged()
         }
-        let result = realm.objects(MakeupLog.self).map { $0 }
-        let array = Array(result)
         let log: MakeupLog
-        if array.isEmpty {
-            let id = MakeupLogID(id: 0)
-            let imagePath = saveImage(folderName: id.folderName(),
-                                           fileName: id.filename(),
-                                           pngData: image.compressData()!)
-            log = MakeupLog.make(id: id,
-                                     title: title,
-                                     body: body,
-                                     imagePath: imagePath,
-                                     partsList: [])
-        } else {
-            let nextID = array.last!.id!.makeNextID()
-            let imagePath = saveImage(folderName: nextID.folderName(), fileName: nextID.filename(), pngData: image.compressData()!)
-                
-            log = MakeupLog.make(id: nextID,
-                                title: title,
-                                body: body,
-                                imagePath: imagePath,
-                                partsList: [])
-        }
+        let id = MakeupLogID()
+        let imagePath = saveImage(folderName: id.folderName(),
+                                  fileName: id.filename(),
+                                  pngData: image.compressData()!)
+        log = MakeupLog.make(id: id,
+                             title: title,
+                             body: body,
+                             imagePath: imagePath,
+                             partsList: [])
         
         do {
             try realm.write {
@@ -170,11 +157,8 @@ class MakeupLogRealmRepository: MakeupLogRepository {
             completion(nil)
             return
         }
-        let part = log.partsList[partIndex]
-        let faceID = part.makeNextFaceAnnotationID()
         let faceAnnotation = FaceAnnotationObject()
-        faceAnnotation.id = faceID
-        faceAnnotation.text = String(faceID.id)
+        faceAnnotation.text = String(log.partsList.count + 1)
         do {
             try realm.write {
                 log.partsList[partIndex].annotations.append(faceAnnotation)

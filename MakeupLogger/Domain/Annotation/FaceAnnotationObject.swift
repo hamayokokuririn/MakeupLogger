@@ -60,6 +60,7 @@ class FaceAnnotationObject: Object, Annotation {
         }
     }
     @objc dynamic var selectedColorPalletAnnotationID: ColorPalletAnnotationID? = nil
+    @objc dynamic var createAt = Date()
     
     override func isEqual(_ object: Any?) -> Bool {
         guard let annotation = object as? FaceAnnotationObject else {
@@ -75,15 +76,10 @@ class FaceAnnotationObject: Object, Annotation {
 }
 
 class FaceAnnotationID: Object, AnnotationID {
+    @objc dynamic var id: String = UUID().uuidString
+    
     override init() {
         super.init()
-    }
-    
-    @objc dynamic var id: Int = 0
-    func makeNextAnnotationID() -> Self {
-        let id = FaceAnnotationID()
-        id.id = self.id + 1
-        return id as! Self
     }
     
     override func isEqual(_ object: Any?) -> Bool {

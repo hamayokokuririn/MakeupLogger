@@ -65,12 +65,7 @@ class ColorPalletAnnotationObject: Object, Annotation {
 }
 
 class ColorPalletAnnotationID: Object, AnnotationID, Codable {
-    @objc dynamic var id: Int = 0
-    func makeNextAnnotationID() -> Self {
-        let id = ColorPalletAnnotationID()
-        id.id = self.id + 1
-        return id as! Self
-    }
+    @objc dynamic var id: String = UUID().uuidString
     
     override func isEqual(_ object: Any?) -> Bool {
         guard let objectID = object as? ColorPalletAnnotationID else {

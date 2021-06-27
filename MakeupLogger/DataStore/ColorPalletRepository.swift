@@ -63,25 +63,13 @@ class ColorPalletRealmRepository: ColorPalletRepository {
             completion(nil)
             return
         }
-        let result = realm.objects(ColorPallet.self).map { $0 }
-        let array = Array(result)
         let pallet: ColorPallet
-        if array.isEmpty {
-            let id = ColorPalletID()
-            let path = Self.saveImage(folderName: id.folderName(), fileName: id.filename(), pngData: data)
-            pallet = ColorPallet.make(id: id,
-                                      title: title,
-                                      imagePath: path,
-                                      annotationList: [])
-        } else {
-            let nextID = array.last!.id!.makeNextID()
-            let path = Self.saveImage(folderName: nextID.folderName(), fileName: nextID.filename(), pngData: data)
-            pallet = ColorPallet.make(id: nextID,
-                                      title: title,
-                                      imagePath: path,
-                                      annotationList: [])
-        }
-        
+        let id = ColorPalletID()
+        let path = Self.saveImage(folderName: id.folderName(), fileName: id.filename(), pngData: data)
+        pallet = ColorPallet.make(id: id,
+                                  title: title,
+                                  imagePath: path,
+                                  annotationList: [])
         do {
             try realm.write {
                 realm.add(pallet)
@@ -146,28 +134,10 @@ class ColorPalletRealmRepository: ColorPalletRepository {
             completion(nil)
             return
         }
-        let list = pallet.annotationList
-        if list.isEmpty {
-            let annotationID = ColorPalletAnnotationID()
-            annotationID.id = 0
-            let annotation = ColorPalletAnnotationObject.make(id: annotationID,
-                                                   text: annotationID.id.description,
-                                                   pointRatioOnImage: .zero)
-            do {
-                try realm.write {
-                    pallet.annotationList.append(annotation)
-                }
-            } catch {
-                print(#function + "insert failed")
-            }
-            completion(pallet)
-            notifyChanged()
-            return
-        }
-        let annotationID = list.last!.id!.makeNextAnnotationID()
+        let annotationID = ColorPalletAnnotationID()
         let annotation = ColorPalletAnnotationObject.make(id: annotationID,
-                                                    text: annotationID.id.description,
-                                                    pointRatioOnImage: .zero)
+                                                          text: annotationID.id.description,
+                                                          pointRatioOnImage: .zero)
         do {
             try realm.write {
                 pallet.annotationList.append(annotation)
@@ -189,17 +159,14 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
     
     lazy var colorID1: ColorPalletAnnotationID = {
         let id = ColorPalletAnnotationID()
-        id.id = 1
         return id
     }()
     lazy var colorID2: ColorPalletAnnotationID = {
         let id = ColorPalletAnnotationID()
-        id.id = 2
         return id
     }()
     lazy var colorID3: ColorPalletAnnotationID = {
         let id = ColorPalletAnnotationID()
-        id.id = 3
         return id
     }()
     
@@ -222,7 +189,6 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
                                                                  }())
     lazy var colorPalletId: ColorPalletID = {
         let id = ColorPalletID()
-        id.id = 0
         return id
     }()
     
@@ -256,24 +222,13 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
                            image: UIImage,
                            completion: (ColorPallet?) -> Void) {
         let data = image.compressData()!
-        if palletList.isEmpty {
-            let id = ColorPalletID()
-            let path = Self.saveImage(folderName: id.folderName(), fileName: id.filename(), pngData: data)
-            let pallet = ColorPallet.make(id: id,
-                                          title: title,
-                                          imagePath: path,
-                                          annotationList: [])
-            cache[id] = pallet
-            completion(pallet)
-            return
-        }
-        let nextID = palletList.last!.id!.makeNextID()
-        let path = Self.saveImage(folderName: nextID.folderName(), fileName: nextID.filename(), pngData: data)
-        let pallet = ColorPallet.make(id: nextID,
+        let id = ColorPalletID()
+        let path = Self.saveImage(folderName: id.folderName(), fileName: id.filename(), pngData: data)
+        let pallet = ColorPallet.make(id: id,
                                       title: title,
                                       imagePath: path,
                                       annotationList: [])
-        cache[nextID] = pallet
+        cache[id] = pallet
         completion(pallet)
         notifyChanged()
     }
@@ -309,29 +264,12 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
     }
     
     func insertAnnotation(id: ColorPalletID, completion: (ColorPallet?) -> Void) {
-        guard let colorPallet = cache[id] else {
-            completion(nil)
-            return
-        }
-        let list = colorPallet.annotationList
-        if list.isEmpty {
-            let annotationID = ColorPalletAnnotationID()
-            annotationID.id = 0
-            let annotation = ColorPalletAnnotationObject.make(id: annotationID,
-                                                   text: annotationID.id.description,
-                                                   pointRatioOnImage: .zero)
-            cache[id]?.annotationList.append(annotation)
-            completion(cache[id]!)
-            notifyChanged()
-            return
-        }
-        let annotationID = list.last!.id!.makeNextAnnotationID()
+        let annotationID = ColorPalletAnnotationID()
         let annotation = ColorPalletAnnotationObject.make(id: annotationID,
-                                                    text: annotationID.id.description,
-                                                    pointRatioOnImage: .zero)
+                                                          text: annotationID.id.description,
+                                                          pointRatioOnImage: .zero)
         cache[id]?.annotationList.append(annotation)
         completion(cache[id]!)
-        
         notifyChanged()
     }
     

@@ -11,9 +11,10 @@ import UIKit
 class MakeupLogRepositoryInMemory: MakeupLogRepository {
     static let shared = MakeupLogRepositoryInMemory()
     
-    var nextID: FacePartID? = nil
+    var nextFacePartID: FacePartID? = nil
+    var nextFaceAnnotationID: FaceAnnotationID? = nil
     
-    let id = MakeupLogID(id: 1)
+    let id = MakeupLogID()
     var imagePath = ""
     
     lazy var log: MakeupLog = MakeupLog.make(id: id,
@@ -32,7 +33,6 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
     
     lazy var faceID: FaceAnnotationID = {
         let id = FaceAnnotationID()
-        id.id = 1
         return id
     }()
     
@@ -55,17 +55,14 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
     
     lazy var colorID1: ColorPalletAnnotationID = {
         let id = ColorPalletAnnotationID()
-        id.id = 1
         return id
     }()
     lazy var colorID2: ColorPalletAnnotationID = {
         let id = ColorPalletAnnotationID()
-        id.id = 2
         return id
     }()
     lazy var colorID3: ColorPalletAnnotationID = {
         let id = ColorPalletAnnotationID()
-        id.id = 3
         return id
     }()
     
@@ -113,25 +110,13 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
         defer {
             notifyChanged()
         }
-        if logList.isEmpty {
-            let id = MakeupLogID(id: 0)
-            let log = MakeupLog.make(id: id,
-                                     title: title,
-                                     body: body,
-                                     imagePath: saveImage(folderName: id.folderName(), fileName: id.filename(), pngData: image.pngData()!),
-                                     partsList: [])
-            logMap[id] = log
-            completion(log)
-            
-            return
-        }
-        let nextID = logList.last!.id!.makeNextID()
-        let log = MakeupLog.make(id: nextID,
+        let id = MakeupLogID()
+        let log = MakeupLog.make(id: id,
                                  title: title,
                                  body: body,
                                  imagePath: saveImage(folderName: id.folderName(), fileName: id.filename(), pngData: image.pngData()!),
                                  partsList: [])
-        logMap[nextID] = log
+        logMap[id] = log
         completion(log)
     }
     
@@ -153,7 +138,7 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
             return
         }
         let id: FacePartID
-        if let nextID = nextID {
+        if let nextID = nextFacePartID {
             id = nextID
         } else {
             id = FacePartID()
@@ -184,9 +169,10 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
     func insertFaceAnnotation(logID: MakeupLogID, partID: FacePartID, completion: (MakeupLog?) -> Void) {
         if let log = logMap[logID],
            let partIndex = log.partsList.firstIndex(where: {$0.id == partID}) {
-            let id = log.partsList[partIndex].makeNextFaceAnnotationID()
             let faceAnnotation = FaceAnnotationObject()
-            faceAnnotation.id = id
+            if let nextID = nextFaceAnnotationID {
+                faceAnnotation.id = nextID
+            }
             faceAnnotation.text = String(id.id)
             log.partsList[partIndex].annotations.append(faceAnnotation)
             logMap[logID] = log
