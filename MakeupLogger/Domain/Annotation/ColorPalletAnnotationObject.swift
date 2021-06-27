@@ -45,9 +45,9 @@ class ColorPalletAnnotationObject: Object, Annotation {
     
     typealias ID = ColorPalletAnnotationID
 
-    @objc dynamic var id: ColorPalletAnnotationID = ColorPalletAnnotationID()
+    @objc dynamic var id: ColorPalletAnnotationID? = ColorPalletAnnotationID()
     @objc dynamic var text: String = ""
-    @objc dynamic var pointRatioOnImage: PointRatio = .zero
+    @objc dynamic var pointRatioOnImage: PointRatio? = .zero
     
     override func isEqual(_ object: Any?) -> Bool {
         guard let annotation = object as? ColorPalletAnnotationObject else {
@@ -58,9 +58,9 @@ class ColorPalletAnnotationObject: Object, Annotation {
     
     func makeAnnotation(point: PointRatio? = nil) -> ColorPalletAnnotation {
         if let point = point {
-            return ColorPalletAnnotation(id: id, text: text, pointRatioOnImage: point)
+            return ColorPalletAnnotation(id: id!, text: text, pointRatioOnImage: point)
         }
-        return ColorPalletAnnotation(id: id, text: text)
+        return ColorPalletAnnotation(id: id!, text: text)
     }
 }
 

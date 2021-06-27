@@ -37,7 +37,7 @@ class FacePart: Object {
         if annotations.isEmpty {
             return FaceAnnotationID()
         }
-        return annotations.last!.id.makeNextAnnotationID()
+        return annotations.last!.id!.makeNextAnnotationID()
     }
     
     override func isEqual(_ object: Any?) -> Bool {

@@ -172,7 +172,7 @@ class ColorPalletRealmRepository: ColorPalletRepository {
             notifyChanged()
             return
         }
-        let annotationID = list.last!.id.makeNextAnnotationID()
+        let annotationID = list.last!.id!.makeNextAnnotationID()
         let annotation = ColorPalletAnnotationObject.make(id: annotationID,
                                                     text: annotationID.id.description,
                                                     pointRatioOnImage: .zero)
@@ -333,7 +333,7 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
             notifyChanged()
             return
         }
-        let annotationID = list.last!.id.makeNextAnnotationID()
+        let annotationID = list.last!.id!.makeNextAnnotationID()
         let annotation = ColorPalletAnnotationObject.make(id: annotationID,
                                                     text: annotationID.id.description,
                                                     pointRatioOnImage: .zero)

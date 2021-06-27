@@ -48,9 +48,9 @@ class FaceAnnotationObject: Object, Annotation {
     }
     
     typealias ID = FaceAnnotationID
-    @objc dynamic var id: FaceAnnotationID = FaceAnnotationID()
+    @objc dynamic var id: FaceAnnotationID? = FaceAnnotationID()
     @objc dynamic var text: String = ""
-    @objc dynamic var pointRatioOnImage: PointRatio = .zero
+    @objc dynamic var pointRatioOnImage: PointRatio? = .zero
     @objc dynamic var comment: String? = nil
     @objc dynamic var selectedColorPalletID: ColorPalletID? {
         didSet {
@@ -67,7 +67,7 @@ class FaceAnnotationObject: Object, Annotation {
     }
     
     func makeAnnotation() -> FaceAnnotation {
-        return FaceAnnotation(id: id, text: text, pointRatioOnImage: pointRatioOnImage, comment: comment, selectedColorPalletID: selectedColorPalletID, selectedColorPalletAnnotationID: selectedColorPalletAnnotationID)
+        return FaceAnnotation(id: id!, text: text, pointRatioOnImage: pointRatioOnImage!, comment: comment, selectedColorPalletID: selectedColorPalletID, selectedColorPalletAnnotationID: selectedColorPalletAnnotationID)
     }
     
 }

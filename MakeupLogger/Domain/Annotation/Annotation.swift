@@ -10,9 +10,9 @@ import RealmSwift
 
 protocol Annotation {
     associatedtype ID: AnnotationID
-    var id: ID { get }
+    var id: ID? { get }
     var text: String { get }
-    var pointRatioOnImage: PointRatio { get }
+    var pointRatioOnImage: PointRatio? { get }
 }
 
 protocol AnnotationID {
