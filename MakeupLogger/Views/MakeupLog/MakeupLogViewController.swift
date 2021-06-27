@@ -47,7 +47,7 @@ final class MakeupLogViewController: UIViewController {
     
     @objc private func takeNewPhoto() {
         alert.selectPhotoAction = {[weak self] image in
-            self?.viewModel.addPicture(type: "eye", image: image)
+            self?.viewModel.addPicture(image: image)
         }
         alert.show(presenter: self)
     }
