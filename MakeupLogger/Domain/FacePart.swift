@@ -13,12 +13,12 @@ class FacePart: Object {
         super.init()
     }
     
-    static func make(id: FacePartID, type: String, imagePath: String, annotations: [FaceAnnotation]) -> FacePart {
+    static func make(id: FacePartID, type: String, imagePath: String, annotations: [FaceAnnotationObject]) -> FacePart {
         let part = FacePart()
         part.id = id
         part.type = type
         part.imagePath = imagePath
-        let list = List<FaceAnnotation>()
+        let list = List<FaceAnnotationObject>()
         annotations.forEach { list.append($0)}
         part.annotations = list
         return part
@@ -27,7 +27,7 @@ class FacePart: Object {
     @objc dynamic var id: FacePartID? = nil
     @objc dynamic var type: String = ""
     @objc dynamic var imagePath: String = ""
-    var annotations: List<FaceAnnotation> = List<FaceAnnotation>()
+    var annotations: List<FaceAnnotationObject> = List<FaceAnnotationObject>()
     
     static func == (lhs: FacePart, rhs: FacePart) -> Bool {
         return lhs.id == rhs.id
@@ -37,7 +37,7 @@ class FacePart: Object {
         if annotations.isEmpty {
             return FaceAnnotationID()
         }
-        return annotations.last!.id!.makeNextAnnotationID()
+        return annotations.last!.id.makeNextAnnotationID()
     }
     
     override func isEqual(_ object: Any?) -> Bool {

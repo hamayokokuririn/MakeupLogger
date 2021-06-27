@@ -35,8 +35,8 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
     }()
     
     
-    lazy var eyeAnnotation: FaceAnnotation = {
-        let annotation = FaceAnnotation()
+    lazy var eyeAnnotation: FaceAnnotationObject = {
+        let annotation = FaceAnnotationObject()
         annotation.id = faceID
         annotation.text = "1"
         annotation.pointRatioOnImage = {
@@ -67,17 +67,17 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
         return id
     }()
     
-    lazy var colorPalletAnnotation1 = ColorPalletAnnotation.make(id: colorID1,
+    lazy var colorPalletAnnotation1 = ColorPalletAnnotationObject.make(id: colorID1,
                                                                  text: "1",
                                                                  pointRatioOnImage: PointRatio())
-    lazy var colorPalletAnnotation2 = ColorPalletAnnotation.make(id: colorID2,
+    lazy var colorPalletAnnotation2 = ColorPalletAnnotationObject.make(id: colorID2,
                                                                  text: "2",
                                                                  pointRatioOnImage: {
                                                                     let ratio = PointRatio()
                                                                     ratio.x = 0.3
                                                                     return ratio
                                                                  }())
-    lazy var colorPalletAnnotation3 = ColorPalletAnnotation.make(id: colorID3,
+    lazy var colorPalletAnnotation3 = ColorPalletAnnotationObject.make(id: colorID3,
                                                                  text: "3",
                                                                  pointRatioOnImage: {
                                                                     let ratio = PointRatio()
@@ -170,7 +170,7 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
         if let log = logMap[logID],
            let partIndex = log.partsList.firstIndex(where: {$0.id == partID}),
            let faceIndex = logMap[logID]?.partsList[partIndex].annotations.firstIndex(where: {$0.id == faceAnnotation.id}) {
-            log.partsList[partIndex].annotations[faceIndex] = faceAnnotation
+            log.partsList[partIndex].annotations[faceIndex] = faceAnnotation.makeObject()
             logMap[logID] = log
             completion(log)
             notifyChanged()
@@ -183,7 +183,7 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
         if let log = logMap[logID],
            let partIndex = log.partsList.firstIndex(where: {$0.id == partID}) {
             let id = log.partsList[partIndex].makeNextFaceAnnotationID()
-            let faceAnnotation = FaceAnnotation()
+            let faceAnnotation = FaceAnnotationObject()
             faceAnnotation.id = id
             faceAnnotation.text = String(id.id)
             log.partsList[partIndex].annotations.append(faceAnnotation)

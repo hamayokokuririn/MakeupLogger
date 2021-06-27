@@ -122,7 +122,7 @@ final class MakeupLogViewModel: NSObject {
         if case .part(let partID) = self.state {
             makeupLogRepository.updateFaceAnnotation(logID: log.id!,
                                             partID: partID,
-                                            faceAnnotation: annotation) { log in
+                                                     faceAnnotation: annotation) { log in
                 guard let log = log else {
                     return
                 }
@@ -196,10 +196,10 @@ extension MakeupLogViewModel: UICollectionViewDataSource {
 }
 
 extension MakeupLogViewModel: CommentListAdapterDelegate {
-    func commentListAdapterAnnotationList(_ adapter: CommentListAdapter) -> [FaceAnnotation] {
+    func commentListAdapterAnnotationList(_ adapter: CommentListAdapter) -> [FaceAnnotationObject] {
         if case .part(let partID) = state,
            let part = log.partsList.first(where: {$0.id == partID}) {
-            var annotations = [FaceAnnotation]()
+            var annotations = [FaceAnnotationObject]()
             part.annotations.forEach {
                 annotations.append($0)
             }
@@ -211,7 +211,7 @@ extension MakeupLogViewModel: CommentListAdapterDelegate {
     func commentListAdapter(_ adapter: CommentListAdapter, didSelectCommentCell index: Int) {
         if case .part(let partID) = state,
            let part = log.partsList.first(where: {$0.id == partID}) {
-            delegate?.viewModel(self, didSelect: part.annotations[index])
+            delegate?.viewModel(self, didSelect: part.annotations[index].makeAnnotation())
         }
         return
     }
@@ -223,20 +223,19 @@ extension MakeupLogViewModel: CommentListAdapterDelegate {
 }
 
 extension MakeupLogViewModel: AnnotationMoveImageViewDelegate {
-    typealias AnnotationType = FaceAnnotation
+    typealias AnnotationType = FaceAnnotationObject
     
-    func annotationMoveImageView(_ view: AnnotationMoveImageView<MakeupLogViewModel>, didTouched annotationViewFrame: CGRect, and id: AnnotationID) {
+    func annotationMoveImageView(_ view: AnnotationMoveImageView<MakeupLogViewModel>, didTouched annotationViewFrame: CGRect, and id: AnnotationType.ID) {
         if case .part(let partID) = state,
            let part = log.partsList.first(where: {$0.id == partID}),
-           let faceID = id as? FaceAnnotationID,
-           let faceAnnotation = part.annotations.first(where: {$0.id == faceID}) {
+           let faceAnnotationObject = part.annotations.first(where: {$0.id == id}) {
             let imageViewRect = view.imageRect()
             let point = CGPoint(x: annotationViewFrame.minX - imageViewRect.minX,
                                 y: annotationViewFrame.minY - imageViewRect.minY)
             let pointRatio = PointRatio.make(parentViewSize: imageViewRect.size,
                                              annotationPoint: point)
-            faceAnnotation.pointRatioOnImage = pointRatio
-            touchEnded(annotation: faceAnnotation)
+            let annotation = FaceAnnotation(id: faceAnnotationObject.id, text: faceAnnotationObject.text, pointRatioOnImage: pointRatio, comment: faceAnnotationObject.comment, selectedColorPalletID: faceAnnotationObject.selectedColorPalletID, selectedColorPalletAnnotationID: faceAnnotationObject.selectedColorPalletAnnotationID)
+            touchEnded(annotation: annotation)
         }
     }
     

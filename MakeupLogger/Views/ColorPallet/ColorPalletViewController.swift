@@ -9,9 +9,9 @@ import Foundation
 import UIKit
 
 extension ColorPalletViewController: AnnotationMoveImageViewDelegate {
-    typealias AnnotationType = ColorPalletAnnotation
+    typealias AnnotationType = ColorPalletAnnotationObject
     
-    func annotationMoveImageView(_ view: AnnotationMoveImageView<ColorPalletViewController>, didTouched annotationViewFrame: CGRect, and id: AnnotationID) {
+    func annotationMoveImageView(_ view: AnnotationMoveImageView<ColorPalletViewController>, didTouched annotationViewFrame: CGRect, and id: AnnotationType.ID) {
         
         viewModel.didAnnotationUpdate(view, didTouched: annotationViewFrame, and: id)
     }
@@ -63,7 +63,7 @@ final class ColorPalletViewController: UIViewController {
         selectedPhotoImage.isUserInteractionEnabled = true
         selectedPhotoImage.contentMode = .scaleAspectFit
         viewModel.annotationList.forEach {
-            let annotation = AnnotationView(annotation: $0)
+            let annotation = AnnotationView(annotation: $0.makeObject())
             selectedPhotoImage.addSubview(annotation)
         }
         selectedPhotoImage.adjustAnnotationViewFrame()

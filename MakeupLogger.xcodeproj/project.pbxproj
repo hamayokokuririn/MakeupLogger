@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		24014B252652BAB100786076 /* FacePart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24014B242652BAB100786076 /* FacePart.swift */; };
 		2409D2942610837E00A3C995 /* ColorPalletRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2409D2932610837E00A3C995 /* ColorPalletRepository.swift */; };
+		240BC8D52688079000111D37 /* RealmConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 240BC8D42688079000111D37 /* RealmConfig.swift */; };
 		240BCD8B2621CAC70032814B /* NotificationName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 240BCD8A2621CAC70032814B /* NotificationName.swift */; };
 		2417377E2619FD3A0040DDF2 /* AddNewColorPalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2417377D2619FD3A0040DDF2 /* AddNewColorPalletViewController.swift */; };
 		241737802619FD9C0040DDF2 /* AddNewColorPalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2417377F2619FD9C0040DDF2 /* AddNewColorPalletViewModel.swift */; };
@@ -17,8 +18,8 @@
 		242447B425D89927002290F2 /* AnnotationDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447B325D89927002290F2 /* AnnotationDetailViewModel.swift */; };
 		242447B725D8B1E1002290F2 /* TakePhotoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447B625D8B1E1002290F2 /* TakePhotoAlert.swift */; };
 		242447BA25E0A625002290F2 /* MakeupLogRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447B925E0A625002290F2 /* MakeupLogRepository.swift */; };
-		242447BC25E0EB65002290F2 /* FaceAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447BB25E0EB65002290F2 /* FaceAnnotation.swift */; };
-		242447BF25E0EB9A002290F2 /* ColorPalletAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447BE25E0EB9A002290F2 /* ColorPalletAnnotation.swift */; };
+		242447BC25E0EB65002290F2 /* FaceAnnotationObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447BB25E0EB65002290F2 /* FaceAnnotationObject.swift */; };
+		242447BF25E0EB9A002290F2 /* ColorPalletAnnotationObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447BE25E0EB9A002290F2 /* ColorPalletAnnotationObject.swift */; };
 		242447C125E0EBEA002290F2 /* MakeupLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447C025E0EBEA002290F2 /* MakeupLog.swift */; };
 		242447C425E0EFBF002290F2 /* MakeupLogListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447C325E0EFBF002290F2 /* MakeupLogListViewController.swift */; };
 		242447C625E0F00D002290F2 /* MakeupLogListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242447C525E0F00D002290F2 /* MakeupLogListViewModel.swift */; };
@@ -45,7 +46,6 @@
 		24B112CA25B2D70100EE8DEA /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B112C925B2D70100EE8DEA /* Annotation.swift */; };
 		24BD230D264FDC350045C729 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BD230B264FDC350045C729 /* RealmSwift.framework */; };
 		24BD230F264FDC350045C729 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BD230C264FDC350045C729 /* Realm.framework */; };
-		24CA18F3263B93DB00DD2B9E /* RealmDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CA18F2263B93DB00DD2B9E /* RealmDatabase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +68,7 @@
 /* Begin PBXFileReference section */
 		24014B242652BAB100786076 /* FacePart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacePart.swift; sourceTree = "<group>"; };
 		2409D2932610837E00A3C995 /* ColorPalletRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalletRepository.swift; sourceTree = "<group>"; };
+		240BC8D42688079000111D37 /* RealmConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmConfig.swift; sourceTree = "<group>"; };
 		240BCD8A2621CAC70032814B /* NotificationName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationName.swift; sourceTree = "<group>"; };
 		2417377D2619FD3A0040DDF2 /* AddNewColorPalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewColorPalletViewController.swift; sourceTree = "<group>"; };
 		2417377F2619FD9C0040DDF2 /* AddNewColorPalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewColorPalletViewModel.swift; sourceTree = "<group>"; };
@@ -76,8 +77,8 @@
 		242447B325D89927002290F2 /* AnnotationDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationDetailViewModel.swift; sourceTree = "<group>"; };
 		242447B625D8B1E1002290F2 /* TakePhotoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakePhotoAlert.swift; sourceTree = "<group>"; };
 		242447B925E0A625002290F2 /* MakeupLogRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeupLogRepository.swift; sourceTree = "<group>"; };
-		242447BB25E0EB65002290F2 /* FaceAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceAnnotation.swift; sourceTree = "<group>"; };
-		242447BE25E0EB9A002290F2 /* ColorPalletAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalletAnnotation.swift; sourceTree = "<group>"; };
+		242447BB25E0EB65002290F2 /* FaceAnnotationObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceAnnotationObject.swift; sourceTree = "<group>"; };
+		242447BE25E0EB9A002290F2 /* ColorPalletAnnotationObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalletAnnotationObject.swift; sourceTree = "<group>"; };
 		242447C025E0EBEA002290F2 /* MakeupLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeupLog.swift; sourceTree = "<group>"; };
 		242447C325E0EFBF002290F2 /* MakeupLogListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeupLogListViewController.swift; sourceTree = "<group>"; };
 		242447C525E0F00D002290F2 /* MakeupLogListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeupLogListViewModel.swift; sourceTree = "<group>"; };
@@ -110,7 +111,6 @@
 		24B112C925B2D70100EE8DEA /* Annotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
 		24BD230B264FDC350045C729 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
 		24BD230C264FDC350045C729 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
-		24CA18F2263B93DB00DD2B9E /* RealmDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDatabase.swift; sourceTree = "<group>"; };
 		24CA18F426425E8600DD2B9E /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = ../../Downloads/Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
 		24CA18F526425E8600DD2B9E /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = ../../Downloads/Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
 		24F7A722263AD56D000039AB /* RealmSwift.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = RealmSwift.xcframework; path = Carthage/Build/RealmSwift.xcframework; sourceTree = "<group>"; };
@@ -144,6 +144,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		240BC8D32688078100111D37 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				240BC8D42688079000111D37 /* RealmConfig.swift */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
 		240BCD892621CAB00032814B /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -184,7 +192,6 @@
 			children = (
 				242447B925E0A625002290F2 /* MakeupLogRepository.swift */,
 				2409D2932610837E00A3C995 /* ColorPalletRepository.swift */,
-				24CA18F2263B93DB00DD2B9E /* RealmDatabase.swift */,
 				247FC89F268784A000392045 /* MakeupLogRepositoryInMemory.swift */,
 			);
 			path = DataStore;
@@ -194,8 +201,8 @@
 			isa = PBXGroup;
 			children = (
 				24B112C925B2D70100EE8DEA /* Annotation.swift */,
-				242447BB25E0EB65002290F2 /* FaceAnnotation.swift */,
-				242447BE25E0EB9A002290F2 /* ColorPalletAnnotation.swift */,
+				242447BB25E0EB65002290F2 /* FaceAnnotationObject.swift */,
+				242447BE25E0EB9A002290F2 /* ColorPalletAnnotationObject.swift */,
 			);
 			path = Annotation;
 			sourceTree = "<group>";
@@ -293,6 +300,7 @@
 		24B1127F25A9576100EE8DEA /* MakeupLogger */ = {
 			isa = PBXGroup;
 			children = (
+				240BC8D32688078100111D37 /* Config */,
 				247FC8982686ACDE00392045 /* Utility */,
 				240BCD892621CAB00032814B /* Extension */,
 				242447B825E0A5F8002290F2 /* DataStore */,
@@ -533,19 +541,19 @@
 				245A09262607895800BD3063 /* AddNewMakeupLogViewModel.swift in Sources */,
 				24B1128125A9576100EE8DEA /* AppDelegate.swift in Sources */,
 				2446ED1D25D54790005BD9F3 /* AnnotationMoveImageView.swift in Sources */,
+				240BC8D52688079000111D37 /* RealmConfig.swift in Sources */,
 				2446ED2A25D893E4005BD9F3 /* AnnotationDetailViewController.swift in Sources */,
 				242447BA25E0A625002290F2 /* MakeupLogRepository.swift in Sources */,
-				24CA18F3263B93DB00DD2B9E /* RealmDatabase.swift in Sources */,
 				242447CB25E0F3BB002290F2 /* MakeupLogViewModel.swift in Sources */,
 				2446ED2625D77A28005BD9F3 /* ColorPallet.swift in Sources */,
-				242447BC25E0EB65002290F2 /* FaceAnnotation.swift in Sources */,
+				242447BC25E0EB65002290F2 /* FaceAnnotationObject.swift in Sources */,
 				24B1128325A9576100EE8DEA /* SceneDelegate.swift in Sources */,
 				241737802619FD9C0040DDF2 /* AddNewColorPalletViewModel.swift in Sources */,
 				242447C925E0F398002290F2 /* MakeupLogViewController.swift in Sources */,
 				24014B252652BAB100786076 /* FacePart.swift in Sources */,
 				240BCD8B2621CAC70032814B /* NotificationName.swift in Sources */,
 				247FC8A0268784A000392045 /* MakeupLogRepositoryInMemory.swift in Sources */,
-				242447BF25E0EB9A002290F2 /* ColorPalletAnnotation.swift in Sources */,
+				242447BF25E0EB9A002290F2 /* ColorPalletAnnotationObject.swift in Sources */,
 				2446ED2225D774D5005BD9F3 /* CommentCell.swift in Sources */,
 				2446ED2025D5713C005BD9F3 /* AnnotationView.swift in Sources */,
 				24B112CA25B2D70100EE8DEA /* Annotation.swift in Sources */,

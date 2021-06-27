@@ -24,8 +24,8 @@ class MakeupLogRepositoryTests: XCTestCase {
         id.id = 1
         return id
     }()
-    lazy var faceAnnotation1: FaceAnnotation = {
-        let annotation = FaceAnnotation()
+    lazy var faceAnnotation1: FaceAnnotationObject = {
+        let annotation = FaceAnnotationObject()
         annotation.id = annotationID
         annotation.text = "1"
         return annotation
@@ -41,8 +41,8 @@ class MakeupLogRepositoryTests: XCTestCase {
         id.id = 2
         return id
     }()
-    lazy var faceAnnotation2: FaceAnnotation = {
-        let annotation = FaceAnnotation()
+    lazy var faceAnnotation2: FaceAnnotationObject = {
+        let annotation = FaceAnnotationObject()
         annotation.id = annotationID2
         annotation.text = "2"
         return annotation

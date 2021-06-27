@@ -173,10 +173,10 @@ extension AnnotationDetailViewController: UITextViewDelegate {
 }
 
 extension AnnotationDetailViewController: AnnotationMoveImageViewDelegate {
-    typealias AnnotationType = ColorPalletAnnotation
+    typealias AnnotationType = ColorPalletAnnotationObject
     
-    func annotationMoveImageView(_ view: AnnotationMoveImageView<AnnotationDetailViewController>, didTouched annotationViewFrame: CGRect, and id: AnnotationID) {
+    func annotationMoveImageView(_ view: AnnotationMoveImageView<AnnotationDetailViewController>, didTouched annotationViewFrame: CGRect, and id: AnnotationType.ID) {
         viewModel.updateSelectedAnnotation(id: id)
-        colorPalletImage.activateAnnotation(for: id as? ColorPalletAnnotation.ID)
+        colorPalletImage.activateAnnotation(for: id)
     }
 }

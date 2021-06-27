@@ -50,7 +50,7 @@ class ColorPalletRealmRepository: ColorPalletRepository {
     static let shared = ColorPalletRealmRepository()
     private init() {
         var config = Realm.Configuration.init()
-        config.schemaVersion = 0
+        config.schemaVersion = RealmConfig.version
         realm = try! Realm(configuration: config)
     }
     
@@ -140,7 +140,7 @@ class ColorPalletRealmRepository: ColorPalletRepository {
         }
         do {
             try realm.write {
-                pallet.annotationList[index] = annotation
+                pallet.annotationList[index] = annotation.makeObject()
             }
         } catch {
             print(#function + "update failed")
@@ -158,7 +158,7 @@ class ColorPalletRealmRepository: ColorPalletRepository {
         if list.isEmpty {
             let annotationID = ColorPalletAnnotationID()
             annotationID.id = 0
-            let annotation = ColorPalletAnnotation.make(id: annotationID,
+            let annotation = ColorPalletAnnotationObject.make(id: annotationID,
                                                    text: annotationID.id.description,
                                                    pointRatioOnImage: .zero)
             do {
@@ -172,8 +172,8 @@ class ColorPalletRealmRepository: ColorPalletRepository {
             notifyChanged()
             return
         }
-        let annotationID = list.last!.id!.makeNextAnnotationID()
-        let annotation = ColorPalletAnnotation.make(id: annotationID,
+        let annotationID = list.last!.id.makeNextAnnotationID()
+        let annotation = ColorPalletAnnotationObject.make(id: annotationID,
                                                     text: annotationID.id.description,
                                                     pointRatioOnImage: .zero)
         do {
@@ -211,17 +211,17 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
         return id
     }()
     
-    lazy var colorPalletAnnotation1 = ColorPalletAnnotation.make(id: colorID1,
+    lazy var colorPalletAnnotation1 = ColorPalletAnnotationObject.make(id: colorID1,
                                                                  text: "1",
                                                                  pointRatioOnImage: PointRatio())
-    lazy var colorPalletAnnotation2 = ColorPalletAnnotation.make(id: colorID2,
+    lazy var colorPalletAnnotation2 = ColorPalletAnnotationObject.make(id: colorID2,
                                                                  text: "2",
                                                                  pointRatioOnImage: {
                                                                     let ratio = PointRatio()
                                                                     ratio.x = 0.3
                                                                     return ratio
                                                                  }())
-    lazy var colorPalletAnnotation3 = ColorPalletAnnotation.make(id: colorID3,
+    lazy var colorPalletAnnotation3 = ColorPalletAnnotationObject.make(id: colorID3,
                                                                  text: "3",
                                                                  pointRatioOnImage: {
                                                                     let ratio = PointRatio()
@@ -308,7 +308,7 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
         if let index = colorPallet.annotationList.firstIndex(where: {
             $0.id == annotation.id
         }) {
-            cache[id]?.annotationList[index] = annotation
+            cache[id]?.annotationList[index] = annotation.makeObject()
             completion(cache[id])
             notifyChanged()
         } else {
@@ -325,7 +325,7 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
         if list.isEmpty {
             let annotationID = ColorPalletAnnotationID()
             annotationID.id = 0
-            let annotation = ColorPalletAnnotation.make(id: annotationID,
+            let annotation = ColorPalletAnnotationObject.make(id: annotationID,
                                                    text: annotationID.id.description,
                                                    pointRatioOnImage: .zero)
             cache[id]?.annotationList.append(annotation)
@@ -333,8 +333,8 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
             notifyChanged()
             return
         }
-        let annotationID = list.last!.id!.makeNextAnnotationID()
-        let annotation = ColorPalletAnnotation.make(id: annotationID,
+        let annotationID = list.last!.id.makeNextAnnotationID()
+        let annotation = ColorPalletAnnotationObject.make(id: annotationID,
                                                     text: annotationID.id.description,
                                                     pointRatioOnImage: .zero)
         cache[id]?.annotationList.append(annotation)

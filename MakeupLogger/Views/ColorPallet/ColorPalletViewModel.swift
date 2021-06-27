@@ -37,7 +37,7 @@ final class ColorPalletViewModel: NSObject {
                 }
                 var list = [ColorPalletAnnotation]()
                 colorPallet.annotationList.forEach {
-                    list.append($0)
+                    list.append($0.makeAnnotation())
                 }
                 self.annotationList = list
             }
@@ -50,7 +50,7 @@ final class ColorPalletViewModel: NSObject {
             if let pallet = pallet {
                 var list = [ColorPalletAnnotation]()
                 pallet.annotationList.forEach {
-                    list.append($0)
+                    list.append($0.makeAnnotation())
                 }
                 annotationList = list
             }
@@ -77,7 +77,7 @@ final class ColorPalletViewModel: NSObject {
                 $0.id == colorPalletID
             }) {
                 guard let id = id as? ColorPalletAnnotationID,
-                      let annotation = colorPallet.annotationList.first(where: {
+                      let annotationObject = colorPallet.annotationList.first(where: {
                         $0.id == id
                       }) else {return}
                 let rect = view.imageRect()
@@ -85,7 +85,7 @@ final class ColorPalletViewModel: NSObject {
                                     y: annotationViewFrame.minY - rect.minY)
                 let pointRatio = PointRatio.make(parentViewSize: rect.size,
                                                  annotationPoint: point)
-                annotation.pointRatioOnImage = pointRatio
+                let annotation = annotationObject.makeAnnotation(point: pointRatio)
                 repository.updateAnnotation(id: colorPalletID,
                                             annotation: annotation,
                                             completion: { _ in })

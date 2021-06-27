@@ -42,7 +42,7 @@ class MakeupLogRealmRepository: MakeupLogRepository {
     
     private init() {
         var config = Realm.Configuration.init()
-        config.schemaVersion = 1
+        config.schemaVersion = RealmConfig.version
         realm = try! Realm(configuration: config)
     }
     
@@ -155,12 +155,15 @@ class MakeupLogRealmRepository: MakeupLogRepository {
             completion(nil)
             return
         }
-        let part = log.partsList[partIndex]
-        part.annotations[faceIndex] = faceAnnotation
-        updateFacePart(logID: logID,
-                       part: part) { log in
-            completion(log)
-            notifyChanged()
+        do {
+            try realm.write {
+                log.partsList[partIndex].annotations[faceIndex] = faceAnnotation.makeObject()
+                completion(log)
+                notifyChanged()
+            }
+        } catch {
+            print(#function + "error")
+            completion(nil)
         }
     }
     
@@ -174,14 +177,20 @@ class MakeupLogRealmRepository: MakeupLogRepository {
         }
         let part = log.partsList[partIndex]
         let faceID = part.makeNextFaceAnnotationID()
-        let faceAnnotation = FaceAnnotation()
+        let faceAnnotation = FaceAnnotationObject()
         faceAnnotation.id = faceID
         faceAnnotation.text = String(faceID.id)
-        part.annotations.append(faceAnnotation)
-        updateFacePart(logID: logID, part: part) { log in
-            completion(log)
-            notifyChanged()
+        do {
+            try realm.write {
+                log.partsList[partIndex].annotations.append(faceAnnotation)
+                completion(log)
+                notifyChanged()
+            }
+        } catch {
+            print(#function + "error")
+            completion(nil)
         }
+        
     }
     
     private func notifyChanged() {

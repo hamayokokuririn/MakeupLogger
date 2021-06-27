@@ -13,12 +13,12 @@ class ColorPallet: Object {
         super.init()
     }
     
-    static func make(id: ColorPalletID, title: String, imagePath: String, annotationList: [ColorPalletAnnotation]) -> ColorPallet {
+    static func make(id: ColorPalletID, title: String, imagePath: String, annotationList: [ColorPalletAnnotationObject]) -> ColorPallet {
         let pallet = ColorPallet()
         pallet.id = id
         pallet.title = title
         pallet.imagePath = imagePath
-        let list = List<ColorPalletAnnotation>()
+        let list = List<ColorPalletAnnotationObject>()
         annotationList.forEach {
             list.append($0)
         }
@@ -30,7 +30,7 @@ class ColorPallet: Object {
     @objc dynamic var id: ColorPalletID? = nil
     @objc dynamic var title: String = ""
     @objc dynamic var imagePath: String = ""
-    var annotationList = List<ColorPalletAnnotation>()
+    var annotationList = List<ColorPalletAnnotationObject>()
     
     override func isEqual(_ object: Any?) -> Bool {
         guard let pallet = object as? ColorPallet else {

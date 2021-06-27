@@ -11,7 +11,7 @@ import UIKit
 protocol CommentListAdapterDelegate: AnyObject {
     func commentListAdapter(_ adapter: CommentListAdapter, didSelectCommentCell index: Int)
     func commentListAdapter(_ adapter: CommentListAdapter, didPushAddButton insertIndex: Int)
-    func commentListAdapterAnnotationList(_ adapter: CommentListAdapter) -> [FaceAnnotation]
+    func commentListAdapterAnnotationList(_ adapter: CommentListAdapter) -> [FaceAnnotationObject]
 }
 
 final class CommentListAdapter: NSObject, UITableViewDataSource {
