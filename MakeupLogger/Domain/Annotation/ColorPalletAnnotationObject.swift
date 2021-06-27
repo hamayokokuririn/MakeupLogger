@@ -60,7 +60,7 @@ class ColorPalletAnnotationObject: Object, Annotation {
         if let point = point {
             return ColorPalletAnnotation(id: id!, text: text, pointRatioOnImage: point)
         }
-        return ColorPalletAnnotation(id: id!, text: text)
+        return ColorPalletAnnotation(id: id!, text: text, pointRatioOnImage: self.pointRatioOnImage!)
     }
 }
 

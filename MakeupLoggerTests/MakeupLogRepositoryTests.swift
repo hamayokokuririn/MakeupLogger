@@ -79,14 +79,14 @@ class MakeupLogRepositoryTests: XCTestCase {
     func testUpdateFaceAnnotation() {
         repository.updateFaceAnnotation(logID: logID,
                                         partID: partID,
-                                        faceAnnotation: faceAnnotation2) { log in
+                                        faceAnnotation: faceAnnotation2.makeAnnotation()) { log in
             XCTAssertNil(log)
         }
 
         faceAnnotation1.comment = "test"
         repository.updateFaceAnnotation(logID: logID,
                                         partID: partID,
-                                        faceAnnotation: faceAnnotation1) { log in
+                                        faceAnnotation: faceAnnotation1.makeAnnotation()) { log in
             XCTAssertEqual(log!.partsList[0].annotations.count, 1)
             XCTAssertEqual(log!.partsList[0].annotations[0], faceAnnotation1)
             XCTAssertEqual(log!.partsList[0].annotations[0].comment, faceAnnotation1.comment)

@@ -23,8 +23,6 @@ protocol ColorPalletRepository {
                           completion: (ColorPallet?) -> Void)
     func insertAnnotation(id: ColorPalletID,
                           completion: (ColorPallet?) -> Void)
-    
-    var cache: [ColorPalletID: ColorPallet] { get }
 }
 
 extension ColorPalletRepository {
@@ -52,19 +50,6 @@ class ColorPalletRealmRepository: ColorPalletRepository {
         var config = Realm.Configuration.init()
         config.schemaVersion = RealmConfig.version
         realm = try! Realm(configuration: config)
-    }
-    
-    var cache: [ColorPalletID : ColorPallet] {
-        get {
-            let result = realm.objects(ColorPallet.self).map { $0 }
-            let array = Array(result)
-            var dic = [ColorPalletID : ColorPallet]()
-            array.forEach {
-                dic[$0.id!] = $0
-            }
-            return dic
-        }
-        
     }
     
     func getColorPalletList(completion: ([ColorPallet]) -> Void) {
@@ -110,7 +95,9 @@ class ColorPalletRealmRepository: ColorPalletRepository {
     }
     
     func updateColorPallet(id: ColorPalletID, title: String, image: UIImage, completion: (ColorPallet?) -> Void) {
-        guard let pallet = cache[id],
+        let result = realm.objects(ColorPallet.self).map { $0 }
+        let array = Array(result)
+        guard let pallet = array.first(where: {$0.id == id}),
             let data = image.compressData() else {
             completion(nil)
             return
@@ -131,7 +118,9 @@ class ColorPalletRealmRepository: ColorPalletRepository {
     }
     
     func updateAnnotation(id: ColorPalletID, annotation: ColorPalletAnnotation, completion: (ColorPallet?) -> Void) {
-        guard let pallet = cache[id],
+        let result = realm.objects(ColorPallet.self).map { $0 }
+        let array = Array(result)
+        guard let pallet = array.first(where: {$0.id == id}),
               let index = pallet.annotationList.firstIndex(where: {
                 $0.id == annotation.id
               }) else {
@@ -141,16 +130,19 @@ class ColorPalletRealmRepository: ColorPalletRepository {
         do {
             try realm.write {
                 pallet.annotationList[index] = annotation.makeObject()
+                completion(pallet)
+                notifyChanged()
             }
         } catch {
             print(#function + "update failed")
+            completion(nil)
         }
-        completion(pallet)
-        notifyChanged()
     }
     
     func insertAnnotation(id: ColorPalletID, completion: (ColorPallet?) -> Void) {
-        guard let pallet = cache[id] else {
+        let result = realm.objects(ColorPallet.self).map { $0 }
+        let array = Array(result)
+        guard let pallet = array.first(where: {$0.id == id}) else {
             completion(nil)
             return
         }

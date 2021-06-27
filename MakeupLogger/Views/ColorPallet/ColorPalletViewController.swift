@@ -8,15 +8,6 @@
 import Foundation
 import UIKit
 
-extension ColorPalletViewController: AnnotationMoveImageViewDelegate {
-    typealias AnnotationType = ColorPalletAnnotationObject
-    
-    func annotationMoveImageView(_ view: AnnotationMoveImageView<ColorPalletViewController>, didTouched annotationViewFrame: CGRect, and id: AnnotationType.ID) {
-        
-        viewModel.didAnnotationUpdate(view, didTouched: annotationViewFrame, and: id)
-    }
-}
-
 final class ColorPalletViewController: UIViewController {
     let titleTextField = UITextField()
     let selectPhotoButton = UIButton()
@@ -152,5 +143,14 @@ final class ColorPalletViewController: UIViewController {
 extension ColorPalletViewController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return false
+    }
+}
+
+extension ColorPalletViewController: AnnotationMoveImageViewDelegate {
+    typealias AnnotationType = ColorPalletAnnotationObject
+    
+    func annotationMoveImageView(_ view: AnnotationMoveImageView<ColorPalletViewController>, didTouched annotationViewFrame: CGRect, and id: AnnotationType.ID) {
+        
+        viewModel.didAnnotationUpdate(view, didTouched: annotationViewFrame, and: id)
     }
 }
