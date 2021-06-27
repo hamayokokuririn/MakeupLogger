@@ -25,7 +25,9 @@ class FaceAnnotation {
     var comment: String? = nil
     var selectedColorPalletID: ColorPalletID? {
         didSet {
-            self.selectedColorPalletAnnotationID = nil
+            if oldValue != selectedColorPalletID {
+                self.selectedColorPalletAnnotationID = nil
+            }
         }
     }
     var selectedColorPalletAnnotationID: ColorPalletAnnotationID? = nil
@@ -57,7 +59,7 @@ class FaceAnnotationObject: Object, Annotation {
             self.selectedColorPalletAnnotationID = nil
         }
     }
-    var selectedColorPalletAnnotationID: ColorPalletAnnotationID? = nil
+    @objc dynamic var selectedColorPalletAnnotationID: ColorPalletAnnotationID? = nil
     
     override func isEqual(_ object: Any?) -> Bool {
         guard let annotation = object as? FaceAnnotationObject else {
