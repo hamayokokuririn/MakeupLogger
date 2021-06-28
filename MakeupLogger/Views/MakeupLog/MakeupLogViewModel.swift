@@ -12,6 +12,7 @@ protocol MakeupLogViewModelDelegate: AnyObject {
     func viewModelAddAnnotation(_ model: MakeupLogViewModel)
     func viewModel(_ model: MakeupLogViewModel, didSelect annotation: FaceAnnotation)
     func viewModel(_ model: MakeupLogViewModel, didChange state: MakeupLogViewModel.ViewState, cellForRowAt indexPath: IndexPath)
+    func viewModelDidPushNewPhoto(_ model: MakeupLogViewModel)
 }
 
 final class MakeupLogViewModel: NSObject {
@@ -146,12 +147,56 @@ final class MakeupLogViewModel: NSObject {
             self.state = .part(partID: log.partsList.last!.id!)
         }
     }
+    
+    func updatePicture(image: UIImage) {
+        if case .part(let id) = state,
+           let part = log.partsList.first(where: {$0.id == id}) {
+            makeupLogRepository.updateFacePart(logID: log.id!,
+                                               part: part,
+                                               image: image) { log in
+                guard let log = log else {
+                    print(#function + "画像追加失敗")
+                    return
+                }
+                self.log = log
+                self.state = .part(partID: id)
+            }
+        }
+    }
+    
+    @objc func didPushNewPhoto() {
+        delegate?.viewModelDidPushNewPhoto(self)
+    }
 }
 
 extension MakeupLogViewModel: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // 顔全体写真とパーツの合計
         return log.partsList.count + 1
+    }
+    
+    fileprivate func addImageView(_ imageData: Data, _ cell: UICollectionViewCell, _ part: FacePart) {
+        let view = AnnotationMoveImageView<Self>(image: UIImage(data: imageData)!)
+        view.isUserInteractionEnabled = true
+        view.frame.size = cell.frame.size
+        view.contentMode = .scaleAspectFit
+        part.annotations.forEach {
+            let annotation = AnnotationView(annotation: $0)
+            view.addSubview(annotation)
+        }
+        view.adjustAnnotationViewFrame()
+        view.delegate = self as? Self
+        cell.contentView.addSubview(view)
+    }
+    
+    fileprivate func addButton(_ cell: UICollectionViewCell) {
+        let button = UIButton()
+        button.isUserInteractionEnabled = true
+        button.frame.size = cell.frame.size
+        button.addTarget(self, action: #selector(didPushNewPhoto), for: .touchUpInside)
+        button.setTitle("写真を追加", for: .normal)
+        button.backgroundColor = .blue
+        cell.contentView.addSubview(button)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -173,23 +218,15 @@ extension MakeupLogViewModel: UICollectionViewDataSource {
         }
         let part = log.partsList[indexPath.row - 1]
         if let imageData = makeupLogRepository.imageData(imagePath: part.imagePath) {
-            let view = AnnotationMoveImageView<Self>(image: UIImage(data: imageData)!)
-            view.isUserInteractionEnabled = true
-            view.frame.size = cell.frame.size
-            view.contentMode = .scaleAspectFit
-            part.annotations.forEach {
-                let annotation = AnnotationView(annotation: $0)
-                view.addSubview(annotation)
-            }
-            view.adjustAnnotationViewFrame()
-            view.delegate = self as? Self
-            cell.contentView.addSubview(view)
+            addImageView(imageData, cell, part)
+        } else {
+            addButton(cell)
         }
         cell.contentView.isUserInteractionEnabled = true
         return cell
     }
-    
 }
+
 
 extension MakeupLogViewModel: CommentListAdapterDelegate {
     func commentListAdapterAnnotationList(_ adapter: CommentListAdapter) -> [FaceAnnotationObject] {

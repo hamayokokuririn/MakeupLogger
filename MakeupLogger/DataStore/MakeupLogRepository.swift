@@ -12,7 +12,7 @@ import RealmSwift
 protocol MakeupLogRepository {
     func getLogList(completion: ([MakeupLog]) -> Void)
     func insertMakeupLog(title: String, body: String?, image: UIImage, completion: (MakeupLog?) -> Void)
-    func updateFacePart(logID: MakeupLogID, part: FacePart, completion: (MakeupLog?) -> Void)
+    func updateFacePart(logID: MakeupLogID, part: FacePart, image: UIImage?, completion: (MakeupLog?) -> Void)
     func insertFacePart(logID: MakeupLogID, type: String, image: UIImage, completion: (MakeupLog?) -> Void)
     func updateFaceAnnotation(logID: MakeupLogID, partID: FacePartID, faceAnnotation: FaceAnnotation, completion: (MakeupLog?) -> Void)
     func insertFaceAnnotation(logID: MakeupLogID, partID: FacePartID, completion: (MakeupLog?) -> Void)
@@ -77,7 +77,7 @@ class MakeupLogRealmRepository: MakeupLogRepository {
         }
     }
     
-    func updateFacePart(logID: MakeupLogID, part: FacePart, completion: (MakeupLog?) -> Void) {
+    func updateFacePart(logID: MakeupLogID, part: FacePart, image: UIImage?, completion: (MakeupLog?) -> Void) {
         let result = realm.objects(MakeupLog.self).map { $0 }
         let array = Array(result)
         
@@ -86,9 +86,13 @@ class MakeupLogRealmRepository: MakeupLogRepository {
             completion(nil)
             return
         }
-        
         do {
             try realm.write {
+                if let image = image,
+                   let data = image.compressData() {
+                    let imagePath = saveImage(folderName: part.id!.folderName, fileName: part.id!.fileName, pngData: data)
+                    part.imagePath = imagePath
+                }
                 log.partsList[index] = part
                 completion(log)
                 notifyChanged()

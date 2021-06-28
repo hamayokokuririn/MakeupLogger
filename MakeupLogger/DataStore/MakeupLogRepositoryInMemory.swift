@@ -118,9 +118,14 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
         completion(log)
     }
     
-    func updateFacePart(logID: MakeupLogID, part: FacePart, completion: (MakeupLog?) -> Void) {
+    func updateFacePart(logID: MakeupLogID, part: FacePart, image: UIImage?, completion: (MakeupLog?) -> Void) {
         if let log = logMap[logID],
            let index = log.partsList.firstIndex(where: {$0.id == part.id}) {
+            if let image = image,
+               let data = image.compressData() {
+                let imagePath = saveImage(folderName: part.id!.folderName, fileName: part.id!.fileName, pngData: data)
+                part.imagePath = imagePath
+            }
             log.partsList[index] = part
             logMap[logID] = log
             completion(log)

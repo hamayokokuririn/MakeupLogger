@@ -52,6 +52,13 @@ final class MakeupLogViewController: UIViewController {
         alert.show(presenter: self)
     }
     
+    @objc private func updatePhoto() {
+        alert.selectPhotoAction = {[weak self] image in
+            self?.viewModel.updatePicture(image: image)
+        }
+        alert.show(presenter: self)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -147,6 +154,10 @@ extension MakeupLogViewController: MakeupLogViewModelDelegate {
             navigation.presentationController?.delegate = self
             present(navigation, animated: true, completion: nil)
         }
+    }
+    
+    func viewModelDidPushNewPhoto(_ model: MakeupLogViewModel) {
+        updatePhoto()
     }
 }
 
