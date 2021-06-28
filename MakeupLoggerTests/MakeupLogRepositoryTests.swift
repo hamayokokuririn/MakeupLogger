@@ -30,7 +30,7 @@ class MakeupLogRepositoryTests: XCTestCase {
 
     lazy var annotations = [faceAnnotation1]
     lazy var facePart = FacePart.make(id: partID, type: "eye", imagePath: "", annotations: annotations)
-    lazy var log = MakeupLog.make(id: logID, title: "1", imagePath: "", partsList: [facePart])
+    lazy var log = MakeupLog.make(id: logID, title: "1", imagePath: "")
     let repository = MakeupLogRepositoryInMemory.shared
 
     lazy var annotationID2: FaceAnnotationID = {
@@ -46,6 +46,7 @@ class MakeupLogRepositoryTests: XCTestCase {
 
     override func setUp() {
         repository.setLog(logMap: [logID: log])
+        repository.logMap[logID]?.partsList[0] = facePart
     }
 
     func testGet() {
@@ -58,13 +59,13 @@ class MakeupLogRepositoryTests: XCTestCase {
     func testUpdateFacePart() throws {
         let id = FacePartID()
         let newPart = FacePart.make(id: id, type: "nose", imagePath: "", annotations: [])
-        repository.updateFacePart(logID: logID, part: newPart) { log in
+        repository.updateFacePart(logID: logID, part: newPart, image: nil) { log in
             XCTAssertNil(log)
         }
 
         facePart.annotations.append(faceAnnotation2)
-        repository.updateFacePart(logID: logID, part: facePart) { log in
-            XCTAssertEqual(log!.partsList.count, 1)
+        repository.updateFacePart(logID: logID, part: facePart, image: nil) { log in
+            XCTAssertEqual(log!.partsList.count, DefaultFaceParts.allCases.count)
             XCTAssertEqual(log!.partsList[0].annotations.count, 2)
             XCTAssertEqual(log!.partsList[0].annotations[0].id, annotationID)
             XCTAssertEqual(log!.partsList[0].annotations[1].id, annotationID2)
@@ -98,20 +99,19 @@ class MakeupLogRepositoryTests: XCTestCase {
                 return XCTFail()
             }
             XCTAssertEqual(annotations.count, 2)
-            XCTAssertEqual(annotations[1].id!.id, faceAnnotation2.id!.id)
         }
     }
 
     func testInsertFacePart() {
         let partList = repository.logMap[logID]?.partsList
-        XCTAssertEqual(partList!.count, 1)
+        XCTAssertEqual(partList!.count, DefaultFaceParts.allCases.count)
 
         let nextID = FacePartID()
         repository.nextFacePartID = nextID
         repository.insertFacePart(logID: logID, type: "nose", image: #imageLiteral(resourceName: "sample_eye_line")) { (log) in
-            XCTAssertEqual(log!.partsList.count, 2)
+            XCTAssertEqual(log!.partsList.count, DefaultFaceParts.allCases.count + 1)
             XCTAssertEqual(log!.partsList[0].id, partID)
-            XCTAssertEqual(log!.partsList[1].id!.id, nextID.id)
+            XCTAssertEqual(log!.partsList[3].id!.id, nextID.id)
         }
     }
 
@@ -121,7 +121,7 @@ class MakeupLogRepositoryTests: XCTestCase {
                                   image: #imageLiteral(resourceName: "sample_eye_line"),
                                   completion: {_ in })
         let partList = repository.logMap[logID]?.partsList
-        XCTAssertEqual(partList!.count, 2)
+        XCTAssertEqual(partList!.count, DefaultFaceParts.allCases.count + 1)
 
         let newPartID = partList![1].id!
         let nextID = FaceAnnotationID()
@@ -147,9 +147,7 @@ class MakeupLogRepositoryTests: XCTestCase {
             }
             XCTAssertEqual(log.title, "test")
             XCTAssertEqual(log.body, "test_body")
-            let result = MakeupLogID()
-            XCTAssertEqual(log.id!.id, result.id)
-            XCTAssertEqual(log.partsList.count, 0)
+            XCTAssertEqual(log.partsList.count, DefaultFaceParts.allCases.count)
         }
     }
 }
