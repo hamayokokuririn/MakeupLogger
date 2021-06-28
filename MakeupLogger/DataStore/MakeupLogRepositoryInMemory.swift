@@ -19,8 +19,7 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
     
     lazy var log: MakeupLog = MakeupLog.make(id: id,
                                              title: "makeup_sample",
-                                             imagePath: imagePath,
-                                             partsList: [eye])
+                                             imagePath: imagePath)
     lazy var eye: FacePart = {
         let id = FacePartID()
         return FacePart.make(id: id,
@@ -114,8 +113,7 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
         let log = MakeupLog.make(id: id,
                                  title: title,
                                  body: body,
-                                 imagePath: saveImage(folderName: id.folderName(), fileName: id.filename(), pngData: image.pngData()!),
-                                 partsList: [])
+                                 imagePath: saveImage(folderName: id.folderName(), fileName: id.filename(), pngData: image.pngData()!))
         logMap[id] = log
         completion(log)
     }

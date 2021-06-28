@@ -8,19 +8,35 @@
 import Foundation
 import RealmSwift
 
+enum DefaultFaceParts: String, CaseIterable {
+    case eye
+    case mouth
+    case cheek
+    
+    static var list: [FacePart] {
+        let list = self.allCases.map { (type: DefaultFaceParts) -> FacePart in
+            let part = FacePart()
+            part.id = FacePartID()
+            part.type = type.rawValue
+            return part
+        }
+        return list
+    }
+}
+
 class MakeupLog: Object {
     override init() {
         super.init()
     }
     
-    static func make(id: MakeupLogID, title: String, body: String? = nil, imagePath: String, partsList: [FacePart]) -> MakeupLog {
+    static func make(id: MakeupLogID, title: String, body: String? = nil, imagePath: String) -> MakeupLog {
         let log = MakeupLog()
         log.id = id
         log.title = title
         log.body = body
         log.imagePath = imagePath
         let list = List<FacePart>()
-        partsList.forEach {
+        DefaultFaceParts.list.forEach {
             list.append($0)
         }
         log.partsList = list

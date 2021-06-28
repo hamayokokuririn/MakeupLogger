@@ -64,8 +64,7 @@ class MakeupLogRealmRepository: MakeupLogRepository {
         log = MakeupLog.make(id: id,
                              title: title,
                              body: body,
-                             imagePath: imagePath,
-                             partsList: [])
+                             imagePath: imagePath)
         
         do {
             try realm.write {

@@ -136,7 +136,7 @@ final class MakeupLogViewModel: NSObject {
     }
     
     func addPicture(image: UIImage) {
-        let type = "パーツ" + (log.partsList.count + 1).description
+        let type = "パーツ" + (log.partsList.count - DefaultFaceParts.allCases.count + 1).description
         makeupLogRepository.insertFacePart(logID: log.id!, type: type, image: image) { log in
             guard let log = log else {
                 print(#function + "画像追加失敗")
