@@ -10,7 +10,7 @@ import RealmSwift
 
 enum DefaultFaceParts: String, CaseIterable {
     case eye
-    case mouth
+    case lip
     case cheek
     
     static var list: [FacePart] {
