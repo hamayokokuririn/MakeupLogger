@@ -161,7 +161,7 @@ class MakeupLogRealmRepository: MakeupLogRepository {
             return
         }
         let faceAnnotation = FaceAnnotationObject()
-        faceAnnotation.text = String(log.partsList.count + 1)
+        faceAnnotation.text = String(log.partsList[partIndex].annotations.count + 1)
         do {
             try realm.write {
                 log.partsList[partIndex].annotations.append(faceAnnotation)
