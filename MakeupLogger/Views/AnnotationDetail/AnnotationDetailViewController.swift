@@ -12,13 +12,10 @@ final class AnnotationDetailViewController: UIViewController {
     var viewModel: AnnotationDetailViewModel
     
     @IBOutlet weak var commentTextView: UITextView!
-    
     @IBOutlet weak var selectedColorPalletName: UILabel!
     @IBOutlet weak var selectedColorPalletAnnotationName: UILabel!
     @IBOutlet weak var imageView: UIImageView!
-    private lazy var colorPalletImage: AnnotationMoveImageView = {
-        return AnnotationMoveImageView<AnnotationDetailViewController>()
-    }()
+    private var colorPalletImage = AnnotationMoveImageView<AnnotationDetailViewController>()
     
     @IBOutlet weak var changeColorPalletButton: UIButton!
     
@@ -36,7 +33,10 @@ final class AnnotationDetailViewController: UIViewController {
         colorPalletImage.movesSubviews = false
         colorPalletImage.delegate = self
         
-        imageView = colorPalletImage
+        colorPalletImage.frame.size = imageView.bounds.size
+        colorPalletImage.contentMode = .scaleAspectFit
+        colorPalletImage.backgroundColor = .black
+        imageView.addSubview(colorPalletImage)
         
         changeColorPalletButton.addTarget(self, action: #selector(didPushChangeColorPalletButton), for: .touchUpInside)
         
