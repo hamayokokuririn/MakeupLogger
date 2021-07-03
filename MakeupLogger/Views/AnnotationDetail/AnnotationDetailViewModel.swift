@@ -17,6 +17,10 @@ struct AnnotationDetailViewModel {
     var didFinishUpdateAnnotation: ((String) -> Void)?
     var didFinishUpdateColorPallet: ((ColorPallet) -> Void)?
     
+    mutating func setTitle(_ text: String) {
+        annotation.title = text
+    }
+    
     mutating func setComment(_ text: String) {
         annotation.comment = text
     }

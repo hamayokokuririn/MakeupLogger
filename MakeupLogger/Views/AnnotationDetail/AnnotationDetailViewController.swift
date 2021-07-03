@@ -11,9 +11,9 @@ import UIKit
 final class AnnotationDetailViewController: UIViewController {
     var viewModel: AnnotationDetailViewModel
     
+    @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var commentTextView: UITextView!
     @IBOutlet weak var selectedColorPalletName: UILabel!
-    @IBOutlet weak var selectedColorPalletAnnotationName: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     private var colorPalletImage = AnnotationMoveImageView<AnnotationDetailViewController>()
     
@@ -25,6 +25,9 @@ final class AnnotationDetailViewController: UIViewController {
         
         view.backgroundColor = .white
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(close))
+        
+        titleTextField.text = annotation.title
+        titleTextField.delegate = self
         
         commentTextView.text = annotation.comment
         commentTextView.delegate = self
@@ -50,8 +53,6 @@ final class AnnotationDetailViewController: UIViewController {
         }
         
         viewModel.didFinishUpdateAnnotation = { text in
-            self.selectedColorPalletAnnotationName.text = text
-            self.selectedColorPalletAnnotationName.sizeToFit()
         }
     }
     
@@ -70,7 +71,6 @@ final class AnnotationDetailViewController: UIViewController {
             let selectedColorAnnotation = colorPallet.annotationList.first(where: {
                 $0.id == selectedColorPalletAnnotationID
             })
-            self.selectedColorPalletAnnotationName.text = selectedColorAnnotation?.text ?? "---"
             self.colorPalletImage.activateAnnotation(for: selectedColorPalletAnnotationID)
         }
     }
@@ -93,6 +93,16 @@ final class AnnotationDetailViewController: UIViewController {
     @objc private func close() {
         guard let pc = navigationController?.presentationController else {return}
         pc.delegate?.presentationControllerDidDismiss?(pc)
+    }
+}
+
+extension AnnotationDetailViewController: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        viewModel.setTitle(textField.text ?? "") 
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
     }
 }
 
