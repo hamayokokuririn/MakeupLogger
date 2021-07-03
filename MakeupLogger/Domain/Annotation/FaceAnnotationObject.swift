@@ -10,18 +10,20 @@ import RealmSwift
 import CoreGraphics
 
 class FaceAnnotation {
-    init(id: FaceAnnotationID, text: String = "", pointRatioOnImage: PointRatio = .zero, comment: String? = nil, selectedColorPalletID: ColorPalletID? = nil, selectedColorPalletAnnotationID: ColorPalletAnnotationID? = nil) {
+    init(id: FaceAnnotationID, text: String, pointRatioOnImage: PointRatio = .zero, title: String, comment: String? = nil, selectedColorPalletID: ColorPalletID? = nil, selectedColorPalletAnnotationID: ColorPalletAnnotationID? = nil) {
         self.id = id
         self.text = text
         self.pointRatioOnImage = pointRatioOnImage
+        self.title = title
         self.comment = comment
         self.selectedColorPalletID = selectedColorPalletID
         self.selectedColorPalletAnnotationID = selectedColorPalletAnnotationID
     }
     
     let id: FaceAnnotationID
-    var text: String = ""
+    var text: String
     var pointRatioOnImage: PointRatio = .zero
+    var title: String
     var comment: String? = nil
     var selectedColorPalletID: ColorPalletID? {
         didSet {
@@ -37,6 +39,7 @@ class FaceAnnotation {
         object.id = id
         object.text = text
         object.pointRatioOnImage = pointRatioOnImage
+        object.title = title
         object.comment = comment
         object.selectedColorPalletID = selectedColorPalletID
         object.selectedColorPalletAnnotationID = selectedColorPalletAnnotationID
@@ -53,6 +56,7 @@ class FaceAnnotationObject: Object, Annotation {
     @objc dynamic var id: FaceAnnotationID? = FaceAnnotationID()
     @objc dynamic var text: String = ""
     @objc dynamic var pointRatioOnImage: PointRatio? = .zero
+    @objc dynamic var title: String = ""
     @objc dynamic var comment: String? = nil
     @objc dynamic var selectedColorPalletID: ColorPalletID? {
         didSet {
@@ -70,7 +74,7 @@ class FaceAnnotationObject: Object, Annotation {
     }
     
     func makeAnnotation() -> FaceAnnotation {
-        return FaceAnnotation(id: id!, text: text, pointRatioOnImage: pointRatioOnImage!, comment: comment, selectedColorPalletID: selectedColorPalletID, selectedColorPalletAnnotationID: selectedColorPalletAnnotationID)
+        return FaceAnnotation(id: id!, text: text, pointRatioOnImage: pointRatioOnImage!, title: title, comment: comment, selectedColorPalletID: selectedColorPalletID, selectedColorPalletAnnotationID: selectedColorPalletAnnotationID)
     }
     
 }

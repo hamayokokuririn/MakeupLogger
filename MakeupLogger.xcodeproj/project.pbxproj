@@ -46,6 +46,7 @@
 		24B112CA25B2D70100EE8DEA /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B112C925B2D70100EE8DEA /* Annotation.swift */; };
 		24BD230D264FDC350045C729 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BD230B264FDC350045C729 /* RealmSwift.framework */; };
 		24BD230F264FDC350045C729 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BD230C264FDC350045C729 /* Realm.framework */; };
+		24E1C2F8268FF6A6002082DA /* AnnotationDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24E1C2F7268FF6A5002082DA /* AnnotationDetailView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,6 +114,7 @@
 		24BD230C264FDC350045C729 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
 		24CA18F426425E8600DD2B9E /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = ../../Downloads/Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
 		24CA18F526425E8600DD2B9E /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = ../../Downloads/Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
+		24E1C2F7268FF6A5002082DA /* AnnotationDetailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AnnotationDetailView.xib; sourceTree = "<group>"; };
 		24F7A722263AD56D000039AB /* RealmSwift.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = RealmSwift.xcframework; path = Carthage/Build/RealmSwift.xcframework; sourceTree = "<group>"; };
 		24F7A729263B841C000039AB /* Realm.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Realm.xcframework; path = Carthage/Build/Realm.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -254,6 +256,7 @@
 			isa = PBXGroup;
 			children = (
 				2446ED2925D893E4005BD9F3 /* AnnotationDetailViewController.swift */,
+				24E1C2F7268FF6A5002082DA /* AnnotationDetailView.xib */,
 				242447B325D89927002290F2 /* AnnotationDetailViewModel.swift */,
 			);
 			path = AnnotationDetail;
@@ -465,6 +468,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				24B1128D25A9576300EE8DEA /* LaunchScreen.storyboard in Resources */,
+				24E1C2F8268FF6A6002082DA /* AnnotationDetailView.xib in Resources */,
 				24B1128A25A9576300EE8DEA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

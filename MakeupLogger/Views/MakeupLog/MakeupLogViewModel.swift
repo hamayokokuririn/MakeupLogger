@@ -267,7 +267,7 @@ extension MakeupLogViewModel: AnnotationMoveImageViewDelegate {
                                 y: annotationViewFrame.minY - imageViewRect.minY)
             let pointRatio = PointRatio.make(parentViewSize: imageViewRect.size,
                                              annotationPoint: point)
-            let annotation = FaceAnnotation(id: faceAnnotationObject.id!, text: faceAnnotationObject.text, pointRatioOnImage: pointRatio, comment: faceAnnotationObject.comment, selectedColorPalletID: faceAnnotationObject.selectedColorPalletID, selectedColorPalletAnnotationID: faceAnnotationObject.selectedColorPalletAnnotationID)
+            let annotation = FaceAnnotation(id: faceAnnotationObject.id!, text: faceAnnotationObject.text, pointRatioOnImage: pointRatio, title: faceAnnotationObject.title, comment: faceAnnotationObject.comment, selectedColorPalletID: faceAnnotationObject.selectedColorPalletID, selectedColorPalletAnnotationID: faceAnnotationObject.selectedColorPalletAnnotationID)
             touchEnded(annotation: annotation)
         }
     }

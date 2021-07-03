@@ -11,17 +11,16 @@ import UIKit
 final class AnnotationDetailViewController: UIViewController {
     var viewModel: AnnotationDetailViewModel
     
-    private let commentTitle: UILabel = .init()
-    private let textView: UITextView = .init()
-    private let selectedColorPallet: UILabel = .init()
-    private let selectedColorPalletName: UILabel = .init()
-    private let selectedColorPalletAnnotation: UILabel = .init()
-    private let selectedColorPalletAnnotationName: UILabel = .init()
+    @IBOutlet weak var commentTextView: UITextView!
+    
+    @IBOutlet weak var selectedColorPalletName: UILabel!
+    @IBOutlet weak var selectedColorPalletAnnotationName: UILabel!
+    @IBOutlet weak var imageView: UIImageView!
     private lazy var colorPalletImage: AnnotationMoveImageView = {
         return AnnotationMoveImageView<AnnotationDetailViewController>()
     }()
-        
-    private let changeColorPalletButton: UIButton = .init()
+    
+    @IBOutlet weak var changeColorPalletButton: UIButton!
     
     init(logID: MakeupLogID, facePartID: FacePartID, annotation: FaceAnnotation, makeupLogRepository: MakeupLogRepository, colorPalletRepository: ColorPalletRepository) {
         self.viewModel = AnnotationDetailViewModel(logID: logID, facePartID: facePartID, annotation: annotation, makeupLogRepository: makeupLogRepository, colorPalletRepository: colorPalletRepository)
@@ -30,38 +29,16 @@ final class AnnotationDetailViewController: UIViewController {
         view.backgroundColor = .white
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(close))
         
-        view.addSubview(commentTitle)
-        commentTitle.text = "Comment"
+        commentTextView.text = annotation.comment
+        commentTextView.delegate = self
         
-        view.addSubview(textView)
-        textView.text = annotation.comment
-        textView.backgroundColor = .systemGray6
-        textView.delegate = self
-        textView.returnKeyType = .done
-        
-        view.addSubview(selectedColorPallet)
-        selectedColorPallet.text = "選択中のカラーパレット："
-        
-        view.addSubview(selectedColorPalletName)
-        selectedColorPalletName.text = "---"
-        
-        view.addSubview(selectedColorPalletAnnotation)
-        selectedColorPalletAnnotation.text = "選択中のアノテーション："
-        
-        view.addSubview(selectedColorPalletAnnotationName)
-        selectedColorPalletAnnotationName.text = "---"
-        
-        view.addSubview(colorPalletImage)
-        colorPalletImage.backgroundColor = .black
-        colorPalletImage.contentMode = .scaleAspectFit
         colorPalletImage.isUserInteractionEnabled = true
         colorPalletImage.movesSubviews = false
         colorPalletImage.delegate = self
         
-        view.addSubview(changeColorPalletButton)
-        changeColorPalletButton.setTitle("カラーパレットの変更", for: .normal)
+        imageView = colorPalletImage
+        
         changeColorPalletButton.addTarget(self, action: #selector(didPushChangeColorPalletButton), for: .touchUpInside)
-        changeColorPalletButton.setTitleColor(.systemBlue, for: .normal)
         
         viewModel.getColorPallet() { pallet in
             setupColorPallet(colorPallet: pallet)
@@ -102,41 +79,6 @@ final class AnnotationDetailViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        
-        let safeAreaInsets = view.safeAreaInsets
-        let margin = CGFloat(16) + safeAreaInsets.left
-        commentTitle.sizeToFit()
-        commentTitle.frame.origin = CGPoint(x: margin, y: safeAreaInsets.top + CGFloat(32))
-        textView.frame = CGRect(x: margin,
-                                y: commentTitle.frame.maxY,
-                                width: view.frame.width,
-                                height: 100)
-        
-        selectedColorPallet.sizeToFit()
-        selectedColorPallet.frame.origin = CGPoint(x: margin, y: textView.frame.maxY + CGFloat(8))
-        
-        selectedColorPalletName.sizeToFit()
-        selectedColorPalletName.frame.origin = CGPoint(x: selectedColorPallet.frame.maxX + margin,
-                                                       y: textView.frame.maxY + CGFloat(8))
-        
-        selectedColorPalletAnnotation.sizeToFit()
-        selectedColorPalletAnnotation.frame.origin = CGPoint(x: margin,
-                                                             y: selectedColorPalletName.frame.maxY + CGFloat(8))
-        
-        selectedColorPalletAnnotationName.sizeToFit()
-        selectedColorPalletAnnotationName.frame.origin = CGPoint(x: selectedColorPalletAnnotation.frame.maxX + margin,
-                                                                 y: selectedColorPalletName.frame.maxY + CGFloat(8))
-        
-        colorPalletImage.frame.size = CGSize(width: view.frame.width - margin * 2, height: 300)
-        colorPalletImage.frame.origin = CGPoint(x: margin, y: selectedColorPalletAnnotationName.frame.maxY + CGFloat(8))
-        colorPalletImage.adjustAnnotationViewFrame()
-        
-        changeColorPalletButton.sizeToFit()
-        changeColorPalletButton.frame.origin = CGPoint(x: margin, y: colorPalletImage.frame.maxY + CGFloat(8))
     }
     
     @objc private func didPushChangeColorPalletButton() {
