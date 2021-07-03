@@ -46,6 +46,17 @@ class AnnotationMoveImageView<D: AnnotationMoveImageViewDelegate>: UIImageView {
         }
     }
     
+    func addAnnotations(_ annotations: [D.AnnotationType]) {
+        subviews.forEach {
+            $0.removeFromSuperview()
+        }
+        annotations.forEach {
+            let view = AnnotationView(annotation: $0)
+            addSubview(view)
+        }
+        adjustAnnotationViewFrame()
+    }
+    
     func adjustAnnotationViewFrame() {
         subviews.compactMap {
             $0 as? AnnotationView<D.AnnotationType>

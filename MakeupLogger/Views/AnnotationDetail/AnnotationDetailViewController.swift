@@ -36,6 +36,7 @@ final class AnnotationDetailViewController: UIViewController {
         colorPalletImage.frame.size = imageView.bounds.size
         colorPalletImage.contentMode = .scaleAspectFit
         colorPalletImage.backgroundColor = .black
+        imageView.isUserInteractionEnabled = true
         imageView.addSubview(colorPalletImage)
         
         changeColorPalletButton.addTarget(self, action: #selector(didPushChangeColorPalletButton), for: .touchUpInside)
@@ -59,14 +60,11 @@ final class AnnotationDetailViewController: UIViewController {
         if let data = ColorPalletRealmRepository.imageData(imagePath: colorPallet.imagePath) {
             colorPalletImage.image = UIImage(data: data)
         }
-        colorPalletImage.subviews.forEach {
-            $0.removeFromSuperview()
-        }
+        var annotations = [ColorPalletAnnotationObject]()
         colorPallet.annotationList.forEach {
-            let view = AnnotationView(annotation: $0)
-            colorPalletImage.addSubview(view)
+            annotations.append($0)
         }
-        colorPalletImage.adjustAnnotationViewFrame()
+        colorPalletImage.addAnnotations(annotations)
         DispatchQueue.main.async {
             let selectedColorPalletAnnotationID = self.viewModel.annotation.selectedColorPalletAnnotationID
             let selectedColorAnnotation = colorPallet.annotationList.first(where: {
