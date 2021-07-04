@@ -11,6 +11,7 @@ import UIKit
 final class AnnotationDetailViewController: UIViewController {
     var viewModel: AnnotationDetailViewModel
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var commentTextView: UITextView!
     @IBOutlet weak var selectedColorPalletName: UILabel!
@@ -54,6 +55,35 @@ final class AnnotationDetailViewController: UIViewController {
         
         viewModel.didFinishUpdateAnnotation = { text in
         }
+        
+        configureObserver()
+    }
+    
+    // MARK: キーボードでスクロール変更
+    //キーボードの出現でスクロールビューを変更するのを監視用オブザーバー
+    private func configureObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        //ここでUIKeyboardWillShowという名前の通知のイベントをオブザーバー登録をしている
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
+        //ここでUIKeyboardWillHideという名前の通知のイベントをオブザーバー登録をしている
+    }
+    
+    //UIKeyboardWillShow通知を受けて、実行される関数
+    @objc func keyboardWillShow(_ notification: NSNotification){
+        guard let userInfo = notification.userInfo else { return }
+        let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.height
+        scrollView.contentInset.bottom = keyboardSize
+    }
+    
+    
+    //UIKeyboardWillHide通知を受けて、実行される関数
+    @objc func keyboardWillHide(_ notification: NSNotification){
+        scrollView.contentInset = .zero
+        scrollView.scrollIndicatorInsets = .zero
+    }
+    
+    private func removeObserver() {
+        NotificationCenter.default.removeObserver(self)
     }
     
     private func setupColorPallet(colorPallet: ColorPallet) {
@@ -68,9 +98,6 @@ final class AnnotationDetailViewController: UIViewController {
         colorPalletImage.addAnnotations(annotations)
         DispatchQueue.main.async {
             let selectedColorPalletAnnotationID = self.viewModel.annotation.selectedColorPalletAnnotationID
-            let selectedColorAnnotation = colorPallet.annotationList.first(where: {
-                $0.id == selectedColorPalletAnnotationID
-            })
             self.colorPalletImage.activateAnnotation(for: selectedColorPalletAnnotationID)
         }
     }

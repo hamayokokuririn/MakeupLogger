@@ -31,9 +31,7 @@ final class CommentListAdapter: NSObject, UITableViewDataSource {
         let annotation = delegate.commentListAdapterAnnotationList(self)[indexPath.row]
         let cell = CommentCell()
         cell.setAnnotationText(annotation.text)
-        if let comment = annotation.comment {
-            cell.setAnnotationComment(comment)
-        }
+        cell.setAnnotationComment(annotation.title)
         return cell
     }
         

@@ -46,6 +46,9 @@
 		24B112CA25B2D70100EE8DEA /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B112C925B2D70100EE8DEA /* Annotation.swift */; };
 		24BD230D264FDC350045C729 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BD230B264FDC350045C729 /* RealmSwift.framework */; };
 		24BD230F264FDC350045C729 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BD230C264FDC350045C729 /* Realm.framework */; };
+		24CF376426918AA400552452 /* ColorPalletView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24CF376326918AA400552452 /* ColorPalletView.xib */; };
+		24CF37672691B20A00552452 /* ColorPalletAnnotationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CF37652691B20A00552452 /* ColorPalletAnnotationTableViewCell.swift */; };
+		24CF37682691B20A00552452 /* ColorPalletAnnotationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24CF37662691B20A00552452 /* ColorPalletAnnotationTableViewCell.xib */; };
 		24E1C2F8268FF6A6002082DA /* AnnotationDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24E1C2F7268FF6A5002082DA /* AnnotationDetailView.xib */; };
 /* End PBXBuildFile section */
 
@@ -114,6 +117,9 @@
 		24BD230C264FDC350045C729 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
 		24CA18F426425E8600DD2B9E /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = ../../Downloads/Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
 		24CA18F526425E8600DD2B9E /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = ../../Downloads/Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
+		24CF376326918AA400552452 /* ColorPalletView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColorPalletView.xib; sourceTree = "<group>"; };
+		24CF37652691B20A00552452 /* ColorPalletAnnotationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalletAnnotationTableViewCell.swift; sourceTree = "<group>"; };
+		24CF37662691B20A00552452 /* ColorPalletAnnotationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColorPalletAnnotationTableViewCell.xib; sourceTree = "<group>"; };
 		24E1C2F7268FF6A5002082DA /* AnnotationDetailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AnnotationDetailView.xib; sourceTree = "<group>"; };
 		24F7A722263AD56D000039AB /* RealmSwift.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = RealmSwift.xcframework; path = Carthage/Build/RealmSwift.xcframework; sourceTree = "<group>"; };
 		24F7A729263B841C000039AB /* Realm.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Realm.xcframework; path = Carthage/Build/Realm.xcframework; sourceTree = "<group>"; };
@@ -177,6 +183,9 @@
 			children = (
 				24173782261A01BE0040DDF2 /* ColorPalletViewController.swift */,
 				24173784261A02860040DDF2 /* ColorPalletViewModel.swift */,
+				24CF376326918AA400552452 /* ColorPalletView.xib */,
+				24CF37652691B20A00552452 /* ColorPalletAnnotationTableViewCell.swift */,
+				24CF37662691B20A00552452 /* ColorPalletAnnotationTableViewCell.xib */,
 			);
 			path = ColorPallet;
 			sourceTree = "<group>";
@@ -467,6 +476,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24CF376426918AA400552452 /* ColorPalletView.xib in Resources */,
+				24CF37682691B20A00552452 /* ColorPalletAnnotationTableViewCell.xib in Resources */,
 				24B1128D25A9576300EE8DEA /* LaunchScreen.storyboard in Resources */,
 				24E1C2F8268FF6A6002082DA /* AnnotationDetailView.xib in Resources */,
 				24B1128A25A9576300EE8DEA /* Assets.xcassets in Resources */,
@@ -567,6 +578,7 @@
 				245A0921260787C100BD3063 /* AddNewMakeupLogViewController.swift in Sources */,
 				247FC89E2686B0DC00392045 /* Image+Compress.swift in Sources */,
 				24173785261A02860040DDF2 /* ColorPalletViewModel.swift in Sources */,
+				24CF37672691B20A00552452 /* ColorPalletAnnotationTableViewCell.swift in Sources */,
 				242447C425E0EFBF002290F2 /* MakeupLogListViewController.swift in Sources */,
 				2409D2942610837E00A3C995 /* ColorPalletRepository.swift in Sources */,
 			);

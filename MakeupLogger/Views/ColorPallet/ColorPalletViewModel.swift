@@ -104,3 +104,32 @@ extension ColorPalletViewModel: UITextFieldDelegate {
         textField.resignFirstResponder()
     }
 }
+
+extension ColorPalletViewModel: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        annotationList.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ColorPalletAnnotationTableViewCell", for: indexPath) as! ColorPalletAnnotationTableViewCell
+        
+        let annotation = annotationList[indexPath.row]
+        cell.setLabel(annotation.text)
+        cell.setTextTitle(annotation.title)
+        cell.delegate = self
+        cell.id = annotation.id
+        return cell
+    }
+    
+    
+}
+
+extension ColorPalletViewModel: ColorPalletAnnotationTableViewCellDelegate {
+    func didEnded(_ cell: ColorPalletAnnotationTableViewCell, editing text: String) {
+        guard let id = cell.id,
+              let index = annotationList.firstIndex(where: {$0.id == id}) else {
+                  return
+              }
+        annotationList[index].title = text
+    }
+}

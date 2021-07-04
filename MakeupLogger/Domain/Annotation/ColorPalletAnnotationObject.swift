@@ -11,20 +11,24 @@ import RealmSwift
 class ColorPalletAnnotation {
     init(id: ColorPalletAnnotationID,
          text: String,
+         title: String,
          pointRatioOnImage: PointRatio = .zero) {
         self.id = id
         self.text = text
+        self.title = title
         self.pointRatioOnImage = pointRatioOnImage
     }
     
     var id: ColorPalletAnnotationID
     var text: String
+    var title: String
     var pointRatioOnImage: PointRatio = .zero
     
     func makeObject() -> ColorPalletAnnotationObject {
         let object = ColorPalletAnnotationObject()
         object.id = id
         object.text = text
+        object.title = title
         object.pointRatioOnImage = pointRatioOnImage
         return object
     }
@@ -47,6 +51,7 @@ class ColorPalletAnnotationObject: Object, Annotation {
 
     @objc dynamic var id: ColorPalletAnnotationID? = ColorPalletAnnotationID()
     @objc dynamic var text: String = ""
+    @objc dynamic var title: String = ""
     @objc dynamic var pointRatioOnImage: PointRatio? = .zero
     
     override func isEqual(_ object: Any?) -> Bool {
@@ -58,9 +63,9 @@ class ColorPalletAnnotationObject: Object, Annotation {
     
     func makeAnnotation(point: PointRatio? = nil) -> ColorPalletAnnotation {
         if let point = point {
-            return ColorPalletAnnotation(id: id!, text: text, pointRatioOnImage: point)
+            return ColorPalletAnnotation(id: id!, text: text, title: title, pointRatioOnImage: point)
         }
-        return ColorPalletAnnotation(id: id!, text: text, pointRatioOnImage: self.pointRatioOnImage!)
+        return ColorPalletAnnotation(id: id!, text: text, title: title, pointRatioOnImage: self.pointRatioOnImage!)
     }
 }
 

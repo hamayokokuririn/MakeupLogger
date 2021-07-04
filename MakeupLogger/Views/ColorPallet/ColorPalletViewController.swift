@@ -9,11 +9,13 @@ import Foundation
 import UIKit
 
 final class ColorPalletViewController: UIViewController {
-    let titleTextField = UITextField()
-    let selectPhotoButton = UIButton()
+    @IBOutlet weak var titleTextField: UITextField!
+    @IBOutlet weak var selectPhotoButton: UIButton!
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var addAnnotationButton: UIButton!
+    @IBOutlet weak var tableView: UITableView!
+    
     let selectedPhotoImage = AnnotationMoveImageView<ColorPalletViewController>()
-    let addAnnotationButton = UIButton()
-    let completeButton = UIButton()
     
     let alert = TakePhotoAlert()
     let viewModel: ColorPalletViewModel
@@ -31,69 +33,45 @@ final class ColorPalletViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func loadView() {
-        super.loadView()
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        view.backgroundColor = .systemGray3
+        self.title = "カラーパレットを編集"
+        let item = UIBarButtonItem(barButtonSystemItem: .save,
+                                   target: self,
+                                   action: #selector(didPushComplete))
+        self.navigationItem.rightBarButtonItem = item
         
-        view.addSubview(titleTextField)
         titleTextField.placeholder = "タイトル"
         titleTextField.text = viewModel.title
         titleTextField.backgroundColor = .white
         titleTextField.delegate = viewModel
         
-        view.addSubview(selectPhotoButton)
-        selectPhotoButton.setTitle("画像変更", for: .normal)
         selectPhotoButton.addTarget(self, action: #selector(didPushSelectPhoto), for: .touchUpInside)
         
-        view.addSubview(selectedPhotoImage)
+        imageView.addSubview(selectedPhotoImage)
+        imageView.isUserInteractionEnabled = true
         selectedPhotoImage.image = viewModel.image
         selectedPhotoImage.contentMode = .scaleAspectFit
         selectedPhotoImage.backgroundColor = .black
         selectedPhotoImage.delegate = self
         selectedPhotoImage.isUserInteractionEnabled = true
-        selectedPhotoImage.contentMode = .scaleAspectFit
-        viewModel.annotationList.forEach {
-            let annotation = AnnotationView(annotation: $0.makeObject())
-            selectedPhotoImage.addSubview(annotation)
-        }
-        selectedPhotoImage.adjustAnnotationViewFrame()
+        selectedPhotoImage.addAnnotations(viewModel.annotationList.map {$0.makeObject()})
         
-        view.addSubview(addAnnotationButton)
-        addAnnotationButton.setTitle("アノテーション追加", for: .normal)
         addAnnotationButton.addTarget(self, action: #selector(didPushAddAnnotation), for: .touchUpInside)
         
-        view.addSubview(completeButton)
-        completeButton.setTitle("完了", for: .normal)
-        completeButton.addTarget(self, action: #selector(didPushComplete), for: .touchUpInside)
-        
-        title = "カラーパレットを編集"
-        
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        
+        tableView.dataSource = viewModel
+        let nib = UINib(nibName: "ColorPalletAnnotationTableViewCell",
+                        bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: "ColorPalletAnnotationTableViewCell")
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        
-        let margin = CGFloat(8)
-        let viewWidth = view.frame.width
-        guard let barY = navigationController?.navigationBar.frame.maxY else {
-            return
-        }
-        titleTextField.frame = CGRect(x: 0, y: barY + margin, width: viewWidth, height: 30)
-        
-        selectPhotoButton.sizeToFit()
-        selectPhotoButton.frame.origin = CGPoint(x: 0, y: titleTextField.frame.maxY + margin)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        selectedPhotoImage.frame.size = imageView.bounds.size
         selectedPhotoImage.adjustAnnotationViewFrame()
-        
-        selectedPhotoImage.frame = CGRect(x: 0, y: selectPhotoButton.frame.maxY + margin, width: viewWidth, height: 300)
-        selectedPhotoImage.adjustAnnotationViewFrame()
-        
-        addAnnotationButton.sizeToFit()
-        addAnnotationButton.frame.origin = CGPoint(x: 0, y: selectedPhotoImage.frame.maxY + margin)
-        
-        completeButton.sizeToFit()
-        completeButton.frame.origin = CGPoint(x: 0, y: addAnnotationButton.frame.maxY + margin)
     }
     
     @objc private func didPushSelectPhoto() {
@@ -116,6 +94,8 @@ final class ColorPalletViewController: UIViewController {
                 selectedPhotoImage.addSubview(annotation)
             }
             selectedPhotoImage.adjustAnnotationViewFrame()
+            
+            tableView.reloadData()
         }
     }
     

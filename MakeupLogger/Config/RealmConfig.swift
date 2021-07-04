@@ -8,5 +8,5 @@
 import Foundation
 
 enum RealmConfig {
-    static let version: UInt64 = 5
+    static let version: UInt64 = 6
 }
