@@ -12,7 +12,7 @@ final class AnnotationDetailViewController: UIViewController {
     var viewModel: AnnotationDetailViewModel
     
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var titleTextField: UITextField!
+    @IBOutlet weak var titleText: UILabel!
     @IBOutlet weak var commentTextView: UITextView!
     @IBOutlet weak var selectedColorPalletName: UILabel!
     @IBOutlet weak var imageView: UIImageView!
@@ -27,8 +27,7 @@ final class AnnotationDetailViewController: UIViewController {
         view.backgroundColor = .white
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(close))
         
-        titleTextField.text = annotation.title
-        titleTextField.delegate = self
+        titleText.text = annotation.title
         
         commentTextView.text = annotation.comment
         commentTextView.delegate = self

@@ -17,6 +17,7 @@ protocol ColorPalletRepository {
     func updateColorPallet(id: ColorPalletID,
                            title: String,
                            image: UIImage,
+                           annotations: [ColorPalletAnnotation],
                            completion: (ColorPallet?) -> Void)
     func updateAnnotation(id: ColorPalletID,
                           annotation: ColorPalletAnnotation,
@@ -82,7 +83,7 @@ class ColorPalletRealmRepository: ColorPalletRepository {
         }
     }
     
-    func updateColorPallet(id: ColorPalletID, title: String, image: UIImage, completion: (ColorPallet?) -> Void) {
+    func updateColorPallet(id: ColorPalletID, title: String, image: UIImage, annotations: [ColorPalletAnnotation], completion: (ColorPallet?) -> Void) {
         let result = realm.objects(ColorPallet.self).map { $0 }
         let array = Array(result)
         guard let pallet = array.first(where: {$0.id == id}),
@@ -95,6 +96,9 @@ class ColorPalletRealmRepository: ColorPalletRepository {
             try realm.write {
                 pallet.title = title
                 pallet.imagePath = path
+                for (i, annotation) in annotations.enumerated() {
+                    pallet.annotationList[i] = annotation.makeObject()
+                }
                 completion(pallet)
                 notifyChanged()
             }
@@ -233,7 +237,7 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
         notifyChanged()
     }
     
-    func updateColorPallet(id: ColorPalletID, title: String, image: UIImage, completion: (ColorPallet?) -> Void) {
+    func updateColorPallet(id: ColorPalletID, title: String, image: UIImage, annotations: [ColorPalletAnnotation], completion: (ColorPallet?) -> Void) {
         guard let pallet = cache[id],
             let data = image.compressData() else {
             completion(nil)

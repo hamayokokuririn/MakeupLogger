@@ -46,7 +46,6 @@ final class ColorPalletViewModel: NSObject {
     
     func addAnnotation(completion: (ColorPallet?) -> Void) {
         repository.insertAnnotation(id: colorPalletID) { pallet in
-            completion(pallet)
             if let pallet = pallet {
                 var list = [ColorPalletAnnotation]()
                 pallet.annotationList.forEach {
@@ -54,6 +53,7 @@ final class ColorPalletViewModel: NSObject {
                 }
                 annotationList = list
             }
+            completion(pallet)
         }
     }
     
@@ -66,7 +66,8 @@ final class ColorPalletViewModel: NSObject {
         }
         repository.updateColorPallet(id: colorPalletID,
                                      title: title,
-                                     image: image) { _ in
+                                     image: image,
+                                     annotations: annotationList) { _ in
             completeAction?()
         }
     }
