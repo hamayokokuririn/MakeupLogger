@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -44,12 +44,14 @@
 		24B112A325A9576300EE8DEA /* MakeupLoggerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B112A225A9576300EE8DEA /* MakeupLoggerUITests.swift */; };
 		24B112BC25B1A54A00EE8DEA /* CommentListAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B112BB25B1A54A00EE8DEA /* CommentListAdapter.swift */; };
 		24B112CA25B2D70100EE8DEA /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B112C925B2D70100EE8DEA /* Annotation.swift */; };
-		24BD230D264FDC350045C729 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BD230B264FDC350045C729 /* RealmSwift.framework */; };
-		24BD230F264FDC350045C729 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BD230C264FDC350045C729 /* Realm.framework */; };
 		24CF376426918AA400552452 /* ColorPalletView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24CF376326918AA400552452 /* ColorPalletView.xib */; };
 		24CF37672691B20A00552452 /* ColorPalletAnnotationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CF37652691B20A00552452 /* ColorPalletAnnotationTableViewCell.swift */; };
 		24CF37682691B20A00552452 /* ColorPalletAnnotationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24CF37662691B20A00552452 /* ColorPalletAnnotationTableViewCell.xib */; };
 		24E1C2F8268FF6A6002082DA /* AnnotationDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24E1C2F7268FF6A5002082DA /* AnnotationDetailView.xib */; };
+		B566C8932782A18900B70C09 /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24F7A729263B841C000039AB /* Realm.xcframework */; };
+		B566C8942782A18900B70C09 /* Realm.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 24F7A729263B841C000039AB /* Realm.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B566C8952782A18900B70C09 /* RealmSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24F7A722263AD56D000039AB /* RealmSwift.xcframework */; };
+		B566C8962782A18900B70C09 /* RealmSwift.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 24F7A722263AD56D000039AB /* RealmSwift.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +70,21 @@
 			remoteInfo = MakeupLogger;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B566C8972782A18900B70C09 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B566C8942782A18900B70C09 /* Realm.xcframework in Embed Frameworks */,
+				B566C8962782A18900B70C09 /* RealmSwift.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		24014B242652BAB100786076 /* FacePart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacePart.swift; sourceTree = "<group>"; };
@@ -130,8 +147,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				24BD230F264FDC350045C729 /* Realm.framework in Frameworks */,
-				24BD230D264FDC350045C729 /* RealmSwift.framework in Frameworks */,
+				B566C8932782A18900B70C09 /* Realm.xcframework in Frameworks */,
+				B566C8952782A18900B70C09 /* RealmSwift.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,7 +398,7 @@
 				24B1127925A9576100EE8DEA /* Sources */,
 				24B1127A25A9576100EE8DEA /* Frameworks */,
 				24B1127B25A9576100EE8DEA /* Resources */,
-				24CA18FB26425F2200DD2B9E /* carthage */,
+				B566C8972782A18900B70C09 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -502,26 +519,6 @@
 
 /* Begin PBXShellScriptBuildPhase section */
 		24BD23122650F1450045C729 /* carthage */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Realm.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/RealmSwift.framework",
-			);
-			name = carthage;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/usr/local/bin/carthage copy-frameworks\n";
-		};
-		24CA18FB26425F2200DD2B9E /* carthage */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
