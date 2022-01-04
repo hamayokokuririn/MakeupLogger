@@ -89,7 +89,11 @@ final class ColorPalletViewModel: NSObject {
                 let annotation = annotationObject.makeAnnotation(point: pointRatio)
                 repository.updateAnnotation(id: colorPalletID,
                                             annotation: annotation,
-                                            completion: { _ in })
+                                            completion: { colorPallet in
+                    if let list = colorPallet?.annotationList {
+                        self.annotationList = list.map { $0.makeAnnotation()}
+                    }
+                })
             }
         }
     }
