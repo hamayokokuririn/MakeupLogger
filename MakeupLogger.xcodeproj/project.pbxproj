@@ -48,6 +48,7 @@
 		24CF37672691B20A00552452 /* ColorPalletAnnotationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CF37652691B20A00552452 /* ColorPalletAnnotationTableViewCell.swift */; };
 		24CF37682691B20A00552452 /* ColorPalletAnnotationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24CF37662691B20A00552452 /* ColorPalletAnnotationTableViewCell.xib */; };
 		24E1C2F8268FF6A6002082DA /* AnnotationDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24E1C2F7268FF6A5002082DA /* AnnotationDetailView.xib */; };
+		B516465827848002003A2F8E /* ColorPalletRepositoryInMemory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B516465727848002003A2F8E /* ColorPalletRepositoryInMemory.swift */; };
 		B566C8932782A18900B70C09 /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24F7A729263B841C000039AB /* Realm.xcframework */; };
 		B566C8942782A18900B70C09 /* Realm.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 24F7A729263B841C000039AB /* Realm.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B566C8952782A18900B70C09 /* RealmSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24F7A722263AD56D000039AB /* RealmSwift.xcframework */; };
@@ -140,6 +141,7 @@
 		24E1C2F7268FF6A5002082DA /* AnnotationDetailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AnnotationDetailView.xib; sourceTree = "<group>"; };
 		24F7A722263AD56D000039AB /* RealmSwift.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = RealmSwift.xcframework; path = Carthage/Build/RealmSwift.xcframework; sourceTree = "<group>"; };
 		24F7A729263B841C000039AB /* Realm.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Realm.xcframework; path = Carthage/Build/Realm.xcframework; sourceTree = "<group>"; };
+		B516465727848002003A2F8E /* ColorPalletRepositoryInMemory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalletRepositoryInMemory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,8 +221,9 @@
 			isa = PBXGroup;
 			children = (
 				242447B925E0A625002290F2 /* MakeupLogRepository.swift */,
-				2409D2932610837E00A3C995 /* ColorPalletRepository.swift */,
 				247FC89F268784A000392045 /* MakeupLogRepositoryInMemory.swift */,
+				2409D2932610837E00A3C995 /* ColorPalletRepository.swift */,
+				B516465727848002003A2F8E /* ColorPalletRepositoryInMemory.swift */,
 			);
 			path = DataStore;
 			sourceTree = "<group>";
@@ -578,6 +581,7 @@
 				24CF37672691B20A00552452 /* ColorPalletAnnotationTableViewCell.swift in Sources */,
 				242447C425E0EFBF002290F2 /* MakeupLogListViewController.swift in Sources */,
 				2409D2942610837E00A3C995 /* ColorPalletRepository.swift in Sources */,
+				B516465827848002003A2F8E /* ColorPalletRepositoryInMemory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -210,7 +210,11 @@ extension MakeupLogListViewModel: UITableViewDelegate {
                 }
                 
             case .colorPallet:
-                colorPalletList.remove(at: indexPath.row)
+                if colorPalletList.indices.contains(indexPath.row) {
+                    let target = colorPalletList[indexPath.row]
+                    colorPalletRepository.delete(id: target.id!)
+                    colorPalletList.remove(at: indexPath.row)
+                }
             }
             tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
         case .insert:
