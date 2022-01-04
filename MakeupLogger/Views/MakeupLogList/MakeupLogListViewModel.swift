@@ -183,4 +183,40 @@ extension MakeupLogListViewModel: UITableViewDelegate {
             didSelectColorPallet?(colorPallet)
         }
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        switch mode {
+        case .top:
+            return true
+        case .selectColorPallet:
+            return false
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        switch editingStyle {
+        case .none:
+            break
+        case .delete:
+            guard let section = Section(rawValue: indexPath.section) else {
+                return
+            }
+            switch section {
+            case .makeupLog:
+                if makeupLogList.indices.contains(indexPath.row) {
+                    let target = makeupLogList[indexPath.row]
+                    makeupLogList.remove(at: indexPath.row)
+                    makeupLogRepository.delete(logID: target.id!)
+                }
+                
+            case .colorPallet:
+                colorPalletList.remove(at: indexPath.row)
+            }
+            tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
+        case .insert:
+            break
+        @unknown default:
+            break
+        }
+    }
 }

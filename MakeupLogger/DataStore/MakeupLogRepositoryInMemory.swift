@@ -189,4 +189,8 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
     private func notifyChanged() {
         NotificationCenter.default.post(name: .didLogUpdate, object: nil)
     }
+    
+    func delete(logID: MakeupLogID) {
+        logMap.removeValue(forKey: logID)
+    }
 }

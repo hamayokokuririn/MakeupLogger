@@ -16,6 +16,7 @@ protocol MakeupLogRepository {
     func insertFacePart(logID: MakeupLogID, type: String, image: UIImage, completion: (MakeupLog?) -> Void)
     func updateFaceAnnotation(logID: MakeupLogID, partID: FacePartID, faceAnnotation: FaceAnnotation, completion: (MakeupLog?) -> Void)
     func insertFaceAnnotation(logID: MakeupLogID, partID: FacePartID, completion: (MakeupLog?) -> Void)
+    func delete(logID: MakeupLogID)
     
 }
 
@@ -36,7 +37,7 @@ extension MakeupLogRepository {
 }
 
 class MakeupLogRealmRepository: MakeupLogRepository {
-    
+
     private var realm: Realm!
     static let shared = MakeupLogRealmRepository()
     
@@ -177,6 +178,23 @@ class MakeupLogRealmRepository: MakeupLogRepository {
     
     private func notifyChanged() {
         NotificationCenter.default.post(name: .didLogUpdate, object: nil)
+    }
+    
+    func delete(logID: MakeupLogID) {
+        
+        let result = realm.objects(MakeupLog.self).map { $0 }
+        guard let target = result.first(where: { log in
+            log.id == logID
+        }) else {
+            return
+        }
+        do {
+            try realm.write({
+                realm.delete(target)
+            })
+        } catch {
+            print(#function + error.localizedDescription)
+        }
     }
     
 }
