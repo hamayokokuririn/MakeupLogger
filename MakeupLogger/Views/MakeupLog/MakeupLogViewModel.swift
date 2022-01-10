@@ -190,12 +190,24 @@ extension MakeupLogViewModel: UICollectionViewDataSource {
     }
     
     fileprivate func addButton(_ cell: UICollectionViewCell) {
-        let button = UIButton()
+        let button: UIButton = {
+            var config = UIButton.Configuration.tinted()
+            config.image = UIImage(systemName: "person.2.circle.fill")
+            config.buttonSize = .large
+            config.background.cornerRadius = 0
+            // 背景の設定
+            config.baseBackgroundColor = .systemGreen
+
+            let button = UIButton(configuration: config)
+            button.translatesAutoresizingMaskIntoConstraints = false
+            button.setTitle("写真を追加", for: .normal)
+            button.setTitleColor(.systemBlue, for: .normal)
+            return button
+        }()
+
         button.isUserInteractionEnabled = true
         button.frame.size = cell.frame.size
         button.addTarget(self, action: #selector(didPushNewPhoto), for: .touchUpInside)
-        button.setTitle("写真を追加", for: .normal)
-        button.backgroundColor = .blue
         cell.contentView.addSubview(button)
     }
     
