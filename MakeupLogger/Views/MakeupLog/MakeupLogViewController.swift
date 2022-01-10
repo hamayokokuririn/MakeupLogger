@@ -39,7 +39,7 @@ final class MakeupLogViewController: UIViewController {
         
         viewModel.delegate = self
         
-        let item = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(takeNewPhoto))
+        let item = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(takeNewPhoto))
         self.navigationItem.rightBarButtonItem = item
         
         title = log.title
@@ -47,7 +47,8 @@ final class MakeupLogViewController: UIViewController {
     
     @objc private func takeNewPhoto() {
         alert.selectPhotoAction = {[weak self] image in
-            self?.viewModel.addPicture(image: image)
+            self?.viewModel.editPicture(image: image)
+            self?.imageCollection.reloadData()
         }
         alert.show(presenter: self)
     }

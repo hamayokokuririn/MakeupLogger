@@ -147,15 +147,16 @@ final class MakeupLogViewModel: NSObject {
         updateAnnotation(annotation)
     }
     
-    func addPicture(image: UIImage) {
-        let type = "パーツ" + (log.partsList.count - DefaultFaceParts.allCases.count + 1).description
-        makeupLogRepository.insertFacePart(logID: log.id!, type: type, image: image) { log in
-            guard let log = log else {
-                print(#function + "画像追加失敗")
-                return
+    func editPicture(image: UIImage) {
+        if case .part(let partID) = state {
+            guard let facePart = log.partsList.first(where: {$0.id == partID}) else {return}
+            makeupLogRepository.updateFacePart(logID: log.id!, part: facePart, image: image) { log in
+                guard let log = log else {
+                    print(#function + "画像追加失敗")
+                    return
+                }
+                self.log = log
             }
-            self.log = log
-            self.state = .part(partID: log.partsList.last!.id!)
         }
     }
     
