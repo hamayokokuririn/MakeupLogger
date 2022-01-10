@@ -159,6 +159,10 @@ extension MakeupLogViewController: MakeupLogViewModelDelegate {
     func viewModelDidPushNewPhoto(_ model: MakeupLogViewModel) {
         updatePhoto()
     }
+    
+    func viewModelDeleteAnnotation(_ model: MakeupLogViewModel) {
+        tableView.reloadData()
+    }
 }
 
 extension MakeupLogViewController: UIAdaptivePresentationControllerDelegate {

@@ -10,6 +10,7 @@ import UIKit
 
 protocol MakeupLogViewModelDelegate: AnyObject {
     func viewModelAddAnnotation(_ model: MakeupLogViewModel)
+    func viewModelDeleteAnnotation(_ model: MakeupLogViewModel)
     func viewModel(_ model: MakeupLogViewModel, didSelect annotation: FaceAnnotation)
     func viewModel(_ model: MakeupLogViewModel, didChange state: MakeupLogViewModel.ViewState, cellForRowAt indexPath: IndexPath)
     func viewModelDidPushNewPhoto(_ model: MakeupLogViewModel)
@@ -67,6 +68,16 @@ final class MakeupLogViewModel: NSObject {
                 self.state = .part(partID: partID)
                 
             })
+        }
+    }
+    
+    private func deleteAnnotation(index: Int) {
+        if case .part(let partID) = self.state {
+            if let id = log.partsList.first(where: {$0.id == partID})?.annotations[index].id {
+                self.makeupLogRepository.delete(logID: log.id!,
+                                                partID: partID,
+                                                annotation: id)
+            }
         }
     }
     
@@ -264,6 +275,11 @@ extension MakeupLogViewModel: CommentListAdapterDelegate {
     func commentListAdapter(_ adapter: CommentListAdapter, didPushAddButton insertIndex: Int) {
         self.appendAnnotation()
         self.delegate?.viewModelAddAnnotation(self)
+    }
+    
+    func commentListAdapter(_ adapter: CommentListAdapter, didDeleteAt index: Int) {
+        deleteAnnotation(index: index)
+        self.delegate?.viewModelDeleteAnnotation(self)
     }
 }
 

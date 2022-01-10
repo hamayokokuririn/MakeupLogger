@@ -11,6 +11,7 @@ import UIKit
 protocol CommentListAdapterDelegate: AnyObject {
     func commentListAdapter(_ adapter: CommentListAdapter, didSelectCommentCell index: Int)
     func commentListAdapter(_ adapter: CommentListAdapter, didPushAddButton insertIndex: Int)
+    func commentListAdapter(_ adapter: CommentListAdapter, didDeleteAt index: Int)
     func commentListAdapterAnnotationList(_ adapter: CommentListAdapter) -> [FaceAnnotationObject]
 }
 
@@ -75,4 +76,20 @@ extension CommentListAdapter: UITableViewDelegate {
         50
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        switch editingStyle {
+        case .none:
+            break
+        case .delete:
+            delegate?.commentListAdapter(self, didDeleteAt: indexPath.row)
+        case .insert:
+            break
+        @unknown default:
+            break
+        }
+    }
 }
