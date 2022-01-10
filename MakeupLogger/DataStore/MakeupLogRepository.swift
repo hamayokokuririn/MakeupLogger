@@ -12,6 +12,7 @@ import RealmSwift
 protocol MakeupLogRepository {
     func getLogList(completion: ([MakeupLog]) -> Void)
     func insertMakeupLog(title: String, body: String?, image: UIImage, completion: (MakeupLog?) -> Void)
+    func updateMakeupLog(logID: MakeupLogID, image: UIImage) -> MakeupLog?
     func updateFacePart(logID: MakeupLogID, part: FacePart, image: UIImage?, completion: (MakeupLog?) -> Void)
     func insertFacePart(logID: MakeupLogID, type: String, image: UIImage, completion: (MakeupLog?) -> Void)
     func updateFaceAnnotation(logID: MakeupLogID, partID: FacePartID, faceAnnotation: FaceAnnotation, completion: (MakeupLog?) -> Void)
@@ -76,6 +77,28 @@ class MakeupLogRealmRepository: MakeupLogRepository {
         } catch {
             print(#function + "insert failed")
             completion(nil)
+        }
+    }
+    
+    func updateMakeupLog(logID: MakeupLogID, image: UIImage) -> MakeupLog? {
+        defer {
+            notifyChanged()
+        }
+        do {
+            guard let target = realm.objects(MakeupLog.self).first(where: {$0.id == logID}) else {
+                print("更新対象が見つからない")
+                return nil
+            }
+            try realm.write {
+                let imagePath = saveImage(folderName: logID.folderName(),
+                                          fileName: logID.filename(),
+                                          pngData: image.compressData()!)
+                target.imagePath = imagePath
+            }
+            return target
+        } catch {
+            print(#function + "画像更新に失敗しました")
+            return nil
         }
     }
     

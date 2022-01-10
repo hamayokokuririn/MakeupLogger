@@ -148,7 +148,12 @@ final class MakeupLogViewModel: NSObject {
     }
     
     func editPicture(image: UIImage) {
-        if case .part(let partID) = state {
+        switch state {
+        case .face:
+            if let updated = makeupLogRepository.updateMakeupLog(logID: log.id!, image: image) {
+                self.log = updated
+            }
+        case .part(partID: let partID):
             guard let facePart = log.partsList.first(where: {$0.id == partID}) else {return}
             makeupLogRepository.updateFacePart(logID: log.id!, part: facePart, image: image) { log in
                 guard let log = log else {
