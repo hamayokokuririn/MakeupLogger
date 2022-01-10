@@ -13,6 +13,20 @@ final class AddNewMakeupLogViewController: UIViewController {
     let titleTextField = UITextField()
     let bodyTextField = UITextField()
     let selectPhotoButton = UIButton()
+    let selectNewPhotoButton: UIButton = {
+        var config = UIButton.Configuration.tinted()
+        config.image = UIImage(systemName: "person.2.circle.fill")
+        config.buttonSize = .large
+        config.background.cornerRadius = 0
+        // 背景の設定
+        config.baseBackgroundColor = .systemGreen
+
+        let button = UIButton(configuration: config)
+        button.setTitle("写真を追加", for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
+        return button
+    }()
+    
     let selectedPhotoImage = UIImageView()
     let completeButton = UIButton()
     
@@ -52,14 +66,22 @@ final class AddNewMakeupLogViewController: UIViewController {
         
         view.addSubview(selectPhotoButton)
         selectPhotoButton.setTitle("写真選択", for: .normal)
+        selectPhotoButton.setTitleColor(.systemBlue, for: .normal)
         selectPhotoButton.addTarget(self, action: #selector(didPushSelectPhoto), for: .touchUpInside)
         
         view.addSubview(selectedPhotoImage)
         selectedPhotoImage.contentMode = .scaleAspectFit
-        selectedPhotoImage.backgroundColor = .black
+        selectedPhotoImage.backgroundColor = .white
+        selectedPhotoImage.isUserInteractionEnabled = true
+        
+        selectNewPhotoButton.addTarget(self, action: #selector(didPushSelectPhoto), for: .touchUpInside)
+        selectNewPhotoButton.isUserInteractionEnabled = true
+        selectedPhotoImage.addSubview(selectNewPhotoButton)
         
         view.addSubview(completeButton)
+        completeButton.titleLabel?.textAlignment = .center
         completeButton.setTitle("完了", for: .normal)
+        completeButton.setTitleColor(.systemBlue, for: .normal)
         completeButton.addTarget(self, action: #selector(didPushComplete), for: .touchUpInside)
         
         title = "新規ログを追加"
@@ -80,8 +102,10 @@ final class AddNewMakeupLogViewController: UIViewController {
         selectPhotoButton.frame.origin = CGPoint(x: 0, y: bodyTextField.frame.maxY + margin)
         
         selectedPhotoImage.frame = CGRect(x: 0, y: selectPhotoButton.frame.maxY + margin, width: viewWidth, height: 300)
+        selectNewPhotoButton.frame.size = selectedPhotoImage.frame.size
         
         completeButton.sizeToFit()
+        completeButton.frame.size.width = viewWidth
         completeButton.frame.origin = CGPoint(x: 0, y: selectedPhotoImage.frame.maxY + margin)
     }
     
@@ -91,6 +115,7 @@ final class AddNewMakeupLogViewController: UIViewController {
             // 写真選択時処理
             self?.selectedPhotoImage.image = image
             self?.viewModel.image = image
+            self?.selectedPhotoImage.subviews.forEach {$0.removeFromSuperview()}
         }
         alert.show(presenter: self)
     }
@@ -103,11 +128,11 @@ final class AddNewMakeupLogViewController: UIViewController {
                 switch error {
                 case .titleMissing:
                     // タイトルが不正です
-                    titleTextField.backgroundColor = .red
+                    titleTextField.backgroundColor = #colorLiteral(red: 1, green: 0.5409764051, blue: 0.8473142982, alpha: 1)
                     return
                 case .imageMissing:
                     // イメージが不正です
-                    selectedPhotoImage.backgroundColor = .red
+                    selectNewPhotoButton.configuration?.baseBackgroundColor = .red
                     return
                 }
             }
