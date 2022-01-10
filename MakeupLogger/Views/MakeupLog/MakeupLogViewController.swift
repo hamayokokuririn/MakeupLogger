@@ -67,7 +67,7 @@ final class MakeupLogViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemGray3
+        view.backgroundColor = .white
         
         view.addSubview(segment)
         
