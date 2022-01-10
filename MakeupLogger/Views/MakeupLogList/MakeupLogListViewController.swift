@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SafariServices
 
 final class MakeupLogListViewController: UIViewController {
     enum Mode {
@@ -61,10 +62,13 @@ final class MakeupLogListViewController: UIViewController {
         tableView.delegate = viewModel
         tableView.dataSource = viewModel
         
-        let item = UIBarButtonItem(barButtonSystemItem: .add,
+        let right = UIBarButtonItem(barButtonSystemItem: .add,
                                    target: self,
                                    action: #selector(didPushAddButton))
-        self.navigationItem.rightBarButtonItem = item
+        self.navigationItem.rightBarButtonItem = right
+        
+        let left = UIBarButtonItem(image: UIImage(systemName: "info.circle"), landscapeImagePhone: nil, style: .plain, target: self, action: #selector(didPushInfoButton))
+        self.navigationItem.leftBarButtonItem = left
     }
     
     override func viewWillLayoutSubviews() {
@@ -74,6 +78,12 @@ final class MakeupLogListViewController: UIViewController {
     
     @objc private func didPushAddButton() {
         viewModel.showAlert(presenter: self)
+    }
+    
+    @objc private func didPushInfoButton() {
+        let url = URL(string: "https://field-level-e6c.notion.site/5d8082859fab444b8af2226ecbb3fedc?v=deb09b5cf45a41d8afcc19a9eced153c")!
+        let vc = SFSafariViewController(url: url)
+        present(vc, animated: true, completion: nil)
     }
     
     private func addNewMakeupLog() {
