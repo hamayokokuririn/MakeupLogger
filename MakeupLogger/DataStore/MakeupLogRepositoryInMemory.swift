@@ -193,4 +193,15 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
     func delete(logID: MakeupLogID) {
         logMap.removeValue(forKey: logID)
     }
+    
+    func delete(logID: MakeupLogID, partID: FacePartID, annotation: FaceAnnotationID) {
+        if let part = logMap[logID]?.partsList.first(where: { part in
+            part.id == partID
+        }),
+           let index = part.annotations.firstIndex(where: { obj in
+               obj.id == annotation
+           }){
+            part.annotations.remove(at: index)
+        }
+    }
 }

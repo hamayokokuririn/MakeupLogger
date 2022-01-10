@@ -17,6 +17,7 @@ protocol MakeupLogRepository {
     func updateFaceAnnotation(logID: MakeupLogID, partID: FacePartID, faceAnnotation: FaceAnnotation, completion: (MakeupLog?) -> Void)
     func insertFaceAnnotation(logID: MakeupLogID, partID: FacePartID, completion: (MakeupLog?) -> Void)
     func delete(logID: MakeupLogID)
+    func delete(logID: MakeupLogID, partID: FacePartID, annotation: FaceAnnotationID)
     
 }
 
@@ -191,6 +192,27 @@ class MakeupLogRealmRepository: MakeupLogRepository {
         do {
             try realm.write({
                 realm.delete(target)
+            })
+        } catch {
+            print(#function + error.localizedDescription)
+        }
+    }
+    
+    func delete(logID: MakeupLogID, partID: FacePartID, annotation: FaceAnnotationID) {
+        let result = realm.objects(MakeupLog.self).map { $0 }
+        guard let target = result.first(where: { log in
+            log.id == logID
+        }) else {
+            return
+        }
+        do {
+            try realm.write({
+                if let part = target.partsList.first(where: { $0.id == partID }),
+                   let index = part.annotations.firstIndex(where: { obj in
+                       obj.id == annotation
+                   }) {
+                    part.annotations.remove(at: index)
+                }
             })
         } catch {
             print(#function + error.localizedDescription)
