@@ -41,8 +41,12 @@ class AnnotationMoveImageView<D: AnnotationMoveImageViewDelegate>: UIImageView {
               movesSubviews else {
             return
         }
+        
         if view != self {
-            view.center = touch.location(in: self)
+            let location = touch.location(in: self)
+            if imageRect().contains(location) {
+                view.center = location
+            }
         }
     }
     
