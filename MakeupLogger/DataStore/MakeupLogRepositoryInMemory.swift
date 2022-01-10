@@ -176,7 +176,7 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
             if let nextID = nextFaceAnnotationID {
                 faceAnnotation.id = nextID
             }
-            faceAnnotation.text = String(id.id)
+            faceAnnotation.text = String(log.partsList[partIndex].annotations.count)
             log.partsList[partIndex].annotations.append(faceAnnotation)
             logMap[logID] = log
             completion(log)

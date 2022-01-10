@@ -45,16 +45,17 @@ extension CommentListAdapter: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footer = UIButton()
-        footer.setTitle("add annotation",
-                        for: .normal)
-        footer.backgroundColor = .green
-        footer.frame.size = CGSize(width: tableView.frame.width,
-                                   height: 20)
+        let footer: UIButton = {
+            var config = UIButton.Configuration.plain()
+            config.image = UIImage(systemName: "plus.bubble.fill")
+            config.buttonSize = .large
+
+            let button = UIButton(configuration: config)
+            button.setTitle("アノテーションを追加", for: .normal)
+            button.setTitleColor(.systemBlue, for: .normal)
+            return button
+        }()
         
-        let image = UIImage(systemName: "plus.bubble.fill")
-        footer.setImage(image, for: .normal)
-        footer.tintColor = .white
         footer.addTarget(self,
                          action: #selector(didPushAdd),
                          for: .touchUpInside)
@@ -67,7 +68,7 @@ extension CommentListAdapter: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        30
+        42
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
