@@ -17,16 +17,21 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
     let id = MakeupLogID()
     var imagePath = ""
     
-    lazy var log: MakeupLog = MakeupLog.make(id: id,
-                                             title: "makeup_sample",
-                                             imagePath: imagePath)
+    lazy var log: MakeupLog = {
+        let log = MakeupLog.make(id: id,
+                                 title: "makeup_sample",
+                                 imagePath: imagePath)
+        log.partsList[0] = eye
+        return log
+    }()
+    
     lazy var eye: FacePart = {
         let id = FacePartID()
         return FacePart.make(id: id,
                              type: "eye",
                              imagePath: saveImage(folderName: id.folderName,
-                                                                              fileName: id.fileName,
-                                                                              pngData: #imageLiteral(resourceName: "sample_eye_line").pngData()!),
+                                                  fileName: id.fileName,
+                                                  pngData: #imageLiteral(resourceName: "sample_eye_line").pngData()!),
                              annotations: [eyeAnnotation])}()
     
     
@@ -204,7 +209,7 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
         logMap.removeValue(forKey: logID)
     }
     
-    func delete(logID: MakeupLogID, partID: FacePartID, annotation: FaceAnnotationID) {
+    func delete(logID: MakeupLogID, partID: FacePartID, annotation: FaceAnnotationID) -> MakeupLog? {
         if let part = logMap[logID]?.partsList.first(where: { part in
             part.id == partID
         }),
@@ -213,5 +218,6 @@ class MakeupLogRepositoryInMemory: MakeupLogRepository {
            }){
             part.annotations.remove(at: index)
         }
+        return logMap[logID]
     }
 }
