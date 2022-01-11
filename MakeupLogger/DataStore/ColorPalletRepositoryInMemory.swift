@@ -26,21 +26,21 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
     
     lazy var colorPalletAnnotation1 = ColorPalletAnnotationObject.make(id: colorID1,
                                                                  text: "1",
-                                                                 pointRatioOnImage: PointRatio())
+                                                                       pointRatioOnImage: PointRatio(), title: "AAA")
     lazy var colorPalletAnnotation2 = ColorPalletAnnotationObject.make(id: colorID2,
                                                                  text: "2",
                                                                  pointRatioOnImage: {
                                                                     let ratio = PointRatio()
                                                                     ratio.x = 0.3
                                                                     return ratio
-                                                                 }())
+    }(), title: "BBB")
     lazy var colorPalletAnnotation3 = ColorPalletAnnotationObject.make(id: colorID3,
                                                                  text: "3",
                                                                  pointRatioOnImage: {
                                                                     let ratio = PointRatio()
                                                                     ratio.x = 0.6
                                                                     return ratio
-                                                                 }())
+    }(), title: "CCC")
     lazy var colorPalletId: ColorPalletID = {
         let id = ColorPalletID()
         return id
@@ -121,7 +121,8 @@ class ColorPalletRepositoryInMemory: ColorPalletRepository {
         let annotationID = ColorPalletAnnotationID()
         let annotation = ColorPalletAnnotationObject.make(id: annotationID,
                                                           text: annotationID.id.description,
-                                                          pointRatioOnImage: .zero)
+                                                          pointRatioOnImage: .zero,
+                                                          title: "")
         cache[id]?.annotationList.append(annotation)
         completion(cache[id]!)
         notifyChanged()

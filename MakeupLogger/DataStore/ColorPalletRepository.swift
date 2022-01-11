@@ -142,7 +142,7 @@ class ColorPalletRealmRepository: ColorPalletRepository {
         let annotationID = ColorPalletAnnotationID()
         let annotation = ColorPalletAnnotationObject.make(id: annotationID,
                                                           text: (pallet.annotationList.count + 1).description,
-                                                          pointRatioOnImage: .zero)
+                                                          pointRatioOnImage: .zero, title: "")
         do {
             try realm.write {
                 pallet.annotationList.append(annotation)

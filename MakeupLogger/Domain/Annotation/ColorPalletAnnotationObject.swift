@@ -39,10 +39,11 @@ class ColorPalletAnnotationObject: Object, Annotation {
         super.init()
     }
     
-    static func make(id: ColorPalletAnnotationID, text: String, pointRatioOnImage: PointRatio) -> ColorPalletAnnotationObject {
+    static func make(id: ColorPalletAnnotationID, text: String, pointRatioOnImage: PointRatio, title: String) -> ColorPalletAnnotationObject {
         let annotation = ColorPalletAnnotationObject()
         annotation.id = id
         annotation.text = text
+        annotation.title = title
         annotation.pointRatioOnImage = pointRatioOnImage
         return annotation
     }
