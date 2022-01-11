@@ -21,8 +21,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         window.makeKeyAndVisible()
         
-        let repo = MakeupLogRealmRepository.shared
-        let colorPalletRepository = ColorPalletRealmRepository.shared
+        let repo: MakeupLogRepository
+        let colorPalletRepository: ColorPalletRepository
+        #if DEBUG
+        repo = MakeupLogRepositoryInMemory.shared
+        colorPalletRepository = ColorPalletRepositoryInMemory.shared
+        #else
+        repo = MakeupLogRealmRepository.shared
+        colorPalletRepository = ColorPalletRealmRepository.shared
+        #endif
+        
         let vc = MakeupLogListViewController(makeupLogRepository: repo, colorPalletRepository: colorPalletRepository)
         let navigation = UINavigationController(rootViewController: vc)
         window.rootViewController = navigation
