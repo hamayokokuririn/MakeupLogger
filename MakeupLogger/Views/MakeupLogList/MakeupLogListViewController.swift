@@ -76,6 +76,12 @@ final class MakeupLogListViewController: UIViewController {
         tableView.frame = view.frame
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        viewModel.fetchLog()
+    }
+    
     @objc private func didPushAddButton() {
         viewModel.showAlert(presenter: self)
     }
@@ -89,23 +95,12 @@ final class MakeupLogListViewController: UIViewController {
     private func addNewMakeupLog() {
         // 新規のログを追加する画面を表示
         let vc = AddNewMakeupLogViewController(repository: viewModel.makeupLogRepository)
-        let navigation = UINavigationController(rootViewController: vc)
-        navigation.presentationController?.delegate = self
-        present(navigation, animated: true, completion: nil)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     private func addNewColorPallet() {
         // 新規のカラーを追加する画面を表示
         let vc = AddNewColorPalletViewController(repository: viewModel.colorPalletRepository)
-        let navigation = UINavigationController(rootViewController: vc)
-        navigation.presentationController?.delegate = self
-        present(navigation, animated: true, completion: nil)
-    }
-}
-
-extension MakeupLogListViewController: UIAdaptivePresentationControllerDelegate {
-    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        dismiss(animated: true, completion: nil)
-        viewModel.fetchLog()
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

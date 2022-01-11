@@ -36,10 +36,9 @@ final class AddNewMakeupLogViewController: UIViewController {
     init(repository: MakeupLogRepository) {
         viewModel = AddNewMakeupLogViewModel(repository: repository)
         super.init(nibName: nil, bundle: nil)
-        viewModel.completeAction = {
+        viewModel.completeAction = { [weak self] in
             // 閉じる
-            guard let pc = self.navigationController?.presentationController else {return}
-            pc.delegate?.presentationControllerDidDismiss?(pc)
+            self?.navigationController?.popViewController(animated: true)
         }
     }
     

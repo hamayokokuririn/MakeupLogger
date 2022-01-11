@@ -104,6 +104,11 @@ final class MakeupLogViewController: UIViewController {
                                  width: imageWidth,
                                  height: tableViewHeight)
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
 }
 
 extension MakeupLogViewController: MakeupLogViewModelDelegate {
@@ -151,9 +156,7 @@ extension MakeupLogViewController: MakeupLogViewModelDelegate {
                                                     annotation: annotation,
                                                     makeupLogRepository: viewModel.makeupLogRepository,
                                                     colorPalletRepository: viewModel.colorPalletRepository)
-            let navigation = UINavigationController(rootViewController: vc)
-            navigation.presentationController?.delegate = self
-            present(navigation, animated: true, completion: nil)
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
@@ -167,15 +170,3 @@ extension MakeupLogViewController: MakeupLogViewModelDelegate {
     }
 }
 
-extension MakeupLogViewController: UIAdaptivePresentationControllerDelegate {
-    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        guard let navi = presentationController.presentedViewController as? UINavigationController,
-              let vc = navi.topViewController as? AnnotationDetailViewController else {
-            return
-        }
-        dismiss(animated: true, completion: nil)
-        let annotation = vc.viewModel.annotation
-        viewModel.editAnnotation(annotation)
-        tableView.reloadData()
-    }
-}

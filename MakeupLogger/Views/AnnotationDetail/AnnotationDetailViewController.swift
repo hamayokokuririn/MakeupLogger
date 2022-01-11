@@ -25,7 +25,6 @@ final class AnnotationDetailViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         
         view.backgroundColor = .white
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(close))
         
         titleText.text = annotation.title
         
@@ -116,11 +115,6 @@ final class AnnotationDetailViewController: UIViewController {
             self.navigationController?.popViewController(animated: true)
         }
         navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    @objc private func close() {
-        guard let pc = navigationController?.presentationController else {return}
-        pc.delegate?.presentationControllerDidDismiss?(pc)
     }
 }
 
