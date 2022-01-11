@@ -13,7 +13,7 @@ class ColorPallet: Object {
         super.init()
     }
     
-    static func make(id: ColorPalletID, title: String, imagePath: String, annotationList: [ColorPalletAnnotationObject]) -> ColorPallet {
+    static func make(id: ColorPalletID, title: String, imagePath: String?, annotationList: [ColorPalletAnnotationObject]) -> ColorPallet {
         let pallet = ColorPallet()
         pallet.id = id
         pallet.title = title
@@ -29,7 +29,7 @@ class ColorPallet: Object {
     
     @objc dynamic var id: ColorPalletID? = nil
     @objc dynamic var title: String = ""
-    @objc dynamic var imagePath: String = ""
+    @objc dynamic var imagePath: String? = nil
     @objc dynamic var createAt = Date()
     var annotationList = List<ColorPalletAnnotationObject>()
     

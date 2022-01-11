@@ -11,7 +11,6 @@ import UIKit
 final class AddNewColorPalletViewModel: NSObject {
     enum ValidateError: Error {
         case titleMissing
-        case imageMissing
     }
     
     private let repository: ColorPalletRepository
@@ -27,9 +26,6 @@ final class AddNewColorPalletViewModel: NSObject {
     func addLog() throws {
         guard let title = title else {
             throw ValidateError.titleMissing
-        }
-        guard let image = image else {
-            throw ValidateError.imageMissing
         }
         repository.insertColorPallet(title: title,
                                      image: image) { _ in

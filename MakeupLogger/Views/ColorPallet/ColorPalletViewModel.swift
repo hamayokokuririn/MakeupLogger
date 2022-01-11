@@ -11,7 +11,6 @@ import UIKit
 final class ColorPalletViewModel: NSObject {
     enum ValidateError: Error {
         case titleMissing
-        case imageMissing
     }
     
     let colorPalletID: ColorPalletID
@@ -32,7 +31,8 @@ final class ColorPalletViewModel: NSObject {
                 $0.id == colorPalletID
             }) {
                 self.title = colorPallet.title
-                if let data = FileIOUtil.getImageDataFromDocument(path: colorPallet.imagePath) {
+                if let imagePath = colorPallet.imagePath,
+                   let data = FileIOUtil.getImageDataFromDocument(path: imagePath) {
                     self.image = UIImage(data: data)
                 }
                 var list = [ColorPalletAnnotation]()
@@ -60,9 +60,6 @@ final class ColorPalletViewModel: NSObject {
     func complete() throws {
         guard let title = title else {
             throw ValidateError.titleMissing
-        }
-        guard let image = image else {
-            throw ValidateError.imageMissing
         }
         repository.updateColorPallet(id: colorPalletID,
                                      title: title,

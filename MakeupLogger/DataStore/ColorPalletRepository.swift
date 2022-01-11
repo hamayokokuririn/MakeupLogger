@@ -12,11 +12,11 @@ import RealmSwift
 protocol ColorPalletRepository {
     func getColorPalletList(completion: ([ColorPallet]) -> Void)
     func insertColorPallet(title: String,
-                           image: UIImage,
+                           image: UIImage?,
                            completion: (ColorPallet?) -> Void)
     func updateColorPallet(id: ColorPalletID,
                            title: String,
-                           image: UIImage,
+                           image: UIImage?,
                            annotations: [ColorPalletAnnotation],
                            completion: (ColorPallet?) -> Void)
     func updateAnnotation(id: ColorPalletID,
@@ -60,14 +60,16 @@ class ColorPalletRealmRepository: ColorPalletRepository {
         completion(array)
     }
     
-    func insertColorPallet(title: String, image: UIImage, completion: (ColorPallet?) -> Void) {
-        guard let data = image.compressData() else {
-            completion(nil)
-            return
-        }
+    func insertColorPallet(title: String, image: UIImage?, completion: (ColorPallet?) -> Void) {
         let pallet: ColorPallet
         let id = ColorPalletID()
-        let path = Self.saveImage(folderName: id.folderName(), fileName: id.filename(), pngData: data)
+        let path: String?
+        if let data = image?.compressData() {
+            path = Self.saveImage(folderName: id.folderName(), fileName: id.filename(), pngData: data)
+        } else {
+            path = nil
+        }
+        
         pallet = ColorPallet.make(id: id,
                                   title: title,
                                   imagePath: path,
@@ -84,19 +86,21 @@ class ColorPalletRealmRepository: ColorPalletRepository {
         }
     }
     
-    func updateColorPallet(id: ColorPalletID, title: String, image: UIImage, annotations: [ColorPalletAnnotation], completion: (ColorPallet?) -> Void) {
+    func updateColorPallet(id: ColorPalletID, title: String, image: UIImage?, annotations: [ColorPalletAnnotation], completion: (ColorPallet?) -> Void) {
         let result = realm.objects(ColorPallet.self).map { $0 }
         let array = Array(result)
-        guard let pallet = array.first(where: {$0.id == id}),
-            let data = image.compressData() else {
+        guard let pallet = array.first(where: {$0.id == id}) else {
             completion(nil)
             return
         }
         do {
-            let path = Self.saveImage(folderName: id.folderName(), fileName: id.filename(), pngData: data)
+            
             try realm.write {
                 pallet.title = title
-                pallet.imagePath = path
+                if let data = image?.compressData() {
+                    let path = Self.saveImage(folderName: id.folderName(), fileName: id.filename(), pngData: data)
+                    pallet.imagePath = path
+                }
                 for (i, annotation) in annotations.enumerated() {
                     pallet.annotationList[i] = annotation.makeObject()
                 }

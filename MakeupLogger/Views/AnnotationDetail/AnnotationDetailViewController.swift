@@ -88,7 +88,8 @@ final class AnnotationDetailViewController: UIViewController {
     
     private func setupColorPallet(colorPallet: ColorPallet) {
         selectedColorPalletName.text = colorPallet.title
-        if let data = ColorPalletRealmRepository.imageData(imagePath: colorPallet.imagePath) {
+        if let path = colorPallet.imagePath,
+           let data = ColorPalletRealmRepository.imageData(imagePath: path) {
             colorPalletImage.image = UIImage(data: data)
         }
         var annotations = [ColorPalletAnnotationObject]()

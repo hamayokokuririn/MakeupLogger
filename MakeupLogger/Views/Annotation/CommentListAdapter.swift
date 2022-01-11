@@ -38,7 +38,8 @@ final class CommentListAdapter: NSObject, UITableViewDataSource {
             if let pallet = list.first(where: {$0.id == annotation.selectedColorPalletID}),
                let annotation = pallet.annotationList.first(where: {$0.id == annotation.selectedColorPalletAnnotationID}) {
                 cell.setAnnotationComment(annotation.title)
-                if let data = ColorPalletRealmRepository.imageData(imagePath: pallet.imagePath),
+                if let imagePath = pallet.imagePath,
+                   let data = ColorPalletRealmRepository.imageData(imagePath: imagePath),
                    let image = UIImage(data: data) {
                     cell.setImage(image)
                 }

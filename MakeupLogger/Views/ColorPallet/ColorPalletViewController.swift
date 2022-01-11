@@ -103,15 +103,11 @@ final class ColorPalletViewController: UIViewController {
         do {
             try viewModel.complete()
         } catch {
-            if let error = error as? AddNewMakeupLogViewModel.ValidateError {
+            if let error = error as? ColorPalletViewModel.ValidateError {
                 switch error {
                 case .titleMissing:
                     // タイトルが不正です
                     titleTextField.backgroundColor = .red
-                    return
-                case .imageMissing:
-                    // イメージが不正です
-                    selectedPhotoImage.backgroundColor = .red
                     return
                 }
             }
