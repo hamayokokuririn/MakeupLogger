@@ -163,6 +163,7 @@ extension MakeupLogViewController: MakeupLogViewModelDelegate {
     
     func viewModelDeleteAnnotation(_ model: MakeupLogViewModel) {
         tableView.reloadData()
+        imageCollection.reloadData()
     }
 }
 

@@ -74,9 +74,11 @@ final class MakeupLogViewModel: NSObject {
     private func deleteAnnotation(index: Int) {
         if case .part(let partID) = self.state {
             if let id = log.partsList.first(where: {$0.id == partID})?.annotations[index].id {
-                self.makeupLogRepository.delete(logID: log.id!,
-                                                partID: partID,
-                                                annotation: id)
+                if let deleted = self.makeupLogRepository.delete(logID: log.id!,
+                                                                 partID: partID,
+                                                                 annotation: id) {
+                    self.log = deleted
+                }
             }
         }
     }
