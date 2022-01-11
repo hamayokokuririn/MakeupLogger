@@ -57,12 +57,14 @@ final class AddNewMakeupLogViewController: UIViewController {
         titleTextField.backgroundColor = .white
         titleTextField.delegate = viewModel
         titleTextField.tag = AddNewMakeupLogViewModel.TextFieldType.title.rawValue
+        titleTextField.returnKeyType = .done
         
         view.addSubview(bodyTextField)
         bodyTextField.placeholder = "説明"
         bodyTextField.backgroundColor = .white
         bodyTextField.delegate = viewModel
         bodyTextField.tag = AddNewMakeupLogViewModel.TextFieldType.body.rawValue
+        bodyTextField.returnKeyType = .done
         
         view.addSubview(selectPhotoButton)
         selectPhotoButton.setTitle("写真選択", for: .normal)

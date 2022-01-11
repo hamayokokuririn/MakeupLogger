@@ -40,6 +40,7 @@ final class AddNewColorPalletViewController: UIViewController {
         titleTextField.placeholder = "タイトル"
         titleTextField.backgroundColor = .white
         titleTextField.delegate = viewModel
+        titleTextField.returnKeyType = .done
         
         view.addSubview(selectPhotoButton)
         selectPhotoButton.setTitle("写真選択", for: .normal)

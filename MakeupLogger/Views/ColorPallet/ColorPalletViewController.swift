@@ -46,6 +46,7 @@ final class ColorPalletViewController: UIViewController {
         titleTextField.text = viewModel.title
         titleTextField.backgroundColor = .white
         titleTextField.delegate = viewModel
+        titleTextField.returnKeyType = .done
         
         selectPhotoButton.addTarget(self, action: #selector(didPushSelectPhoto), for: .touchUpInside)
         
