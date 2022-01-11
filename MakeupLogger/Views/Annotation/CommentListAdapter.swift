@@ -17,9 +17,11 @@ protocol CommentListAdapterDelegate: AnyObject {
 
 final class CommentListAdapter: NSObject, UITableViewDataSource {
     weak var delegate: CommentListAdapterDelegate?
+    let colorPalletRepository: ColorPalletRepository
     
-    init(delegate: CommentListAdapterDelegate) {
+    init(delegate: CommentListAdapterDelegate, repository: ColorPalletRepository) {
         self.delegate = delegate
+        self.colorPalletRepository = repository
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -32,7 +34,16 @@ final class CommentListAdapter: NSObject, UITableViewDataSource {
         let annotation = delegate.commentListAdapterAnnotationList(self)[indexPath.row]
         let cell = CommentCell()
         cell.setAnnotationText(annotation.text)
-        cell.setAnnotationComment(annotation.title)
+        colorPalletRepository.getColorPalletList { list in
+            if let pallet = list.first(where: {$0.id == annotation.selectedColorPalletID}),
+               let annotation = pallet.annotationList.first(where: {$0.id == annotation.selectedColorPalletAnnotationID}) {
+                cell.setAnnotationComment(annotation.title)
+                if let data = ColorPalletRealmRepository.imageData(imagePath: pallet.imagePath),
+                   let image = UIImage(data: data) {
+                    cell.setImage(image)
+                }
+            }
+        }
         return cell
     }
         

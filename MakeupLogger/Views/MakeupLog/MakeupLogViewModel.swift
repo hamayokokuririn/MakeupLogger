@@ -39,7 +39,7 @@ final class MakeupLogViewModel: NSObject {
     
     weak var delegate: MakeupLogViewModelDelegate? = nil
     
-    lazy var tableViewAdapter = CommentListAdapter(delegate: self)
+    lazy var tableViewAdapter = CommentListAdapter(delegate: self, repository: colorPalletRepository)
     private(set) var log: MakeupLog
     
     let makeupLogRepository: MakeupLogRepository

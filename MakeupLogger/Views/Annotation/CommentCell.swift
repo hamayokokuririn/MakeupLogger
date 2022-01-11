@@ -12,6 +12,7 @@ final class CommentCell: UITableViewCell {
     
     let idLabel: UILabel = .init()
     let commentLabel: UILabel = .init()
+    let palletImageView: UIImageView = .init(image: nil)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -20,6 +21,8 @@ final class CommentCell: UITableViewCell {
         idLabel.textAlignment = .center
         
         contentView.addSubview(commentLabel)
+        
+        contentView.addSubview(palletImageView)
     }
     
     required init?(coder: NSCoder) {
@@ -31,9 +34,16 @@ final class CommentCell: UITableViewCell {
         
         let height = frame.height
         idLabel.frame = CGRect(x: 0, y: 0, width: 30, height: height)
-        commentLabel.frame = CGRect(x: idLabel.frame.maxX,
+        palletImageView.frame = CGRect(x: idLabel.frame.maxX,
+                                       y: 0,
+                                       width: 60,
+                                       height: height)
+        commentLabel.frame = CGRect(x: palletImageView.frame.maxX,
                                     y: 0,
-                                    width: frame.width - idLabel.frame.width,
+                                    width:
+                                        frame.width
+                                    - idLabel.frame.width
+                                    - palletImageView.frame.width,
                                     height: height)
     }
     
@@ -43,6 +53,10 @@ final class CommentCell: UITableViewCell {
     
     func setAnnotationComment(_ text: String) {
         commentLabel.text = text
+    }
+    
+    func setImage(_ image: UIImage) {
+        palletImageView.image = image
     }
 }
 

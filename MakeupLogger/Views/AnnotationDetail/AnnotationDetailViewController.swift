@@ -53,6 +53,7 @@ final class AnnotationDetailViewController: UIViewController {
         }
         
         viewModel.didFinishUpdateAnnotation = { text in
+            self.titleText.text = text
         }
         
         configureObserver()

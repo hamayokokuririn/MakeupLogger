@@ -136,5 +136,6 @@ extension ColorPalletViewModel: ColorPalletAnnotationTableViewCellDelegate {
                   return
               }
         annotationList[index].title = text
+        repository.updateAnnotation(id: colorPalletID, annotation: annotationList[index], completion: {_ in })
     }
 }

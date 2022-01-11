@@ -56,7 +56,7 @@ struct AnnotationDetailViewModel {
                     if let colorPalletAnnotation = pallet.annotationList.first(where: {
                         $0.id == annotation.selectedColorPalletAnnotationID
                     }) {
-                        didFinishUpdateAnnotation?(colorPalletAnnotation.text)
+                        didFinishUpdateAnnotation?(colorPalletAnnotation.title)
                     }
                 }
             }
