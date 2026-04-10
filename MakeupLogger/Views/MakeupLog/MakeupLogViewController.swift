@@ -80,6 +80,11 @@ final class MakeupLogViewController: UIViewController {
         tableView.dataSource = viewModel.tableViewAdapter
         
         viewModel.state = .face
+        
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        if #available(iOS 26.0, *) {
+            navigationController?.interactiveContentPopGestureRecognizer?.isEnabled = false
+        }
     }
     
     override func viewWillLayoutSubviews() {
